@@ -11,11 +11,13 @@ export default function Navbar() {
     <nav className="min-h-screen max-w-fit flex flex-col justify-between">
       <Image src={logo} alt="logo" className="mx-4 mt-8" />
       <div>
-        <Image src={list_icon} alt="list_icon" className="mx-4 my-2" />
-        <Image src={replay_icon} alt="replay_icon" className="mx-4 my-2" />
-        <Image src={stats_icon} alt="stats_icon" className="mx-4 my-2" />
+        <Image src={list_icon} alt="list_icon" className="mx-8 my-12" />
+        <Image src={replay_icon} alt="replay_icon" className="mx-8 my-12" />
+        <Image src={stats_icon} alt="stats_icon" className="mx-8 my-12" />
       </div>
-      <Image src={cart_icon} alt="cart" className="mx-4 mb-8" />
+      <div className="rounded-full p-4 bg-slate-600 flex items-center justify-center mx-4 mb-8">
+        <Image src={cart_icon} alt="cart" className="" />
+      </div>
     </nav>
   );
 }
