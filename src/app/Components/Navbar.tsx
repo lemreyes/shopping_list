@@ -9,7 +9,7 @@ import cart_icon from "../../../public/cart.svg";
 export default function Navbar() {
   return (
     <nav className="min-h-screen max-w-fit flex flex-col justify-between">
-      <Image src={logo} alt="logo" className="mx-4 mt-8" />
+      <Image src={logo} alt="logo" className="mx-8 mt-8" />
       <div>
         <Image src={list_icon} alt="list_icon" className="mx-8 my-12" />
         <Image src={replay_icon} alt="replay_icon" className="mx-8 my-12" />
