@@ -6,7 +6,7 @@ import ListedItem from "./ListedItem";
 
 export default function ActiveListPanel() {
   return (
-    <aside className="p-8 bg-gray-200 flex flex-col justify-between">
+    <aside className="p-8 bg-gray-200 flex flex-col justify-between min-w-[30%]">
       <div>
         <section className="rounded-xl p-8 bg-gray-900 text-white mb-8">
           <p>An item is not on the list?</p>
