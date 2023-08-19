@@ -12,9 +12,16 @@ export default function Masterlist() {
         <span className="text-orange-600 font-bold">SyncShop</span> seamlessly
         share and shop together with real-time list updates
       </h1>
-      <h2 className="font-bold text-2xl mt-8">Master List</h2>
+      <div className="flex flex-row mt-8">
+        <h2 className="font-bold text-2xl">Master List</h2>
+        <button className="border border-gray-800 rounded-lg ml-16 px-4">Edit</button>
+      </div>
       <div className="flex flex-row">
-        <Image src={search_icon} alt="search" className="w-6 h-6 absolute translate-x-1 translate-y-3" />
+        <Image
+          src={search_icon}
+          alt="search"
+          className="w-6 h-6 absolute translate-x-1 translate-y-3"
+        />
         <input
           type="text"
           placeholder="Search for an item"
