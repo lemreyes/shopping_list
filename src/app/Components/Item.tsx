@@ -1,5 +1,5 @@
 import React from "react";
-import add_icon from "../../../public/add_icon.svg";
+import add_icon from "../../../public/assets/add_icon.svg";
 import Image from "next/image";
 
 export default function Item({ label }: { label: string }) {
