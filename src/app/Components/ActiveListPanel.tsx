@@ -1,4 +1,5 @@
 import React from "react";
+import ListSaveButton from "./ListSaveButton";
 
 export default function ActiveListPanel() {
   return (
@@ -14,6 +15,7 @@ export default function ActiveListPanel() {
         <li>Milk</li>
         <li>Orange Juice</li>
       </ul>
+      <ListSaveButton />
     </aside>
   );
 }
