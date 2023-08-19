@@ -1,11 +1,16 @@
 import React from "react";
+import Image from "next/image";
 import ListSaveButton from "./ListSaveButton";
+import edit_list_icon from "../../../public/assets/edit_icon.svg";
 
 export default function ActiveListPanel() {
   return (
     <aside className="p-8 bg-gray-200 flex flex-col justify-between">
       <div>
-        <h2 className="font-bold text-2xl">Shopping List</h2>
+        <div className="flex flex-row justify-between">
+          <h2 className="font-bold text-2xl">Shopping List</h2>
+          <Image src={edit_list_icon} alt="Edit" height={30} />
+        </div>
         <h3 className="text-sm mt-4">Fruits and vegetables</h3>
         <ul className="text-lg">
           <li>Avocado</li>
