@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import ListSaveButton from "./ListSaveButton";
 import edit_list_icon from "../../../public/assets/edit_icon.svg";
+import ListedItem from "./ListedItem";
 
 export default function ActiveListPanel() {
   return (
@@ -19,13 +20,13 @@ export default function ActiveListPanel() {
         </div>
         <h3 className="text-sm mt-4">Fruits and vegetables</h3>
         <ul className="text-lg">
-          <li>Avocado</li>
-          <li>Bananas</li>
+          <ListedItem item_name="Avocado" quantity="3" />
+          <ListedItem item_name="Bananas" quantity="1" />
         </ul>
         <h3 className="text-sm mt-4">Beverages</h3>
         <ul className="text-lg">
-          <li>Milk</li>
-          <li>Orange Juice</li>
+          <ListedItem item_name="Milk" quantity="1" />
+          <ListedItem item_name="Orange Juice" quantity="1" />
         </ul>
       </div>
       <ListSaveButton />
