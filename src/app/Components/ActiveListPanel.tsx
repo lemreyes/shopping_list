@@ -17,6 +17,13 @@ export default function ActiveListPanel() {
     setShowForm(false);
   };
 
+  const hdlAddItemToList = () => {
+    // TODO
+    // add to shopping list
+
+    setShowForm(false);
+  }
+
   return (
     <aside className="p-8 bg-gray-200 w-[30%] min-h-full">
       {showForm === false && (
@@ -34,7 +41,7 @@ export default function ActiveListPanel() {
         </div>
       )}
       {showForm === true && (
-        <NewItemFormActiveList cancelHandler={hdlCancelAddItemButton} />
+        <NewItemFormActiveList cancelHandler={hdlCancelAddItemButton} addHandler={hdlAddItemToList}/>
       )}
     </aside>
   );
