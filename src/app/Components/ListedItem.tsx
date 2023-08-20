@@ -16,15 +16,21 @@ export default function ListedItem({
     return (
       <li className="flex flex-row justify-between mt-1">
         <div className="flex flex-row">
-          <Image src={trash_icon} alt="Delete" className="w-6 mr-2" />
+          <button>
+            <Image src={trash_icon} alt="Delete" className="w-6 mr-2" />
+          </button>
           {item_name}
         </div>
         <div className="flex flex-row">
-          <Image src={subtract_icon} alt="Less" className="w-4 mr-1" />
+          <button>
+            <Image src={subtract_icon} alt="Less" className="w-4 mr-1" />
+          </button>
           <span className="border border-gray-800 rounded-xl px-4 text-base">
             {quantity} pcs
           </span>
-          <Image src={add_icon} alt="More" className="w-4 ml-1" />
+          <button>
+            <Image src={add_icon} alt="More" className="w-4 ml-1" />
+          </button>
         </div>
       </li>
     );
