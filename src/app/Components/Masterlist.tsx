@@ -5,6 +5,53 @@ import Image from "next/image";
 
 import search_icon from "../../../public/assets/search_icon.svg";
 
+/////////////////////////////////////////////////
+// TEST DATA
+const MASTER_LIST = [
+  { category: "Fruits and Vegetables", items: ["Apples", "Bananas"] },
+  { category: "Beverages", items: ["Orange Juice", "Milk"] },
+  { category: "Kitchen", items: ["Noodles"] },
+  { category: "Grains", items: ["Ganador", "Cornflakes"] },
+  { category: "Bread", items: ["Ichipan Slice Bread"] },
+  {
+    category: "Canned Food",
+    items: ["Spam", "Century Tuna", "Vienna Sausage", "Hereford Corned Beef"],
+  },
+  {
+    category: "Cleaning",
+    items: [
+      "Domex Blue Toilet Bowl Cleaner",
+      "Domex Yellow Stain and Limescale Cleaner",
+      "Cif All Around Cleaner",
+      "Ariel Liquid Detergent",
+      "Ajax Dishwashing Liquid",
+      "Scotchbrite",
+    ],
+  },
+  {
+    category: "Condiments",
+    items: [
+      "Golden Fiesta Palm Cooking Oil",
+      "Iodized Salt",
+      "Del Monte Ketchup",
+    ],
+  },
+  {
+    category: "Hygiene",
+    items: [
+      "Old Spice High Endurance Deo",
+      "Dove Body Soap Mens",
+      "Modess with wings",
+      "Carefree Pantiliners",
+      "PH Care Feminine Wash",
+      "Cottonbuds",
+      "Hygienix Alcohol",
+    ],
+  },
+];
+
+////////////////////////////////////////////////
+
 export default function Masterlist() {
   return (
     <main className="ml-16 mt-8">
@@ -14,7 +61,9 @@ export default function Masterlist() {
       </h1>
       <div className="flex flex-row mt-8">
         <h2 className="font-bold text-2xl">Master List</h2>
-        <button className="border border-gray-800 rounded-lg ml-16 px-4">Edit</button>
+        <button className="border border-gray-800 rounded-lg ml-16 px-4">
+          Edit
+        </button>
       </div>
       <div className="flex flex-row">
         <Image
