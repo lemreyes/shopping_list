@@ -7,48 +7,89 @@ import search_icon from "../../../public/assets/search_icon.svg";
 
 /////////////////////////////////////////////////
 // TEST DATA
-const MASTER_LIST = [
-  { category: "Fruits and Vegetables", items: ["Apples", "Bananas"] },
-  { category: "Beverages", items: ["Orange Juice", "Milk"] },
-  { category: "Kitchen", items: ["Noodles"] },
-  { category: "Grains", items: ["Ganador", "Cornflakes"] },
-  { category: "Bread", items: ["Ichipan Slice Bread"] },
-  {
-    category: "Canned Food",
-    items: ["Spam", "Century Tuna", "Vienna Sausage", "Hereford Corned Beef"],
-  },
-  {
-    category: "Cleaning",
-    items: [
-      "Domex Blue Toilet Bowl Cleaner",
-      "Domex Yellow Stain and Limescale Cleaner",
-      "Cif All Around Cleaner",
-      "Ariel Liquid Detergent",
-      "Ajax Dishwashing Liquid",
-      "Scotchbrite",
-    ],
-  },
-  {
-    category: "Condiments",
-    items: [
-      "Golden Fiesta Palm Cooking Oil",
-      "Iodized Salt",
-      "Del Monte Ketchup",
-    ],
-  },
-  {
-    category: "Hygiene",
-    items: [
-      "Old Spice High Endurance Deo",
-      "Dove Body Soap Mens",
-      "Modess with wings",
-      "Carefree Pantiliners",
-      "PH Care Feminine Wash",
-      "Cottonbuds",
-      "Hygienix Alcohol",
-    ],
-  },
-];
+const MASTER_LIST = {
+  MasterList: [
+    {
+      category: "Fruits and Vegetables",
+      items: [
+        { name: "Apples", id: "1" },
+        { name: "Bananas", id: "2" },
+      ],
+      id: "1",
+    },
+    {
+      category: "Beverages",
+      items: [
+        { name: "Orange Juice", id: "1" },
+        { name: "Milk", id: "2" },
+      ],
+      id: "2",
+    },
+    { category: "Kitchen", items: [{ name: "Noodles", id: "1" }], id: "3" },
+    {
+      category: "Grains",
+      items: [
+        { name: "Ganador", id: "1" },
+        { name: "Cornflakes", id: "2" },
+      ],
+      id: "4",
+    },
+    {
+      category: "Bread",
+      items: [{ name: "Ichipan Slice Bread", id: "1" }],
+      id: "5",
+    },
+    {
+      category: "Canned Food",
+      items: [
+        { name: "Spam", id: "1" },
+        { name: "Century Tuna", id: "2" },
+        { name: "Vienna Sausage", id: "3" },
+        { name: "Hereford Corned Beef", id: "4" },
+      ],
+      id: "6",
+    },
+    {
+      category: "Cleaning",
+      items: [
+        { name: "Domex Blue Toilet Bowl Cleaner", id: "1" },
+        { name: "Domex Yellow Stain and Limescale Cleaner", id: "2" },
+        { name: "Cif All Around Cleaner", id: "3" },
+        { name: "Ariel Liquid Detergent", id: "4" },
+        { name: "Ajax Dishwashing Liquid", id: "5" },
+        { name: "Scotchbrite", id: "6" },
+      ],
+      id: "7",
+    },
+    {
+      category: "Condiments",
+      items: [
+        { name: "Golden Fiesta Palm Cooking Oil", id: "1" },
+        { name: "Iodized Salt", id: "2" },
+        { name: "Del Monte Ketchup", id: "3" },
+      ],
+      id: "8",
+    },
+    {
+      category: "Hygiene",
+      items: [
+        { name: "Old Spice High Endurance Deo", id: "1" },
+        { name: "Dove Body Soap Mens", id: "2" },
+        { name: "Modess with wings", id: "3" },
+        { name: "Carefree Pantiliners", id: "4" },
+        { name: "PH Care Feminine Wash", id: "5" },
+        { name: "Cottonbuds", id: "6" },
+        { name: "Hygienix Alcohol", id: "7" },
+      ],
+      id: "9",
+    },
+    {
+      category: "Candies",
+      items: [],
+      id: "10",
+    },
+  ],
+};
 
 ////////////////////////////////////////////////
 
