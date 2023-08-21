@@ -38,7 +38,7 @@ export default function ShoppingList() {
                     <ListedItem
                       key={item.id}
                       item_name={item.name}
-                      quantity="1"
+                      quantity={item.quantity}
                       edit_mode={editMode}
                     />
                   );
