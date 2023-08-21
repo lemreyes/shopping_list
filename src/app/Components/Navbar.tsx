@@ -8,14 +8,14 @@ import cart_icon from "../../../public/assets/cart.svg";
 
 export default function Navbar() {
   return (
-    <nav className="min-h-screen max-w-fit flex flex-col justify-between">
+    <nav className="min-h-screen max-w-fit flex flex-col justify-between h-screen sticky top-0">
       <Image src={logo} alt="logo" className="mx-8 mt-8" />
       <div>
         <Image src={list_icon} alt="list_icon" className="mx-8 my-12" />
         <Image src={replay_icon} alt="replay_icon" className="mx-8 my-12" />
         <Image src={stats_icon} alt="stats_icon" className="mx-8 my-12" />
       </div>
-      <div className="rounded-full p-4 bg-slate-600 flex items-center justify-center mx-4 mb-8">
+      <div className="rounded-full p-4 bg-slate-600 flex items-center justify-center mx-4 mb-4">
         <Image src={cart_icon} alt="cart" className="" />
       </div>
     </nav>
