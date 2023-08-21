@@ -6,7 +6,6 @@ export default function CategoryGroup({ category }: { category: Category }) {
       <h3 className="text-lg font-medium mt-8">{category.category_name}</h3>
       {category.items.length > 0 ? (
         category.items.map((item: any) => {
-          console.log("Item", item);
           return <Item key={item.id} label={item.name} />;
         })
       ) : (
