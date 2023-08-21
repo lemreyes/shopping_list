@@ -5,8 +5,14 @@ import ListSaveButton from "./ListSaveButton";
 import edit_list_icon from "../../../public/assets/edit_icon.svg";
 import ListedItem from "./ListedItem";
 
+import { useShoppingListStore } from "../Store/shoppinglist_store";
+
 export default function ShoppingList() {
   let [editMode, setEditMode] = useState(false);
+
+  const shoppingList: Array<Category> = useShoppingListStore(
+    (state: any) => state.shoppingList
+  );
 
   const hdlEditButton = () => {
     editMode === true ? setEditMode(false) : setEditMode(true);
@@ -21,20 +27,26 @@ export default function ShoppingList() {
             <Image src={edit_list_icon} alt="Edit" className="w-8" />
           </button>
         </div>
-        <h3 className="text-sm mt-4">Fruits and vegetables</h3>
-        <ul className="text-lg">
-          <ListedItem item_name="Avocado" quantity="3" edit_mode={editMode} />
-          <ListedItem item_name="Bananas" quantity="1" edit_mode={editMode} />
-        </ul>
-        <h3 className="text-sm mt-4">Beverages</h3>
-        <ul className="text-lg">
-          <ListedItem item_name="Milk" quantity="1" edit_mode={editMode} />
-          <ListedItem
-            item_name="Orange Juice"
-            quantity="1"
-            edit_mode={editMode}
-          />
-        </ul>
+
+        {shoppingList.map((category: Category) => {
+          return (
+            <div key={category.id}>
+              <h3 className="text-sm mt-4">{category.category_name}</h3>
+              <ul>
+                {category.items.map((item: Item) => {
+                  return (
+                    <ListedItem
+                      key={item.id}
+                      item_name={item.name}
+                      quantity="1"
+                      edit_mode={editMode}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
       </div>
       <ListSaveButton />
     </div>

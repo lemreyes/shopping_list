@@ -1,6 +1,10 @@
+"use client";
+
 import Navbar from "./Components/Navbar";
 import Masterlist from "./Components/Masterlist";
 import ActiveListPanel from "./Components/ActiveListPanel";
+
+import { useMasterlistStore } from "./Store/masterlist_store";
 
 /////////////////////////////////////////////////
 // TEST DATA
@@ -89,11 +93,19 @@ const MASTER_LIST = [
 ////////////////////////////////////////////////
 
 export default function Home() {
+  // update masterlist store
+  const updateCategories = useMasterlistStore(
+    (state: any) => state.updateCategories
+  );
+  updateCategories(MASTER_LIST);
+
+  const categories = useMasterlistStore((state: any) => state.categories);
+
   return (
     <div className="flex flex-row justify-between">
       <div className="flex flex-row">
         <Navbar />
-        <Masterlist masterlist={MASTER_LIST} />
+        <Masterlist masterlist={categories} />
       </div>
       <ActiveListPanel />
     </div>
