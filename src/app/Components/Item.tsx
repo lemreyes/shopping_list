@@ -76,6 +76,8 @@ export default function Item({
     }
   };
 
+  const itemCount = getItemCount();
+
   return (
     <button
       value={label}
@@ -83,8 +85,8 @@ export default function Item({
       onClick={hdlItemBtnClick}
     >
       {label}{" "}
-      {parseInt(getItemCount()) > 0 ? (
-        <span className="text_lg">{getItemCount()}</span>
+      {parseInt(itemCount) > 0 ? (
+        <span className="text_lg">{itemCount}</span>
       ) : (
         <Image src={add_icon} width={24} alt="add" className="inline" />
       )}
