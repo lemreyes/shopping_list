@@ -32,13 +32,10 @@ export default function ListedItem({
       (categoryInList) => categoryInList.id === category_id
     );
 
-    console.log("category index: ", categoryIndex);
-
     if (categoryIndex >= 0) {
       const itemIndex = newShoppingList[categoryIndex].items.findIndex(
         (itemInList) => itemInList.id === item_id
       );
-      console.log("item index: ", itemIndex);
 
       if (itemIndex >= 0) {
         newShoppingList[categoryIndex].items.splice(itemIndex, 1);
@@ -57,6 +54,45 @@ export default function ListedItem({
     updateShoppingList(newShoppingList);
   };
 
+  const hdlDecreaseButtonClick = () => {
+    const categoryIndex: number = newShoppingList.findIndex(
+      (categoryInList) => categoryInList.id === category_id
+    );
+
+    const itemIndex = newShoppingList[categoryIndex].items.findIndex(
+      (itemInList) => itemInList.id === item_id
+    );
+
+    newShoppingList[categoryIndex].items[itemIndex].quantity = (
+      parseInt(newShoppingList[categoryIndex].items[itemIndex].quantity) - 1
+    ).toString();
+    if (newShoppingList[categoryIndex].items[itemIndex].quantity === "0") {
+      newShoppingList[categoryIndex].items.splice(itemIndex, 1);
+
+      if (newShoppingList[categoryIndex].items.length === 0) {
+        newShoppingList.splice(categoryIndex, 1);
+      }
+    }
+
+    updateShoppingList(newShoppingList);
+  };
+
+  const hdlIncreaseButtonClick = () => {
+    const categoryIndex: number = newShoppingList.findIndex(
+      (categoryInList) => categoryInList.id === category_id
+    );
+
+    const itemIndex = newShoppingList[categoryIndex].items.findIndex(
+      (itemInList) => itemInList.id === item_id
+    );
+
+    newShoppingList[categoryIndex].items[itemIndex].quantity = (
+      parseInt(newShoppingList[categoryIndex].items[itemIndex].quantity) + 1
+    ).toString();
+
+    updateShoppingList(newShoppingList);
+  };
+
   if (true === edit_mode) {
     return (
       <li className="flex flex-row justify-between mt-1">
@@ -67,13 +103,13 @@ export default function ListedItem({
           {item_name}
         </div>
         <div className="flex flex-row">
-          <button>
+          <button onClick={hdlDecreaseButtonClick}>
             <Image src={subtract_icon} alt="Less" className="w-4 mr-1" />
           </button>
           <span className="border border-gray-800 rounded-xl px-4 text-base w-24 text-center ">
             {quantity} pcs
           </span>
-          <button>
+          <button onClick={hdlIncreaseButtonClick}>
             <Image src={add_icon} alt="More" className="w-4 ml-1" />
           </button>
         </div>
