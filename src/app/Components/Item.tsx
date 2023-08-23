@@ -48,7 +48,7 @@ export default function Item({
     const newItem: Item = { id: item_id, name: label, quantity: "1" };
 
     // find the category
-    const matchedCategory: Category | undefined = shoppingList.find(
+    const matchedCategory: Category | undefined = newShoppingList.find(
       (categoryInList) => categoryInList.id === category_id
     );
     if (matchedCategory) {

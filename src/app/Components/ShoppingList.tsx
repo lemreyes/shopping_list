@@ -37,6 +37,8 @@ export default function ShoppingList() {
                   return (
                     <ListedItem
                       key={item.id}
+                      category_id={category.id}
+                      item_id={item.id}
                       item_name={item.name}
                       quantity={item.quantity}
                       edit_mode={editMode}
