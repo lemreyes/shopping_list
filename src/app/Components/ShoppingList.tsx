@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import ListSaveButton from "./ListSaveButton";
 import edit_list_icon from "../../../public/assets/edit_icon.svg";
+import edit_active_icon from "../../../public/assets/edit_active_icon.svg";
 import ListedItem from "./ListedItem";
 
 import { useShoppingListStore } from "../Store/shoppinglist_store";
@@ -23,8 +24,12 @@ export default function ShoppingList() {
       <div>
         <div className="flex flex-row justify-between">
           <h2 className="font-bold text-2xl">Shopping List</h2>
-          <button onClick={hdlEditButton}>
-            <Image src={edit_list_icon} alt="Edit" className="w-8" />
+          <button onClick={hdlEditButton} className="hover:bg-white hover:rounded-full p-1">
+            <Image
+              src={editMode ? edit_active_icon : edit_list_icon}
+              alt="Edit"
+              className="w-8"
+            />
           </button>
         </div>
 
