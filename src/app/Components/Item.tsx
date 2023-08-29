@@ -81,14 +81,16 @@ export default function Item({
   return (
     <button
       value={label}
-      className="border border-gray-300 rounded-xl p-2 mt-4 mr-4 drop-shadow-lg text-sm"
+      className={`border ${
+        parseInt(itemCount) > 0 ? "border-black" : "border-gray-300"
+      } rounded-xl p-2 mt-4 mr-4 drop-shadow-lg text-sm hover:drop-shadow-lg hover:border-black`}
       onClick={hdlItemBtnClick}
     >
       {label}{" "}
       {parseInt(itemCount) > 0 ? (
-        <span className="text_lg">{itemCount}</span>
+        <span className="text_lg ml-3">{itemCount}</span>
       ) : (
-        <Image src={add_icon} width={24} alt="add" className="inline" />
+        <Image src={add_icon} alt="add" className="inline w-6" />
       )}
     </button>
   );
