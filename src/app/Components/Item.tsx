@@ -83,7 +83,7 @@ export default function Item({
       value={label}
       className={`border ${
         parseInt(itemCount) > 0 ? "border-black" : "border-gray-300"
-      } rounded-xl p-2 mt-4 mr-4 drop-shadow-lg text-sm hover:drop-shadow-lg hover:border-black`}
+      } rounded-xl p-2 px-3 mt-4 mr-4 text-sm hover:drop-shadow-2xl hover:border-black`}
       onClick={hdlItemBtnClick}
     >
       {label}{" "}
