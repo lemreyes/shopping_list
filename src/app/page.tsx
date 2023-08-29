@@ -102,11 +102,9 @@ export default function Home() {
   const categories = useMasterlistStore((state: any) => state.categories);
 
   return (
-    <div className="flex flex-row justify-between">
-      <div className="flex flex-row">
-        <Navbar />
-        <Masterlist masterlist={categories} />
-      </div>
+    <div className="flex flex-col desktop:flex-row">
+      <Navbar />
+      <Masterlist masterlist={categories} />
       <ActiveListPanel />
     </div>
   );

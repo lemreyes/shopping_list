@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import Item from "./Item";
-
 import Image from "next/image";
 
 import search_icon from "../../../public/assets/search_icon.svg";
@@ -13,12 +11,8 @@ export default function Masterlist({
   masterlist: Array<Object>;
 }) {
   return (
-    <main className="ml-16 mt-8">
-      <h1 className="text-4xl ">
-        <span className="text-orange-600 font-bold">SyncShop</span> seamlessly
-        share and shop together with real-time list updates
-      </h1>
-      <div className="flex flex-row mt-8">
+    <main className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8">
+      <div className="flex flex-row">
         <h2 className="font-bold text-2xl">Master List</h2>
         <button className="border border-gray-800 rounded-lg ml-16 px-4">
           Edit

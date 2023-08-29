@@ -5,7 +5,7 @@ export default function CategoryGroup({ category }: { category: Category }) {
 
   return (
     <div key={category.id}>
-      <h3 className="text-lg font-medium mt-8">{category.category_name}</h3>
+      <h3 className="text-lg font-medium mt-2 desktop:mt-4">{category.category_name}</h3>
       {category.items.length > 0 ? (
         category.items.map((item: any) => {
           return (

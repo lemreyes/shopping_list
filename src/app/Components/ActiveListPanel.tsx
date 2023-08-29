@@ -25,10 +25,10 @@ export default function ActiveListPanel() {
   }
 
   return (
-    <aside className="p-8 bg-gray-200 w-[30%] min-h-full">
+    <section id="activeList" className="px-4 py-8 mt-8 desktop:mt-0 pb-20 desktop:pb-4 bg-gray-200 desktop:w-[30%] desktop:min-h-full">
       {showForm === false && (
         <div className="min-h-full">
-          <section className="rounded-xl p-8 bg-gray-900 text-white mb-8">
+          <section className="rounded-xl p-4 bg-gray-900 text-white mb-8">
             <p>An item is not on the list?</p>
             <button
               className="bg-white text-black mt-2 py-1 px-4 rounded-lg"
@@ -43,6 +43,6 @@ export default function ActiveListPanel() {
       {showForm === true && (
         <NewItemFormActiveList cancelHandler={hdlCancelAddItemButton} addHandler={hdlAddItemToList}/>
       )}
-    </aside>
+    </section>
   );
 }
