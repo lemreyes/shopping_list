@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import search_icon from "../../../public/assets/search_icon.svg";
@@ -10,6 +10,34 @@ export default function Masterlist({
 }: {
   masterlist: Array<Object>;
 }) {
+  let [searchString, setSearchString] = useState("");
+
+  const hdlSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchString(event.target.value);
+    console.log(searchString);
+
+    searchString = searchString.toLowerCase();
+
+    const searchResults = masterlist.reduce((results, category) => {
+      const matchingItems = category.items.filter((item) =>
+        item.name.toLowerCase().includes(searchString)
+      );
+
+      if (matchingItems.length > 0) {
+        results.push({
+          category_name: category.category_name,
+          items: matchingItems,
+        });
+      }
+
+      return results;
+    }, []);
+
+    console.log("searchResult", searchResults);
+
+    return searchResults;
+  };
+
   return (
     <main className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8">
       <div className="flex flex-row">
@@ -28,6 +56,7 @@ export default function Masterlist({
           type="text"
           placeholder="Search for an item"
           className="mt-2 border rounded-lg border-gray-400 p-1 pl-8"
+          onChange={hdlSearchOnChange}
         />
       </div>
 
