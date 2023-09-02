@@ -1,8 +1,10 @@
 import React from "react";
 import add_icon from "../../../public/assets/add_icon.svg";
+import trash_icon from "../../../public/assets/trash_icon.svg";
 import Image from "next/image";
 
 import { useShoppingListStore } from "../Store/shoppinglist_store";
+import { useMasterlistStore } from "../Store/masterlist_store";
 
 export default function Item({
   category_id,
@@ -21,6 +23,8 @@ export default function Item({
   const updateShoppingList = useShoppingListStore(
     (state: any) => state.updateShoppingList
   );
+
+  const editMode = useMasterlistStore((state: any) => state.editMode);
 
   // find this category in the shoppingList
   const getItemCount = () => {
@@ -87,7 +91,9 @@ export default function Item({
       onClick={hdlItemBtnClick}
     >
       {label}{" "}
-      {parseInt(itemCount) > 0 ? (
+      {editMode ? (
+        <Image src={trash_icon} alt="delete" className="inline w-6" />
+      ) : parseInt(itemCount) > 0 ? (
         <span className="text_lg ml-3">{itemCount}</span>
       ) : (
         <Image src={add_icon} alt="add" className="inline w-6" />
