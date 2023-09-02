@@ -8,41 +8,46 @@ import CategoryGroup from "./CategoryGroup";
 export default function Masterlist({
   masterlist,
 }: {
-  masterlist: Array<Object>;
+  masterlist: Array<Category>;
 }) {
   let [searchString, setSearchString] = useState("");
+  let [filterResults, setFilterResults] = useState<Category[]>([]);
+  let [masterlistEditMode, setMasterlistEditMode] = useState(false);
 
   const hdlSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value);
-    console.log(searchString);
 
     searchString = searchString.toLowerCase();
 
-    const searchResults = masterlist.reduce((results, category) => {
-      const matchingItems = category.items.filter((item) =>
-        item.name.toLowerCase().includes(searchString)
-      );
+    const searchResults = masterlist.reduce(
+      (results: Category[], category: Category) => {
+        const matchingItems = category.items.filter((item) =>
+          item.name.toLowerCase().includes(searchString)
+        );
 
-      if (matchingItems.length > 0) {
-        results.push({
-          category_name: category.category_name,
-          items: matchingItems,
-        });
-      }
+        if (matchingItems.length > 0) {
+          let filteredCategory: Category = {
+            id: category.id,
+            category_name: category.category_name,
+            items: matchingItems,
+          };
 
-      return results;
-    }, []);
+          results.push(filteredCategory);
+        }
 
-    console.log("searchResult", searchResults);
+        return results;
+      },
+      []
+    );
 
-    return searchResults;
+    setFilterResults(searchResults);
   };
 
   return (
-    <main className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8">
+    <main className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8 desktop:w-[70%]">
       <div className="flex flex-row">
         <h2 className="font-bold text-2xl">Master List</h2>
-        <button className="border border-gray-800 rounded-lg ml-16 px-4">
+        <button className="border border-gray-800 rounded-lg ml-16 px-4 hover:bg-gray-300">
           Edit
         </button>
       </div>
@@ -60,9 +65,13 @@ export default function Masterlist({
         />
       </div>
 
-      {masterlist.map((category: Category | any) => {
-        return <CategoryGroup key={category.id} category={category} />;
-      })}
+      {searchString.length === 0
+        ? masterlist.map((category: Category | any) => {
+            return <CategoryGroup key={category.id} category={category} />;
+          })
+        : filterResults.map((category: Category | any) => {
+            return <CategoryGroup key={category.id} category={category} />;
+          })}
     </main>
   );
 }

@@ -25,7 +25,7 @@ export default function ActiveListPanel() {
   }
 
   return (
-    <section id="activeList" className="px-4 py-8 mt-8 desktop:mt-0 pb-20 desktop:pb-4 bg-gray-200 desktop:w-[30%] desktop:min-h-full">
+    <section id="activeList" className="px-4 py-8 mt-8 desktop:mt-0 pb-20 desktop:pb-4 bg-gray-200 desktop:w-[30%] desktop:min-h-full desktop:float-right">
       {showForm === false && (
         <div className="min-h-full">
           <section className="rounded-xl p-4 bg-gray-900 text-white mb-8">
