@@ -47,36 +47,39 @@ export default function Item({
   };
 
   const hdlItemBtnClick = () => {
-    // construct object
-    const newShoppingList = [...shoppingList];
-    const newItem: Item = { id: item_id, name: label, quantity: "1" };
-
-    // find the category
-    const matchedCategory: Category | undefined = newShoppingList.find(
-      (categoryInList) => categoryInList.id === category_id
-    );
-    if (matchedCategory) {
-      // find if there is existing item
-      const matchedItem = matchedCategory.items.find(
-        (itemInList) => itemInList.id === item_id
-      );
-      if (matchedItem) {
-        let quantity = parseInt(matchedItem.quantity);
-        quantity++;
-        matchedItem.quantity = quantity.toString();
-      } else {
-        matchedCategory.items.push(newItem);
-      }
-      updateShoppingList(newShoppingList);
+    if (editMode) {
     } else {
-      // category not found so add new category
-      const newCategory = {
-        id: category_id,
-        category_name: category,
-        items: [newItem],
-      };
-      newShoppingList.push(newCategory);
-      updateShoppingList(newShoppingList);
+      // construct object
+      const newShoppingList = [...shoppingList];
+      const newItem: Item = { id: item_id, name: label, quantity: "1" };
+
+      // find the category
+      const matchedCategory: Category | undefined = newShoppingList.find(
+        (categoryInList) => categoryInList.id === category_id
+      );
+      if (matchedCategory) {
+        // find if there is existing item
+        const matchedItem = matchedCategory.items.find(
+          (itemInList) => itemInList.id === item_id
+        );
+        if (matchedItem) {
+          let quantity = parseInt(matchedItem.quantity);
+          quantity++;
+          matchedItem.quantity = quantity.toString();
+        } else {
+          matchedCategory.items.push(newItem);
+        }
+        updateShoppingList(newShoppingList);
+      } else {
+        // category not found so add new category
+        const newCategory = {
+          id: category_id,
+          category_name: category,
+          items: [newItem],
+        };
+        newShoppingList.push(newCategory);
+        updateShoppingList(newShoppingList);
+      }
     }
   };
 

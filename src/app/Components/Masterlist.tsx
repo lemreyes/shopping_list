@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import search_icon from "../../../public/assets/search_icon.svg";
+import add_icon from "../../../public/assets/add_icon.svg";
 import CategoryGroup from "./CategoryGroup";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
@@ -66,9 +67,9 @@ export default function Masterlist({
         >
           Edit
         </button>
-        {
-          editMode && <span className="text-red-600 ml-2">Edit masterlist mode ON</span>
-        }
+        {editMode && (
+          <span className="text-red-600 ml-2">Edit masterlist mode ON</span>
+        )}
       </div>
       <div className="flex flex-row">
         <Image
@@ -84,6 +85,16 @@ export default function Masterlist({
           disabled={editMode}
         />
       </div>
+      {editMode && (
+        <div className="text-lg font-medium mt-2 desktop:mt-4">
+          <button
+            className={`border rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-orange-800 bg-orange-200 hover:drop-shadow-2xl hover:border-orange-800 hover:bg-orange-100`}
+          >
+            Create new Category{" "}
+            <Image src={add_icon} alt="add" className="inline w-6" />
+          </button>
+        </div>
+      )}
 
       {searchString.length === 0
         ? masterlist.map((category: Category | any) => {
