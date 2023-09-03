@@ -1,7 +1,7 @@
 import { useMasterlistStore } from "../Store/masterlist_store";
 import Image from "next/image";
 import Item from "./Item";
-import add_icon from "../../../public/assets/add_icon.svg";
+import NewItemButton from "./NewItemButton";
 
 export default function CategoryGroup({ category }: { category: Category }) {
   const editMode = useMasterlistStore((state: any) => state.editMode);
@@ -27,11 +27,10 @@ export default function CategoryGroup({ category }: { category: Category }) {
         <p>No items listed.</p>
       )}
       {editMode && (
-        <button
-          className={`border rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-orange-800 bg-orange-200 hover:drop-shadow-2xl hover:border-orange-800 hover:bg-orange-100`}
-        > New Item
-          <Image src={add_icon} alt="add" className="inline w-6" />
-        </button>
+        <NewItemButton
+          category_id={category.id}
+          category_name={category.category_name}
+        />
       )}
     </div>
   );
