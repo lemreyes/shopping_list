@@ -1,4 +1,5 @@
 import { MouseEventHandler } from "react";
+import { useMasterlistStore } from "../Store/masterlist_store";
 
 export default function NewItemFormActiveList({
   cancelHandler,
@@ -7,6 +8,10 @@ export default function NewItemFormActiveList({
   cancelHandler: MouseEventHandler<HTMLButtonElement> | undefined;
   addHandler: MouseEventHandler<HTMLButtonElement> | undefined;
 }) {
+  const categories: Array<Category> = useMasterlistStore(
+    (state: any) => state.categories
+  );
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-8">Add a new item</h2>
@@ -48,7 +53,14 @@ export default function NewItemFormActiveList({
           id="category"
           name="category"
           className="text-sm px-2 py-2 rounded-2xl w-full mt-1 mb-8"
-        ></select>
+        >
+          <option value="Select a category">-- Select a Category --</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.category_name}>
+              {category.category_name}
+            </option>
+          ))}
+        </select>
       </form>
       <div className="flex flex-row justify-evenly">
         <button

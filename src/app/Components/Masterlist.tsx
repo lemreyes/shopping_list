@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import search_icon from "../../../public/assets/search_icon.svg";
-import add_icon from "../../../public/assets/add_icon.svg";
 import CategoryGroup from "./CategoryGroup";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
