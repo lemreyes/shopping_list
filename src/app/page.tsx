@@ -99,12 +99,14 @@ export default function Home() {
   );
   updateCategories(MASTER_LIST);
 
-  const categories = useMasterlistStore((state: any) => state.categories);
+
+
+  console.log("HOME");
 
   return (
     <div className="flex flex-col desktop:flex-row">
       <Navbar />
-      <Masterlist masterlist={categories} />
+      <Masterlist />
       <ActiveListPanel />
     </div>
   );

@@ -19,7 +19,7 @@ export default function CategoryGroup({ category }: { category: Category }) {
               category_id={category.id}
               category={category.category_name}
               label={item.name}
-              item_id={`${category.id}+${item.id}`}
+              item_id={item.id}
             />
           );
         })

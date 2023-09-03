@@ -6,6 +6,13 @@ import Image from "next/image";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
 
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 export default function Item({
   category_id,
   category,
@@ -23,8 +30,54 @@ export default function Item({
   const updateShoppingList = useShoppingListStore(
     (state: any) => state.updateShoppingList
   );
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   const editMode = useMasterlistStore((state: any) => state.editMode);
+  const masterlist = useMasterlistStore((state: any) => state.categories);
+  const updateMaterList = useMasterlistStore(
+    (state: any) => state.updateCategories
+  );
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseYes = () => {
+    const newMasterList = [...masterlist];
+
+    const categoryIndex: number = masterlist.findIndex(
+      (categoryInList: Category) => categoryInList.id === category_id
+    );
+
+    if (categoryIndex >= 0) {
+      const itemIndex = masterlist[categoryIndex].items.findIndex(
+        (itemInList: Item) => itemInList.id === item_id
+      );
+
+      if (itemIndex >= 0) {
+        newMasterList[categoryIndex].items.splice(itemIndex, 1);
+
+        // delete category if item list is empty
+        if (newMasterList[categoryIndex].items.length === 0) {
+          newMasterList.splice(categoryIndex, 1);
+        }
+      } else {
+        // do nothing
+      }
+    } else {
+      // do nothing
+    }
+
+    console.log("Handle Close Yes newMasterlist", newMasterList);
+    updateMaterList(newMasterList);
+
+    setOpenDialog(false);
+  };
+
+  const handleCloseNo = () => {
+    setOpenDialog(false);
+    console.log("Handle close NO");
+  };
 
   // find this category in the shoppingList
   const getItemCount = () => {
@@ -48,6 +101,7 @@ export default function Item({
 
   const hdlItemBtnClick = () => {
     if (editMode) {
+      handleClickOpen();
     } else {
       // construct object
       const newShoppingList = [...shoppingList];
@@ -86,21 +140,44 @@ export default function Item({
   const itemCount = getItemCount();
 
   return (
-    <button
-      value={label}
-      className={`border ${
-        parseInt(itemCount) > 0 ? "border-black" : "border-gray-300"
-      } rounded-xl py-2 px-2 mt-2 mr-2 text-sm hover:drop-shadow-2xl hover:border-black hover:bg-gray-200`}
-      onClick={hdlItemBtnClick}
-    >
-      {label}{" "}
-      {editMode ? (
-        <Image src={trash_icon} alt="delete" className="inline w-6" />
-      ) : parseInt(itemCount) > 0 ? (
-        <span className="text_lg ml-3">{itemCount}</span>
-      ) : (
-        <Image src={add_icon} alt="add" className="inline w-6" />
-      )}
-    </button>
+    <>
+      <button
+        value={label}
+        className={`border ${
+          parseInt(itemCount) > 0 ? "border-black" : "border-gray-300"
+        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm hover:drop-shadow-2xl hover:border-black hover:bg-gray-200`}
+        onClick={hdlItemBtnClick}
+      >
+        {label}{" "}
+        {editMode ? (
+          <Image src={trash_icon} alt="delete" className="inline w-6" />
+        ) : parseInt(itemCount) > 0 ? (
+          <span className="text_lg ml-3">{itemCount}</span>
+        ) : (
+          <Image src={add_icon} alt="add" className="inline w-6" />
+        )}
+      </button>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseNo}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`Delete ${label} from Master List`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete {label} from the Master list?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseNo}>No</Button>
+          <Button onClick={handleCloseYes} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
