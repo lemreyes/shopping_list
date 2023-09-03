@@ -7,6 +7,7 @@ import add_icon from "../../../public/assets/add_icon.svg";
 import CategoryGroup from "./CategoryGroup";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
+import NewCategoryButton from "./NewCategoryButton";
 
 export default function Masterlist() {
   let [searchString, setSearchString] = useState("");
@@ -84,16 +85,7 @@ export default function Masterlist() {
           disabled={editMode}
         />
       </div>
-      {editMode && (
-        <div className="text-lg font-medium mt-2 desktop:mt-4">
-          <button
-            className={`border rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-orange-800 bg-orange-200 hover:drop-shadow-2xl hover:border-orange-800 hover:bg-orange-100`}
-          >
-            Create new Category{" "}
-            <Image src={add_icon} alt="add" className="inline w-6" />
-          </button>
-        </div>
-      )}
+      {editMode && <NewCategoryButton />}
 
       {searchString.length === 0
         ? categories.map((category: Category | any) => {

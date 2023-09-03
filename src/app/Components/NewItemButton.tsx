@@ -36,11 +36,11 @@ export default function NewItemButton({
   };
 
   const hdlItemNoteOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setItemName(event.target.value);
+    setItemNote(event.target.value);
   };
 
   const hdlItemImageOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setItemName(event.target.value);
+    setItemImage(event.target.value);
   };
 
   const handleClickOpen = () => {
