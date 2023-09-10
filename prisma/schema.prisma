@@ -1,13 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
 
 model Account {
@@ -39,17 +36,12 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
-  first_name    String?
-  last_name     String?
+  name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @default(now())
-  groups_owned  Group[]
-  groups        Group[]   @relation("GroupMembers") // Groups where this user is a member
 }
 
 model VerificationToken {
@@ -58,50 +50,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model Group {
-  id         Int        @id @default(autoincrement())
-  group_name String
-  owner      User       @relation(fields: [ownerId], references: [id])
-  ownerId    String
-  members    User[]     @relation("GroupMembers")
-  categories Category[]
-  lists      List[]
-  created_at DateTime   @default(now())
-  updated_at DateTime   @default(now())
-}
-
-model Category {
-  id            Int      @id @default(autoincrement())
-  category_name String   @unique
-  items         Item[]
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
-  Group         Group?   @relation(fields: [groupId], references: [id])
-  groupId       Int?
-}
-
-model Item {
-  id           Int       @id @default(autoincrement())
-  item_name    String    @unique
-  quantity     Int?
-  is_purchased Boolean
-  Category     Category? @relation(fields: [categoryId], references: [id])
-  categoryId   Int?
-  List         List?     @relation(fields: [listId], references: [id])
-  listId       Int?
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @default(now())
-}
-
-model List {
-  id         Int      @id @default(autoincrement())
-  list_name  String   @unique
-  items      Item[]
-  is_done    Boolean
-  Group      Group?   @relation(fields: [groupId], references: [id])
-  groupId    Int?
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
 }

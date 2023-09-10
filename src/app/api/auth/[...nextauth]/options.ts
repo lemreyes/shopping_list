@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 
 let userAccount: any = null;
 
@@ -27,6 +28,10 @@ export const options: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID as string,
+      clientSecret: process.env.FACEBOOK_SECRET as string,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
