@@ -51,3 +51,56 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model UserData {
+  id         Int        @id @default(autoincrement())
+  email      String     @unique
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+  Category   Category[]
+  List       List[]
+}
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  category_name String    @unique
+  items         Item[]
+  UserData      UserData? @relation(fields: [userDataId], references: [id])
+  userDataId    Int?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @default(now())
+}
+
+model Item {
+  id           Int       @id @default(autoincrement())
+  item_name    String    @unique
+  quantity     Int?
+  is_purchased Boolean
+  Category     Category? @relation(fields: [categoryId], references: [id])
+  categoryId   Int?
+  List         List?     @relation(fields: [listId], references: [id])
+  listId       Int?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @default(now())
+}
+
+model List {
+  id         Int        @id @default(autoincrement())
+  list_name  String     @unique
+  items      Item[]
+  is_done    Boolean
+  UserData   UserData?  @relation(fields: [ownerId], references: [id])
+  ownerId    Int?
+  accessors  Accessor[]
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+}
+
+model Accessor {
+  id         Int      @id @default(autoincrement())
+  email      String?  @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  List       List?    @relation(fields: [listId], references: [id])
+  listId     Int?
+}
