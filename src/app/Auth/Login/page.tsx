@@ -17,7 +17,7 @@ export default function Login() {
             confusion of mismatched shopping lists and missed items. With
             ShopSync, you can effortlessly create, share, and update shopping
             lists in real-time with friends and family, ensuring that everyone
-            stays on the same page.{" "}
+            stays on the same page.
           </p>
         </section>
         <section className="mt-8">
@@ -29,9 +29,9 @@ export default function Login() {
               they add or check off items.
             </li>
             <li>
-              <span className="font-bold">Collaborative Shopping:</span>{" "}
+              <span className="font-bold">Collaborative Shopping:</span>
               Collaborate with friends, family, or roommates to create the
-              perfect shopping list together.{" "}
+              perfect shopping list together.
             </li>
             <li>
               <span className="font-bold">Never Forget an Item:</span> With

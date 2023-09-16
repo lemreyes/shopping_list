@@ -13,19 +13,22 @@ export default function LoginPanel() {
         variant="outlined"
         className="w-full"
       />
-      <button className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100">
+      <button
+        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
+        onClick={() => signIn("email", { callbackUrl: "/" })}
+      >
         Login with Email
       </button>
       <p className="my-4">or</p>
       <button
         className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
-        onClick={() => signIn("facebook")}
+        onClick={() => signIn("facebook", { callbackUrl: "/" })}
       >
         Login with Facebook
       </button>
       <button
         className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { callbackUrl: "/" })}
       >
         Login with Google
       </button>
