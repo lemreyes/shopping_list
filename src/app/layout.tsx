@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
+import { NextAuthProvider } from "./providers";
 
 const inter = Quicksand({ subsets: ["latin"] });
 
@@ -16,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <NextAuthProvider>
+        <body className={inter.className}>{children}</body>
+      </NextAuthProvider>
     </html>
   );
 }

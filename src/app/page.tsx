@@ -5,6 +5,7 @@ import Masterlist from "./Components/Masterlist";
 import ActiveListPanel from "./Components/ActiveListPanel";
 
 import { useMasterlistStore } from "./Store/masterlist_store";
+import { useSession } from "next-auth/react";
 
 /////////////////////////////////////////////////
 // TEST DATA
@@ -93,21 +94,26 @@ const MASTER_LIST = [
 ////////////////////////////////////////////////
 
 export default function Home() {
+  const { data: session } = useSession();
+  console.log(session);
+
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
   );
   updateCategories(MASTER_LIST);
-
-
-
   console.log("HOME");
 
-  return (
-    <div className="flex flex-col desktop:flex-row">
-      <Navbar />
-      <Masterlist />
-      <ActiveListPanel />
-    </div>
-  );
+  if (session) {
+    return (
+      <div className="flex flex-col desktop:flex-row">
+        <Navbar />
+        <Masterlist />
+        <ActiveListPanel />
+      </div>
+    );
+  } else {
+    console.log("redirect to signin");
+    return <h1>Not signed in </h1>;
+  }
 }
