@@ -41,6 +41,8 @@ export const options: NextAuthOptions = {
       const userData = await prisma.userData.create({
         data: {
           email: message.user.email as string,
+          name: message.user.name as string,
+          image: message.user.image as string,
         },
       });
       console.log(userData);

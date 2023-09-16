@@ -54,7 +54,9 @@ model VerificationToken {
 
 model UserData {
   id         Int        @id @default(autoincrement())
+  name       String?
   email      String     @unique
+  image      String?
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now())
   Category   Category[]
