@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 
 export default function LoginPanel() {
   return (
-    <div id="login" className="flex flex-col p-8">
+    <div id="login" className="flex flex-col items-center p-8 border-t desktop:border-none">
       <h2 className="mb-4">Login</h2>
       <TextField
         id="outlined-basic"
