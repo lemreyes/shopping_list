@@ -48,4 +48,7 @@ export const options: NextAuthOptions = {
       console.log(userData);
     },
   },
+  pages: {
+    signIn: '/Auth/Login'
+  }
 };
