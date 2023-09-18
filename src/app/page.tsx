@@ -6,7 +6,7 @@ import ActiveListPanel from "./Components/ActiveListPanel";
 
 import { useMasterlistStore } from "./Store/masterlist_store";
 import { useSession } from "next-auth/react";
-import { redirect } from "Next/navigation";
+import { redirect } from "next/navigation";
 
 /////////////////////////////////////////////////
 // TEST DATA
