@@ -5,8 +5,6 @@ import Masterlist from "./Components/Masterlist";
 import ActiveListPanel from "./Components/ActiveListPanel";
 
 import { useMasterlistStore } from "./Store/masterlist_store";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 
 /////////////////////////////////////////////////
 // TEST DATA
@@ -95,9 +93,6 @@ const MASTER_LIST = [
 ////////////////////////////////////////////////
 
 export default function Home() {
-  const { data: session } = useSession();
-  console.log(session);
-
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
@@ -105,17 +100,11 @@ export default function Home() {
   updateCategories(MASTER_LIST);
   console.log("HOME");
 
-  if (session) {
-    return (
-      <div className="flex flex-col desktop:flex-row">
-        <Navbar />
-        <Masterlist />
-        <ActiveListPanel />
-      </div>
-    );
-  } else if (session === null) {
-    redirect("/Auth/Login");
-  } else {
-    // should still be loading
-  }
+  return (
+    <div className="flex flex-col desktop:flex-row">
+      <Navbar />
+      <Masterlist />
+      <ActiveListPanel />
+    </div>
+  );
 }

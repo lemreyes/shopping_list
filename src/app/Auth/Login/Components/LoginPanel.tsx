@@ -9,18 +9,19 @@ export default function LoginPanel() {
   let errorMessage = "";
 
   const errorResult = searchParams.get("error");
-  console.log("errorResult", errorResult);
-  switch (errorResult) {
-    case "EmailSignin":
-      errorMessage =
-        "Error in logging in using email.  Check the email address or try another login method";
-      break;
-    case "OAuthAccountNotLinked":
-      errorMessage =
-        "Email on this account is already linked, but not with this account.  Try signing in with another account.";
-      break;
-    default:
-      errorMessage = "There was a problem logging in.";
+  if (errorResult != null) {
+    switch (errorResult) {
+      case "EmailSignin":
+        errorMessage =
+          "Error in logging in using email.  Check the email address or try another login method";
+        break;
+      case "OAuthAccountNotLinked":
+        errorMessage =
+          "Email on this account is already linked, but not with this account.  Try signing in with another account.";
+        break;
+      default:
+        errorMessage = "There was a problem logging in.";
+    }
   }
 
   return (
