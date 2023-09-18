@@ -6,6 +6,7 @@ import ActiveListPanel from "./Components/ActiveListPanel";
 
 import { useMasterlistStore } from "./Store/masterlist_store";
 import { useSession } from "next-auth/react";
+import { redirect } from "Next/navigation";
 
 /////////////////////////////////////////////////
 // TEST DATA
@@ -112,8 +113,9 @@ export default function Home() {
         <ActiveListPanel />
       </div>
     );
+  } else if (session === null) {
+    redirect("/Auth/Login");
   } else {
-    console.log("redirect to signin");
-    return <h1>Not signed in </h1>;
+    // should still be loading
   }
 }
