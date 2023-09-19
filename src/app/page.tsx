@@ -5,6 +5,8 @@ import Masterlist from "./Components/Masterlist";
 import ActiveListPanel from "./Components/ActiveListPanel";
 
 import { useMasterlistStore } from "./Store/masterlist_store";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 /////////////////////////////////////////////////
 // TEST DATA
@@ -93,6 +95,13 @@ const MASTER_LIST = [
 ////////////////////////////////////////////////
 
 export default function Home() {
+  // redirect to login if no session
+  const { data: session } = useSession();
+  console.log("Home session", session);
+  if (session === null) {
+    redirect("/Auth/Login");
+  }
+
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
