@@ -1,7 +1,7 @@
 "use client";
 
 import TextField from "@mui/material/TextField";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginPanel() {
