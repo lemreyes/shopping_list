@@ -65,7 +65,7 @@ model UserData {
 
 model Category {
   id            Int       @id @default(autoincrement())
-  category_name String    @unique
+  category_name String    
   items         Item[]
   UserData      UserData? @relation(fields: [userDataId], references: [id])
   userDataId    Int?
@@ -76,7 +76,7 @@ model Category {
 model Item {
   id           Int       @id @default(autoincrement())
   item_name    String    @unique
-  quantity     Int?
+  quantity     Int
   is_purchased Boolean
   Category     Category? @relation(fields: [categoryId], references: [id])
   categoryId   Int?

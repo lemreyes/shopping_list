@@ -1,11 +1,12 @@
 interface Category {
-  id: string;
+  id: number;
   category_name: string;
-  items: Array<Item>;
+  items?: Array<Item>;
 }
 
 interface Item {
-  id: string;
-  name: string;
-  quantity: string;
+  id: number;
+  item_name: string;
+  quantity: number;
+  is_purchased: boolean;
 }

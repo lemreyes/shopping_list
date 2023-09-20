@@ -19,10 +19,10 @@ export default function Item({
   label,
   item_id,
 }: {
-  category_id: string;
+  category_id: number;
   category: string;
   label: string;
-  item_id: string;
+  item_id: number;
 }) {
   const shoppingList: Array<Category> = useShoppingListStore(
     (state: any) => state.shoppingList
@@ -86,16 +86,16 @@ export default function Item({
     );
 
     if (matchedCategory) {
-      const matchedItem = matchedCategory.items.find(
+      const matchedItem = matchedCategory.items?.find(
         (itemInList) => itemInList.id === item_id
       );
       if (matchedItem) {
         return matchedItem.quantity;
       } else {
-        return "0";
+        return 0;
       }
     } else {
-      return "0";
+      return 0;
     }
   };
 
@@ -105,7 +105,12 @@ export default function Item({
     } else {
       // construct object
       const newShoppingList = [...shoppingList];
-      const newItem: Item = { id: item_id, name: label, quantity: "1" };
+      const newItem: Item = {
+        id: item_id,
+        item_name: label,
+        quantity: 1,
+        is_purchased: false,
+      };
 
       // find the category
       const matchedCategory: Category | undefined = newShoppingList.find(
@@ -113,15 +118,13 @@ export default function Item({
       );
       if (matchedCategory) {
         // find if there is existing item
-        const matchedItem = matchedCategory.items.find(
+        const matchedItem = matchedCategory.items?.find(
           (itemInList) => itemInList.id === item_id
         );
         if (matchedItem) {
-          let quantity = parseInt(matchedItem.quantity);
-          quantity++;
-          matchedItem.quantity = quantity.toString();
+          let quantity: number = matchedItem.quantity++;
         } else {
-          matchedCategory.items.push(newItem);
+          matchedCategory.items?.push(newItem);
         }
         updateShoppingList(newShoppingList);
       } else {
@@ -144,14 +147,14 @@ export default function Item({
       <button
         value={label}
         className={`border ${
-          parseInt(itemCount) > 0 ? "border-black" : "border-gray-300"
+          itemCount > 0 ? "border-black" : "border-gray-300"
         } rounded-xl py-2 px-2 mt-2 mr-2 text-sm hover:drop-shadow-2xl hover:border-black hover:bg-gray-200`}
         onClick={hdlItemBtnClick}
       >
         {label}{" "}
         {editMode ? (
           <Image src={trash_icon} alt="delete" className="inline w-6" />
-        ) : parseInt(itemCount) > 0 ? (
+        ) : itemCount > 0 ? (
           <span className="text_lg ml-3">{itemCount}</span>
         ) : (
           <Image src={add_icon} alt="add" className="inline w-6" />
