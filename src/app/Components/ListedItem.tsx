@@ -11,10 +11,10 @@ export default function ListedItem({
   quantity,
   edit_mode,
 }: {
-  category_id: string;
-  item_id: string;
+  category_id: number;
+  item_id: number;
   item_name: string;
-  quantity: string;
+  quantity: number;
   edit_mode: boolean;
 }) {
   const shoppingList: Array<Category> = useShoppingListStore(
@@ -63,10 +63,8 @@ export default function ListedItem({
       (itemInList) => itemInList.id === item_id
     );
 
-    newShoppingList[categoryIndex].items[itemIndex].quantity = (
-      parseInt(newShoppingList[categoryIndex].items[itemIndex].quantity) - 1
-    ).toString();
-    if (newShoppingList[categoryIndex].items[itemIndex].quantity === "0") {
+    newShoppingList[categoryIndex].items[itemIndex].quantity--;
+    if (newShoppingList[categoryIndex].items[itemIndex].quantity === 0) {
       newShoppingList[categoryIndex].items.splice(itemIndex, 1);
 
       if (newShoppingList[categoryIndex].items.length === 0) {
@@ -86,9 +84,7 @@ export default function ListedItem({
       (itemInList) => itemInList.id === item_id
     );
 
-    newShoppingList[categoryIndex].items[itemIndex].quantity = (
-      parseInt(newShoppingList[categoryIndex].items[itemIndex].quantity) + 1
-    ).toString();
+    newShoppingList[categoryIndex].items[itemIndex].quantity++;
 
     updateShoppingList(newShoppingList);
   };
@@ -120,7 +116,7 @@ export default function ListedItem({
       <li className="flex flex-row justify-between mt-1">
         {item_name}
         <span className="border border-gray-800 rounded-xl px-4 text-base w-24 text-center ml-8 mr-8">
-          {quantity} {parseInt(quantity) > 1 ? "pcs" : "pc"}
+          {quantity} {quantity > 1 ? "pcs" : "pc"}
         </span>
       </li>
     );

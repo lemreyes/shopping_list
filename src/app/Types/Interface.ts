@@ -1,7 +1,7 @@
 interface Category {
   id: number;
   category_name: string;
-  items?: Array<Item>;
+  items: Array<Item>;
 }
 
 interface Item {

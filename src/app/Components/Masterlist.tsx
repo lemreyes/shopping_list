@@ -12,11 +12,11 @@ export default function Masterlist() {
   let [searchString, setSearchString] = useState("");
   let [filterResults, setFilterResults] = useState<Category[]>([]);
 
-  const categories = useMasterlistStore((state: any) => state.categories);
+  const categories: Array<Category> = useMasterlistStore(
+    (state: any) => state.categories
+  );
   const editMode = useMasterlistStore((state: any) => state.editMode);
   const setEditMode = useMasterlistStore((state: any) => state.setEditMode);
-
-  console.log("MasterList");
 
   const hdlSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value);
@@ -25,8 +25,8 @@ export default function Masterlist() {
 
     const searchResults = categories.reduce(
       (results: Category[], category: Category) => {
-        const matchingItems = category.items.filter((item) =>
-          item.name.toLowerCase().includes(searchString)
+        const matchingItems = category.items?.filter((item) =>
+          item.item_name.toLowerCase().includes(searchString)
         );
 
         if (matchingItems.length > 0) {
@@ -87,10 +87,10 @@ export default function Masterlist() {
       {editMode && <NewCategoryButton />}
 
       {searchString.length === 0
-        ? categories.map((category: Category | any) => {
+        ? categories.map((category: Category) => {
             return <CategoryGroup key={category.id} category={category} />;
           })
-        : filterResults.map((category: Category | any) => {
+        : filterResults.map((category: Category) => {
             return <CategoryGroup key={category.id} category={category} />;
           })}
     </main>

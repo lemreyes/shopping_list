@@ -68,7 +68,6 @@ export default function Item({
       // do nothing
     }
 
-    console.log("Handle Close Yes newMasterlist", newMasterList);
     updateMaterList(newMasterList);
 
     setOpenDialog(false);
@@ -76,7 +75,6 @@ export default function Item({
 
   const handleCloseNo = () => {
     setOpenDialog(false);
-    console.log("Handle close NO");
   };
 
   // find this category in the shoppingList

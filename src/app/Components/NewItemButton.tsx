@@ -19,7 +19,7 @@ export default function NewItemButton({
   category_id,
   category_name,
 }: {
-  category_id: string;
+  category_id: number;
   category_name: string;
 }) {
   let [itemName, setItemName] = useState("");
@@ -44,7 +44,6 @@ export default function NewItemButton({
   };
 
   const handleClickOpen = () => {
-    console.log("Click Open dialog");
     setOpenNewItemForm(true);
   };
 
@@ -64,7 +63,7 @@ export default function NewItemButton({
     const newItem: Item = {
       id: "new",
       name: itemName,
-      quantity: "0",
+      quantity: 0,
     };
 
     // update masterlist store

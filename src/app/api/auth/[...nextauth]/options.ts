@@ -37,7 +37,6 @@ export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     createUser: async (message) => {
-      console.log("create user event");
       const userData = await prisma.userData.create({
         data: {
           email: message.user.email as string,
@@ -45,10 +44,9 @@ export const options: NextAuthOptions = {
           image: message.user.image as string,
         },
       });
-      console.log(userData);
     },
   },
   pages: {
-    signIn: '/Auth/Login'
-  }
+    signIn: "/Auth/Login",
+  },
 };

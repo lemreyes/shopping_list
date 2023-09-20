@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 export async function GET(request: Request, response: Response) {
   const session = await getServerSession(options);
-  console.log("session: ", session);
 
   // find user data
   const userData = await prisma.userData.findUnique({
@@ -15,16 +14,18 @@ export async function GET(request: Request, response: Response) {
       email: session?.user?.email as string,
     },
   });
-  console.log("userData", userData);
 
   // populate masterlist with categories
   const categories: Array<Category> = await prisma.category.findMany({
     where: {
       userDataId: userData?.id,
     },
+    select: {
+      id: true,
+      category_name: true,
+      items: true,
+    },
   });
-
-  console.log("newMasterList", categories);
 
   const newMasterList = await Promise.all(
     categories.map(async (category) => {
@@ -39,12 +40,10 @@ export async function GET(request: Request, response: Response) {
           is_purchased: true,
         },
       });
-      console.log("Category", category, "Items", items);
       category.items = items;
       return category;
     })
   );
-  console.log(newMasterList);
 
-  return NextResponse.json({ masterList: newMasterList });
+  return NextResponse.json(newMasterList);
 }

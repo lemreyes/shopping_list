@@ -7,6 +7,8 @@ import ActiveListPanel from "./Components/ActiveListPanel";
 import { useMasterlistStore } from "./Store/masterlist_store";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { GET } from "./api/masterlist/route";
 
 /////////////////////////////////////////////////
 // TEST DATA
@@ -97,7 +99,6 @@ const MASTER_LIST = [
 export default function Home() {
   // redirect to login if no session
   const { data: session } = useSession();
-  console.log("Home session", session);
   if (session === null) {
     redirect("/Auth/Login");
   }
@@ -106,8 +107,28 @@ export default function Home() {
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
   );
-  updateCategories(MASTER_LIST);
-  console.log("HOME");
+
+  // fetch masterlist data
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("/api/masterlist", {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error("Fetch error");
+        }
+
+        const responseData = await response.json();
+        updateCategories(responseData);
+      } catch (error) {
+        console.error("Fetch error", error);
+      }
+    }
+
+    fetchData();
+  });
 
   return (
     <div className="flex flex-col desktop:flex-row">

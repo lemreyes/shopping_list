@@ -44,7 +44,7 @@ export default function ShoppingList() {
                       key={item.id}
                       category_id={category.id}
                       item_id={item.id}
-                      item_name={item.name}
+                      item_name={item.item_name}
                       quantity={item.quantity}
                       edit_mode={editMode}
                     />

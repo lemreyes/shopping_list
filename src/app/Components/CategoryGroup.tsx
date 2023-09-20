@@ -18,7 +18,7 @@ export default function CategoryGroup({ category }: { category: Category }) {
               key={item.id}
               category_id={category.id}
               category={category.category_name}
-              label={item.name}
+              label={item.item_name}
               item_id={item.id}
             />
           );
