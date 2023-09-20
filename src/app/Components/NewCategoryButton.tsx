@@ -40,7 +40,7 @@ export default function NewCategoryButton() {
     // TODO: create new category from server side for unique id.
     // then update local master list
     const newCategory: Category = {
-      id: "new",
+      id: 0,
       category_name: categoryName,
       items: [],
     };
@@ -60,7 +60,12 @@ export default function NewCategoryButton() {
         Create new Category{" "}
         <Image src={add_icon} alt="add" className="inline w-6" />
       </button>
-      <Dialog open={openNewCategoryForm} onClose={handleClose}>
+      <Dialog
+        open={openNewCategoryForm}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle>Add new Category</DialogTitle>
         <DialogContent>
           <DialogContentText>Enter name of new category</DialogContentText>

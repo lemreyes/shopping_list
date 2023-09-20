@@ -61,9 +61,10 @@ export default function NewItemButton({
     // TODO: generate actual id from server
     // update database first, then update the masterlist store
     const newItem: Item = {
-      id: "new",
-      name: itemName,
+      id: 0,
+      item_name: itemName,
       quantity: 0,
+      is_purchased: false,
     };
 
     // update masterlist store
