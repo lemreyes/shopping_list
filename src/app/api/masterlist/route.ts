@@ -5,7 +5,7 @@ import { options } from "../auth/[...nextauth]/options";
 
 const prisma = new PrismaClient();
 
-export async function GET(request: Request, response: Response) {
+export async function GET() {
   const session = await getServerSession(options);
 
   // find user data

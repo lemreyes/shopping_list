@@ -12,10 +12,20 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function NewCategoryButton() {
   let [categoryName, setCategoryName] = useState("");
-  const [openNewCategoryForm, setOpenNewCategoryForm] = React.useState(false);
+  const [openNewCategoryForm, setOpenNewCategoryForm] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const categories = useMasterlistStore((state: any) => state.categories);
   const updateCategories = useMasterlistStore(
@@ -34,21 +44,32 @@ export default function NewCategoryButton() {
     setOpenNewCategoryForm(false);
   };
 
-  const handleAddCategory = () => {
-    const newMasterList = [...categories];
+  const handleAddCategory = async () => {
+    try {
+      const newMasterList = [...categories];
 
-    // TODO: create new category from server side for unique id.
-    // then update local master list
-    const newCategory: Category = {
-      id: 0,
-      category_name: categoryName,
-      items: [],
-    };
+      const response = await fetch("/api/category", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          categoryName: categoryName,
+        }),
+      });
 
-    newMasterList.push(newCategory);
-    updateCategories(newMasterList);
+      if (!response.ok) {
+        throw new Error("Category error");
+      }
 
-    setOpenNewCategoryForm(false);
+      const responseData = await response.json();
+      console.log("Response data: ", responseData);
+
+      newMasterList.push(responseData);
+      updateCategories(newMasterList);
+
+      setOpenNewCategoryForm(false);
+    } catch (error) {}
   };
 
   return (
@@ -85,6 +106,24 @@ export default function NewCategoryButton() {
           <Button onClick={handleAddCategory}>Add category</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          This is a success message!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          This is an error message!
+        </Alert>
+      </Snackbar>
     </>
   );
 }
