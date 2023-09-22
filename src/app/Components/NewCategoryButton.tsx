@@ -23,9 +23,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export default function NewCategoryButton() {
-  let [categoryName, setCategoryName] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [openNewCategoryForm, setOpenNewCategoryForm] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
+  const [openSnackbarError, setOpenSnackbarError] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const categories = useMasterlistStore((state: any) => state.categories);
   const updateCategories = useMasterlistStore(
@@ -42,6 +44,14 @@ export default function NewCategoryButton() {
 
   const handleClose = () => {
     setOpenNewCategoryForm(false);
+  };
+
+  const handleCloseSnackbarSuccess = () => {
+    setOpenSnackbarSuccess(false);
+  };
+
+  const handleCloseSnackbarError = () => {
+    setOpenSnackbarError(false);
   };
 
   const handleAddCategory = async () => {
@@ -62,14 +72,24 @@ export default function NewCategoryButton() {
         throw new Error("Category error");
       }
 
-      const responseData = await response.json();
+      const responseData: Category = await response.json();
       console.log("Response data: ", responseData);
 
       newMasterList.push(responseData);
       updateCategories(newMasterList);
 
       setOpenNewCategoryForm(false);
-    } catch (error) {}
+
+      setSnackbarMessage(
+        `${responseData.category_name} category was successfully added.`
+      );
+      setOpenSnackbarSuccess(true);
+    } catch (error) {
+      setSnackbarMessage(
+        "There was a problem adding this category.  Please try again later."
+      );
+      setOpenSnackbarError(true);
+    }
   };
 
   return (
@@ -107,21 +127,21 @@ export default function NewCategoryButton() {
         </DialogActions>
       </Dialog>
       <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleClose}
+        open={openSnackbarSuccess}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbarSuccess}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          This is a success message!
+          {snackbarMessage}
         </Alert>
       </Snackbar>
       <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleClose}
+        open={openSnackbarError}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbarError}
       >
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          This is an error message!
+          {snackbarMessage}
         </Alert>
       </Snackbar>
     </>
