@@ -11,9 +11,18 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function NewItemButton({
   category_id,
@@ -22,9 +31,10 @@ export default function NewItemButton({
   category_id: number;
   category_name: string;
 }) {
-  let [itemName, setItemName] = useState("");
-  let [itemNote, setItemNote] = useState("");
-  let [itemImage, setItemImage] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
+  const [openSnackbarError, setOpenSnackbarError] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [openNewItemForm, setOpenNewItemForm] = React.useState(false);
   const masterlist = useMasterlistStore((state: any) => state.categories);
   const updateMaterList = useMasterlistStore(
@@ -35,14 +45,6 @@ export default function NewItemButton({
     setItemName(event.target.value);
   };
 
-  const hdlItemNoteOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setItemNote(event.target.value);
-  };
-
-  const hdlItemImageOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setItemImage(event.target.value);
-  };
-
   const handleClickOpen = () => {
     setOpenNewItemForm(true);
   };
@@ -51,27 +53,55 @@ export default function NewItemButton({
     setOpenNewItemForm(false);
   };
 
-  const handleAddItem = () => {
-    const newMasterList: Array<Category> = [...masterlist];
+  const handleCloseSnackbarSuccess = () => {
+    setOpenSnackbarSuccess(false);
+  };
 
-    const categoryIndex: number = newMasterList.findIndex(
-      (categoryInList: Category) => categoryInList.id === category_id
-    );
+  const handleCloseSnackbarError = () => {
+    setOpenSnackbarError(false);
+  };
 
-    // TODO: generate actual id from server
-    // update database first, then update the masterlist store
-    const newItem: Item = {
-      id: 0,
-      item_name: itemName,
-      quantity: 0,
-      is_purchased: false,
-    };
+  const handleAddItem = async () => {
+    try {
+      const newMasterList: Array<Category> = [...masterlist];
 
-    // update masterlist store
-    newMasterList[categoryIndex].items.push(newItem);
-    updateMaterList(newMasterList);
+      const categoryIndex: number = newMasterList.findIndex(
+        (categoryInList: Category) => categoryInList.id === category_id
+      );
 
-    setOpenNewItemForm(false);
+      const response = await fetch("/api/item", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          itemName: itemName,
+          categoryId: category_id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Category error");
+      }
+
+      const responseData: Item = await response.json();
+
+      // update masterlist store
+      newMasterList[categoryIndex].items.push(responseData);
+      updateMaterList(newMasterList);
+
+      setOpenNewItemForm(false);
+
+      setSnackbarMessage(
+        `${responseData.item_name} item was successfully added.`
+      );
+      setOpenSnackbarSuccess(true);
+    } catch (error) {
+      setSnackbarMessage(
+        "There was a problem adding this item.  Please try again later."
+      );
+      setOpenSnackbarError(true);
+    }
   };
 
   return (
@@ -88,7 +118,12 @@ export default function NewItemButton({
           onClick={handleClickOpen}
         />
       </button>
-      <Dialog open={openNewItemForm} onClose={handleClose}>
+      <Dialog
+        open={openNewItemForm}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle>Add new item</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -104,30 +139,30 @@ export default function NewItemButton({
             variant="standard"
             onChange={hdlItemNameOnChange}
           />
-          <TextField
-            margin="dense"
-            id="name"
-            label="Note (optional)"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={hdlItemNoteOnChange}
-          />
-          <TextField
-            margin="dense"
-            id="name"
-            label="Image"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={hdlItemImageOnChange}
-          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleAddItem}>Add item</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={openSnackbarSuccess}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbarSuccess}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnackbarError}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbarError}
+      >
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -75,7 +75,7 @@ model Category {
 
 model Item {
   id           Int       @id @default(autoincrement())
-  item_name    String    @unique
+  item_name    String    
   quantity     Int
   is_purchased Boolean
   Category     Category? @relation(fields: [categoryId], references: [id])
