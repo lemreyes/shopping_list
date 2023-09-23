@@ -3,10 +3,18 @@ import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 
-import prisma from "../../Utilities/prisma"
+import prisma from "../../Utilities/prisma";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
 
   // find user data
   const userData = await prisma.userData.findUnique({
@@ -14,15 +22,48 @@ export async function POST(request: NextRequest) {
       email: session?.user?.email as string,
     },
   });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
 
   const { categoryName, itemName } = await request.json();
 
-  const category = await prisma.category.create({
-    data: {
+  let category = await prisma.category.findFirst({
+    where: {
       category_name: categoryName,
-      userDataId: userData?.id,
     },
   });
+  if (!category) {
+    category = await prisma.category.create({
+      data: {
+        category_name: categoryName,
+        userDataId: userData?.id,
+      },
+    });
+    if (!category) {
+      return NextResponse.json(
+        {
+          errorMessage:
+            "Error in creating new category.  Please try again later.",
+        },
+        { status: 500 }
+      );
+    }
+  } else {
+    return NextResponse.json(
+      {
+        errorMessage:
+          "Category is already existing.  Please add a category with a unique name.",
+      },
+      { status: 400 }
+    );
+  }
+
   console.log("Category", category);
 
   const item = await prisma.item.create({
@@ -33,7 +74,15 @@ export async function POST(request: NextRequest) {
       is_purchased: false,
     },
   });
-  console.log("Item", item);
+  if (!item) {
+    return NextResponse.json(
+      {
+        errorMessage:
+          "Error in adding item to database.  Please try again later.",
+      },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({
     categoryId: item.categoryId,

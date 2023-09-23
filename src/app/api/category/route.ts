@@ -37,10 +37,20 @@ export async function POST(request: Request) {
         userDataId: userData?.id,
       },
     });
+    if (!category) {
+      return NextResponse.json(
+        {
+          errorMessage:
+            "Error in creating new category.  Please try again later.",
+        },
+        { status: 500 }
+      );
+    }
   } else {
     return NextResponse.json(
       {
-        errorMessage: "Category is already existing.",
+        errorMessage:
+          "Category is already existing.  Please add a category with a unique name.",
       },
       { status: 400 }
     );

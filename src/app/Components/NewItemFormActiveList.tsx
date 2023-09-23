@@ -55,14 +55,14 @@ export default function NewItemFormActiveList({
           }),
         });
 
+        const responseData = await response.json();
+
         if (!response.ok) {
-          throw new Error("Category error");
+          throw new Error(responseData.errorMessage);
         }
         console.log("Response", response);
 
-        const responseData = await response.json();
         const { categoryId, itemId } = responseData;
-        console.log("Response data", responseData);
 
         // update masterlist store
         const newItem = {
@@ -95,11 +95,11 @@ export default function NewItemFormActiveList({
           }),
         });
 
-        if (!response.ok) {
-          throw new Error("Category error");
-        }
+        const responseData = await response.json();
 
-        const responseData: Item = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.errorMessage);
+        }
 
         const categoryIndex: number = newMasterList.findIndex(
           (categoryInList: Category) => categoryInList.id === selectedCategory
@@ -113,7 +113,7 @@ export default function NewItemFormActiveList({
 
         return;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.log(error);
     }
   };
