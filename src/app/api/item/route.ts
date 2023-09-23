@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
 
   let item = await prisma.item.findFirst({
     where: {
-      item_name: itemName,
+      item_name: {
+        equals: itemName,
+        mode: "insensitive",
+      },
     },
   });
   if (!item) {

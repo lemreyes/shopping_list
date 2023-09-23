@@ -27,7 +27,10 @@ export async function POST(request: Request) {
 
   let category = await prisma.category.findFirst({
     where: {
-      category_name: categoryName,
+      category_name: {
+        equals: categoryName,
+        mode: "insensitive",
+      },
     },
   });
   if (!category) {

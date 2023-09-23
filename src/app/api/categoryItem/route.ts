@@ -35,7 +35,10 @@ export async function POST(request: NextRequest) {
 
   let category = await prisma.category.findFirst({
     where: {
-      category_name: categoryName,
+      category_name: {
+        equals: categoryName,
+        mode: "insensitive",
+      },
     },
   });
   if (!category) {
@@ -66,15 +69,33 @@ export async function POST(request: NextRequest) {
 
   console.log("Category", category);
 
-  const item = await prisma.item.create({
-    data: {
-      item_name: itemName,
-      categoryId: category.id,
-      quantity: 0,
-      is_purchased: false,
+  let item = await prisma.item.findFirst({
+    where: {
+      item_name: {
+        equals: itemName,
+        mode: "insensitive",
+      },
     },
   });
   if (!item) {
+    item = await prisma.item.create({
+      data: {
+        item_name: itemName,
+        categoryId: category.id,
+        quantity: 0,
+        is_purchased: false,
+      },
+    });
+    if (!item) {
+      return NextResponse.json(
+        {
+          errorMessage:
+            "Error in adding item to database.  Please try again later.",
+        },
+        { status: 500 }
+      );
+    }
+  } else {
     return NextResponse.json(
       {
         errorMessage:
