@@ -80,11 +80,11 @@ export default function NewItemButton({
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Category error");
-      }
+      const responseData = await response.json();
 
-      const responseData: Item = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.errorMessage);
+      }
 
       // update masterlist store
       newMasterList[categoryIndex].items.push(responseData);
@@ -96,11 +96,11 @@ export default function NewItemButton({
         `${responseData.item_name} item was successfully added.`
       );
       setOpenSnackbarSuccess(true);
-    } catch (error) {
-      setSnackbarMessage(
-        "There was a problem adding this item.  Please try again later."
-      );
-      setOpenSnackbarError(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setOpenSnackbarError(true);
+      }
     }
   };
 
@@ -108,15 +108,11 @@ export default function NewItemButton({
     <>
       <button
         className={`border rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-orange-800 bg-orange-200 hover:drop-shadow-2xl hover:border-orange-800 hover:bg-orange-100`}
+        onClick={handleClickOpen}
       >
         {" "}
         New Item
-        <Image
-          src={add_icon}
-          alt="add"
-          className="inline w-6"
-          onClick={handleClickOpen}
-        />
+        <Image src={add_icon} alt="add" className="inline w-6" />
       </button>
       <Dialog
         open={openNewItemForm}

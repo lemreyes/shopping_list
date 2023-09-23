@@ -6,24 +6,49 @@ import prisma from "../../Utilities/prisma";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
-
-  // find user data
-  const userData = await prisma.userData.findUnique({
-    where: {
-      email: session?.user?.email as string,
-    },
-  });
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
 
   const { itemName, categoryId } = await request.json();
 
-  const item = await prisma.item.create({
-    data: {
+  let item = await prisma.item.findFirst({
+    where: {
       item_name: itemName,
-      quantity: 0,
-      is_purchased: false,
-      categoryId: categoryId,
     },
   });
+  if (!item) {
+    item = await prisma.item.create({
+      data: {
+        item_name: itemName,
+        quantity: 0,
+        is_purchased: false,
+        categoryId: categoryId,
+      },
+    });
+    if (!item) {
+      return NextResponse.json(
+        {
+          errorMessage:
+            "Error in adding item to database.  Please try again later.",
+        },
+        { status: 500 }
+      );
+    }
+  } else {
+    return NextResponse.json(
+      {
+        errorMessage:
+          "Item is already existing.  Please create new item with a different item name.",
+      },
+      { status: 400 }
+    );
+  }
 
   return NextResponse.json({
     id: item.id,
