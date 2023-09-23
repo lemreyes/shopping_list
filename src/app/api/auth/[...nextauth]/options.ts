@@ -7,9 +7,9 @@ import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 
-let userAccount: any = null;
+import prisma from "../../../Utilities/prisma"
 
-const prisma = new PrismaClient();
+let userAccount: any = null;
 
 export const options: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),

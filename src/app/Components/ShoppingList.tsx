@@ -24,7 +24,10 @@ export default function ShoppingList() {
       <div>
         <div className="flex flex-row justify-between">
           <h2 className="font-bold text-2xl">Shopping List</h2>
-          <button onClick={hdlEditButton} className="hover:bg-white hover:rounded-full p-1">
+          <button
+            onClick={hdlEditButton}
+            className="hover:bg-white hover:rounded-full p-1"
+          >
             <Image
               src={editMode ? edit_active_icon : edit_list_icon}
               alt="Edit"

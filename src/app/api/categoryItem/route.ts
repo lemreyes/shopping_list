@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 
-const prisma = new PrismaClient();
+import prisma from "../../Utilities/prisma"
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
