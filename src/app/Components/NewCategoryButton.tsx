@@ -68,12 +68,15 @@ export default function NewCategoryButton() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Category error");
-      }
+      console.log("Response", response);
 
-      const responseData: Category = await response.json();
+      const responseData = await response.json();
       console.log("Response data: ", responseData);
+
+      if (!response.ok) {
+        console.log("Throw error");
+        throw new Error(responseData.errorMessage);
+      }
 
       newMasterList.push(responseData);
       updateCategories(newMasterList);
@@ -84,11 +87,12 @@ export default function NewCategoryButton() {
         `${responseData.category_name} category was successfully added.`
       );
       setOpenSnackbarSuccess(true);
-    } catch (error) {
-      setSnackbarMessage(
-        "There was a problem adding this category.  Please try again later."
-      );
-      setOpenSnackbarError(true);
+    } catch (error: unknown) {
+      console.log("Error: ", error);
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setOpenSnackbarError(true);
+      }
     }
   };
 
