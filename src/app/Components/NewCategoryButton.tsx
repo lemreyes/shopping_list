@@ -14,7 +14,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { createNewCategory } from "../Services/category";
+import { createNewCategory } from "../Services/fetchWrapper";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,

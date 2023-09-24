@@ -16,6 +16,7 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
+import { createNewItem } from "../Services/fetchWrapper";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -69,22 +70,7 @@ export default function NewItemButton({
         (categoryInList: Category) => categoryInList.id === category_id
       );
 
-      const response = await fetch("/api/item", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          itemName: itemName,
-          categoryId: category_id,
-        }),
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.errorMessage);
-      }
+      const responseData = await createNewItem(itemName, category_id);
 
       // update masterlist store
       newMasterList[categoryIndex].items.push(responseData);

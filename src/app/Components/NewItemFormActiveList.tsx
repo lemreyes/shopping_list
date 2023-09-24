@@ -1,5 +1,9 @@
 import { ChangeEvent, MouseEventHandler, useState } from "react";
 import { useMasterlistStore } from "../Store/masterlist_store";
+import {
+  createItemWithNewCategory,
+  createNewItem,
+} from "../Services/fetchWrapper";
 
 export default function NewItemFormActiveList({
   cancelHandler,
@@ -44,23 +48,10 @@ export default function NewItemFormActiveList({
     try {
       if (selectedCategory === 0) {
         // add category
-        const response = await fetch("/api/categoryItem", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            categoryName: newCategoryName,
-            itemName: itemName,
-          }),
-        });
-
-        const responseData = await response.json();
-
-        if (!response.ok) {
-          throw new Error(responseData.errorMessage);
-        }
-        console.log("Response", response);
+        const responseData = await createItemWithNewCategory(
+          newCategoryName,
+          itemName
+        );
 
         const { categoryId, itemId } = responseData;
 
@@ -84,22 +75,7 @@ export default function NewItemFormActiveList({
 
         return;
       } else {
-        const response = await fetch("/api/item", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            itemName: itemName,
-            categoryId: selectedCategory,
-          }),
-        });
-
-        const responseData = await response.json();
-
-        if (!response.ok) {
-          throw new Error(responseData.errorMessage);
-        }
+        const responseData = await createNewItem(itemName, selectedCategory);
 
         const categoryIndex: number = newMasterList.findIndex(
           (categoryInList: Category) => categoryInList.id === selectedCategory

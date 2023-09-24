@@ -12,6 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { deleteItem } from "../Services/fetchWrapper";
 
 export default function Item({
   category_id,
@@ -45,22 +46,7 @@ export default function Item({
   const handleCloseYes = async () => {
     // delete in database
     try {
-      const response = await fetch("/api/item", {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          itemId: item_id,
-        }),
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.errorMessage);
-      }
-      console.log("Response", response);
+      deleteItem(item_id);
 
       // update master list
       const newMasterList = [...masterlist];
