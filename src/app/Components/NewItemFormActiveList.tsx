@@ -122,19 +122,6 @@ export default function NewItemFormActiveList({
     <div>
       <h2 className="text-2xl font-bold mb-8">Add a new item</h2>
       <form>
-        <label htmlFor="name" className="text-sm">
-          Name
-        </label>
-        <br />
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Enter a name"
-          className="text-sm px-2 py-2 rounded-2xl w-full mt-1 mb-8"
-          onChange={hdlItemNameChange}
-          required
-        />
         <label htmlFor="category" className="text-sm">
           Category
         </label>
@@ -164,13 +151,26 @@ export default function NewItemFormActiveList({
               type="text"
               id="newCategory"
               name="newCategory"
-              placeholder="Enter name of new category"
+              placeholder="Enter new category name"
               className="text-sm px-2 py-2 rounded-2xl w-full mt-1 mb-8"
               onChange={hdlNewCategoryInputChange}
               required
             />
           </section>
         )}
+        <label htmlFor="name" className="text-sm">
+          Item Name
+        </label>
+        <br />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter the item name"
+          className="text-sm px-2 py-2 rounded-2xl w-full mt-1 mb-8"
+          onChange={hdlItemNameChange}
+          required
+        />
       </form>
       <div className="flex flex-row justify-evenly">
         <button
