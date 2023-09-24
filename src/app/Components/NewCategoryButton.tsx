@@ -14,6 +14,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { createNewCategory } from "../Services/category";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -58,25 +59,7 @@ export default function NewCategoryButton() {
     try {
       const newMasterList = [...categories];
 
-      const response = await fetch("/api/category", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          categoryName: categoryName,
-        }),
-      });
-
-      console.log("Response", response);
-
-      const responseData = await response.json();
-      console.log("Response data: ", responseData);
-
-      if (!response.ok) {
-        console.log("Throw error");
-        throw new Error(responseData.errorMessage);
-      }
+      const responseData = await createNewCategory(categoryName);
 
       newMasterList.push(responseData);
       updateCategories(newMasterList);
