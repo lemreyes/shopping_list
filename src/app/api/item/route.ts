@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 import prisma from "../../Utilities/prisma";
@@ -59,4 +59,39 @@ export async function POST(request: NextRequest) {
     quantity: 0,
     is_purchased: false,
   });
+}
+
+export async function DELETE(request: NextRequest) {
+  const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+
+  const { itemId } = await request.json();
+
+  try {
+    const deletedItem = await prisma.item.delete({
+      where: {
+        id: itemId,
+      },
+    });
+
+    return NextResponse.json(deletedItem);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return NextResponse.json(
+          {
+            errorMessage: "The item to be deleted was not found.",
+          },
+          { status: 404 }
+        );
+      }
+    }
+  }
 }

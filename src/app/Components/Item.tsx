@@ -42,35 +42,57 @@ export default function Item({
     setOpenDialog(true);
   };
 
-  const handleCloseYes = () => {
-    const newMasterList = [...masterlist];
+  const handleCloseYes = async () => {
+    // delete in database
+    try {
+      const response = await fetch("/api/item", {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          itemId: item_id,
+        }),
+      });
 
-    const categoryIndex: number = masterlist.findIndex(
-      (categoryInList: Category) => categoryInList.id === category_id
-    );
+      const responseData = await response.json();
 
-    if (categoryIndex >= 0) {
-      const itemIndex = masterlist[categoryIndex].items.findIndex(
-        (itemInList: Item) => itemInList.id === item_id
+      if (!response.ok) {
+        throw new Error(responseData.errorMessage);
+      }
+      console.log("Response", response);
+
+      // update master list
+      const newMasterList = [...masterlist];
+      const categoryIndex: number = masterlist.findIndex(
+        (categoryInList: Category) => categoryInList.id === category_id
       );
 
-      if (itemIndex >= 0) {
-        newMasterList[categoryIndex].items.splice(itemIndex, 1);
+      if (categoryIndex >= 0) {
+        const itemIndex = masterlist[categoryIndex].items.findIndex(
+          (itemInList: Item) => itemInList.id === item_id
+        );
 
-        // delete category if item list is empty
-        if (newMasterList[categoryIndex].items.length === 0) {
-          newMasterList.splice(categoryIndex, 1);
+        if (itemIndex >= 0) {
+          newMasterList[categoryIndex].items.splice(itemIndex, 1);
+
+          // delete category if item list is empty
+          if (newMasterList[categoryIndex].items.length === 0) {
+            newMasterList.splice(categoryIndex, 1);
+          }
+        } else {
+          // do nothing
         }
       } else {
         // do nothing
       }
-    } else {
-      // do nothing
+
+      updateMaterList(newMasterList);
+
+      setOpenDialog(false);
+    } catch (error: unknown) {
+      console.log(error);
     }
-
-    updateMaterList(newMasterList);
-
-    setOpenDialog(false);
   };
 
   const handleCloseNo = () => {
