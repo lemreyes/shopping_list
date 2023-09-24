@@ -100,3 +100,27 @@ export async function createItemWithNewCategory(
 
   return responseData;
 }
+
+export async function createNewList(
+  list_name: string,
+  shopping_list: Array<Category>
+) {
+  const response = await fetch("/api/activelist", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      listName: list_name,
+      shoppingList: shopping_list,
+    }),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}

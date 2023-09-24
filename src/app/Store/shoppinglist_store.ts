@@ -6,4 +6,9 @@ export const useShoppingListStore = create((set) => ({
     set({
       shoppingList: updatedList,
     }),
+  activeListId: null,
+  updateActiveListId: (currentActiveListId: number) =>
+    set({
+      activeListId: currentActiveListId,
+    }),
 }));
