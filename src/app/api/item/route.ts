@@ -81,6 +81,21 @@ export async function DELETE(request: NextRequest) {
       },
     });
 
+    // check if there are still items in the same category.
+    // if no more items in category, delete the category.
+    const otherItem = await prisma.item.findFirst({
+      where: {
+        categoryId: deletedItem.categoryId,
+      },
+    });
+    if (!otherItem) {
+      await prisma.category.delete({
+        where: {
+          id: deletedItem.categoryId as number,
+        },
+      });
+    }
+
     return NextResponse.json(deletedItem);
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
