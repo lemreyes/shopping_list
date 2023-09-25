@@ -11,19 +11,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
 import { createNewItem } from "../Services/fetchWrapper";
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import { useShoppingListStore } from "../Store/shoppinglist_store";
 
 export default function NewItemButton({
   category_id,
@@ -33,14 +25,18 @@ export default function NewItemButton({
   category_name: string;
 }) {
   const [itemName, setItemName] = useState("");
-  const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
-  const [openSnackbarError, setOpenSnackbarError] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [openNewItemForm, setOpenNewItemForm] = React.useState(false);
   const masterlist = useMasterlistStore((state: any) => state.categories);
   const updateMaterList = useMasterlistStore(
     (state: any) => state.updateCategories
   );
+  const setSnackbarMessage = useShoppingListStore(
+    (state: any) => state.setMessage
+  );
+  const setOpenSnackbar = useShoppingListStore(
+    (state: any) => state.setOpenSnackbar
+  );
+  const setSeverity = useShoppingListStore((state: any) => state.setSeverity);
 
   const hdlItemNameOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setItemName(event.target.value);
@@ -52,14 +48,6 @@ export default function NewItemButton({
 
   const handleClose = () => {
     setOpenNewItemForm(false);
-  };
-
-  const handleCloseSnackbarSuccess = () => {
-    setOpenSnackbarSuccess(false);
-  };
-
-  const handleCloseSnackbarError = () => {
-    setOpenSnackbarError(false);
   };
 
   const handleAddItem = async () => {
@@ -81,11 +69,13 @@ export default function NewItemButton({
       setSnackbarMessage(
         `${responseData.item_name} item was successfully added.`
       );
-      setOpenSnackbarSuccess(true);
+      setSeverity("success");
+      setOpenSnackbar(true);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setSnackbarMessage(error.message);
-        setOpenSnackbarError(true);
+        setSeverity("error");
+        setOpenSnackbar(true);
       }
     }
   };
@@ -127,24 +117,6 @@ export default function NewItemButton({
           <Button onClick={handleAddItem}>Add item</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={openSnackbarSuccess}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbarSuccess}
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openSnackbarError}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbarError}
-      >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 }

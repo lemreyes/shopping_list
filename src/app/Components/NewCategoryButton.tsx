@@ -12,9 +12,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
-import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { createNewCategory } from "../Services/fetchWrapper";
+import { useSnackbarStore } from "../Store/snackbar_store";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -26,9 +26,13 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function NewCategoryButton() {
   const [categoryName, setCategoryName] = useState("");
   const [openNewCategoryForm, setOpenNewCategoryForm] = useState(false);
-  const [openSnackbarSuccess, setOpenSnackbarSuccess] = useState(false);
-  const [openSnackbarError, setOpenSnackbarError] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const setSnackbarMessage = useSnackbarStore(
+    (state: any) => state.setMessage
+  );
+  const setOpenSnackbar = useSnackbarStore(
+    (state: any) => state.setOpenSnackbar
+  );
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
   const categories = useMasterlistStore((state: any) => state.categories);
   const updateCategories = useMasterlistStore(
@@ -47,14 +51,6 @@ export default function NewCategoryButton() {
     setOpenNewCategoryForm(false);
   };
 
-  const handleCloseSnackbarSuccess = () => {
-    setOpenSnackbarSuccess(false);
-  };
-
-  const handleCloseSnackbarError = () => {
-    setOpenSnackbarError(false);
-  };
-
   const handleAddCategory = async () => {
     try {
       const newMasterList = [...categories];
@@ -69,12 +65,14 @@ export default function NewCategoryButton() {
       setSnackbarMessage(
         `${responseData.category_name} category was successfully added.`
       );
-      setOpenSnackbarSuccess(true);
+      setSeverity("success");
+      setOpenSnackbar(true);
     } catch (error: unknown) {
       console.log("Error: ", error);
       if (error instanceof Error) {
         setSnackbarMessage(error.message);
-        setOpenSnackbarError(true);
+        setSeverity("error");
+        setOpenSnackbar(true);
       }
     }
   };
@@ -113,24 +111,6 @@ export default function NewCategoryButton() {
           <Button onClick={handleAddCategory}>Add category</Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={openSnackbarSuccess}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbarSuccess}
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openSnackbarError}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbarError}
-      >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 }

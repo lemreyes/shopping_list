@@ -13,6 +13,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { deleteItem } from "../Services/fetchWrapper";
+import { useSnackbarStore } from "../Store/snackbar_store";
 
 export default function Item({
   category_id,
@@ -39,6 +40,12 @@ export default function Item({
     (state: any) => state.updateCategories
   );
 
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
+  const setOpenSnackbar = useSnackbarStore(
+    (state: any) => state.setOpenSnackbar
+  );
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
+
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
@@ -47,6 +54,7 @@ export default function Item({
     // delete in database
     try {
       deleteItem(item_id);
+      let itemName = "";
 
       // update master list
       const newMasterList = [...masterlist];
@@ -58,6 +66,8 @@ export default function Item({
         const itemIndex = masterlist[categoryIndex].items.findIndex(
           (itemInList: Item) => itemInList.id === item_id
         );
+
+        itemName = masterlist[categoryIndex].items[itemIndex].item_name;
 
         if (itemIndex >= 0) {
           newMasterList[categoryIndex].items.splice(itemIndex, 1);
@@ -76,8 +86,16 @@ export default function Item({
       updateMaterList(newMasterList);
 
       setOpenDialog(false);
+
+      setSnackbarMessage(`${itemName} was successfully deleted.`);
+      setSeverity("success");
+      setOpenSnackbar(true);
     } catch (error: unknown) {
-      console.log(error);
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setSeverity("error");
+        setOpenSnackbar(true);
+      }
     }
   };
 

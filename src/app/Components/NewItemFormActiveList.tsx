@@ -4,6 +4,7 @@ import {
   createItemWithNewCategory,
   createNewItem,
 } from "../Services/fetchWrapper";
+import { useSnackbarStore } from "../Store/snackbar_store";
 
 export default function NewItemFormActiveList({
   cancelHandler,
@@ -24,6 +25,12 @@ export default function NewItemFormActiveList({
   const updateMaterList = useMasterlistStore(
     (state: any) => state.updateCategories
   );
+
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
+  const setOpenSnackbar = useSnackbarStore(
+    (state: any) => state.setOpenSnackbar
+  );
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
   const hdlSelectChange = (event: React.FormEvent<HTMLSelectElement>) => {
     if (parseInt(event.currentTarget.value) === NEW_CATEGORY_ID) {
@@ -73,6 +80,12 @@ export default function NewItemFormActiveList({
         // notify success
         console.log("success add category and item");
 
+        setSnackbarMessage(
+          `${newCategoryName} category and ${itemName} item was successfully added.`
+        );
+        setSeverity("success");
+        setOpenSnackbar(true);
+
         return;
       } else {
         const responseData = await createNewItem(itemName, selectedCategory);
@@ -85,12 +98,20 @@ export default function NewItemFormActiveList({
         newMasterList[categoryIndex].items.push(responseData);
         updateMaterList(newMasterList);
 
-        console.log("success add item");
+        setSnackbarMessage(
+          `${responseData.item_name} item was successfully added.`
+        );
+        setSeverity("success");
+        setOpenSnackbar(true);
 
         return;
       }
     } catch (error: unknown) {
-      console.log(error);
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setSeverity("error");
+        setOpenSnackbar(true);
+      }
     }
   };
 

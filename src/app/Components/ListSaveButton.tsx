@@ -11,7 +11,6 @@ export default function ListSaveButton() {
     (state: any) => state.shoppingList
   );
 
-
   const [listName, setListName] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
