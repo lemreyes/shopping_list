@@ -16,6 +16,7 @@ import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
 import { createNewItem } from "../Services/fetchWrapper";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
+import { useSnackbarStore } from "../Store/snackbar_store";
 
 export default function NewItemButton({
   category_id,
@@ -30,13 +31,13 @@ export default function NewItemButton({
   const updateMaterList = useMasterlistStore(
     (state: any) => state.updateCategories
   );
-  const setSnackbarMessage = useShoppingListStore(
+  const setSnackbarMessage = useSnackbarStore(
     (state: any) => state.setMessage
   );
-  const setOpenSnackbar = useShoppingListStore(
+  const setOpenSnackbar = useSnackbarStore(
     (state: any) => state.setOpenSnackbar
   );
-  const setSeverity = useShoppingListStore((state: any) => state.setSeverity);
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
   const hdlItemNameOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setItemName(event.target.value);

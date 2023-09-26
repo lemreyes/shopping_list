@@ -59,9 +59,43 @@ export async function POST(request: Request) {
         }
       }
     }
+  } else {
+    return NextResponse.json(
+      {
+        errorMessage:
+          "A list with the same name already exists.  Please rename the list that you would like to save.",
+      },
+      { status: 400 }
+    );
   }
 
   return NextResponse.json({
     activeListId: activeList.id,
   });
+}
+
+export async function PATCH(request: Request) {
+  const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+  console.log("Session: ", session);
+
+  // find user data
+  const userData = await prisma.userData.findUnique({
+    where: {
+      email: session?.user?.email as string,
+    },
+  });
+  console.log("userData: ", userData);
+
+  const { listId, shoppingList } = await request.json();
+
+  // get ids in database list
+  
 }

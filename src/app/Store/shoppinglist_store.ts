@@ -11,4 +11,9 @@ export const useShoppingListStore = create((set) => ({
     set({
       activeListId: currentActiveListId,
     }),
+  activeListName: "",
+  updateActiveListName: (newActiveListName: string) =>
+    set({
+      activeListName: newActiveListName,
+    }),
 }));

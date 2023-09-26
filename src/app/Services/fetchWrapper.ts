@@ -124,3 +124,27 @@ export async function createNewList(
 
   return responseData;
 }
+
+export async function updateList(
+  list_id: number,
+  shopping_list: Array<Category>
+) {
+  const response = await fetch("/api/activelist", {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      listId: list_id,
+      shoppingList: shopping_list,
+    }),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
