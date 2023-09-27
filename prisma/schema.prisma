@@ -87,39 +87,28 @@ model Item {
 }
 
 model List {
-  id          Int                  @id @default(autoincrement())
-  list_name   String               @unique
+  id          Int               @id @default(autoincrement())
+  list_name   String            @unique
   is_done     Boolean
-  UserData    UserData?            @relation(fields: [ownerId], references: [id])
+  UserData    UserData?         @relation(fields: [ownerId], references: [id])
   ownerId     Int?
-  listedItems ListsOnListedItems[]
   accessors   AccessorsOnList[]
-  created_at  DateTime             @default(now())
-  updated_at  DateTime             @default(now())
+  listedItems ListedItem[]
+  created_at  DateTime          @default(now())
+  updated_at  DateTime          @default(now())
 }
 
 // items that are placed on a list
 model ListedItem {
-  id               Int                  @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   listed_item_name String
   quantity         Int
   is_purchased     Boolean
-  Category         Category?            @relation(fields: [categoryId], references: [id])
+  Category         Category? @relation(fields: [categoryId], references: [id])
   categoryId       Int?
-  created_at       DateTime             @default(now())
-  updated_at       DateTime             @default(now())
-  lists            ListsOnListedItems[]
-}
-
-model ListsOnListedItems {
-  List         List       @relation(fields: [listId], references: [id])
-  listId       Int
-  ListedItem   ListedItem @relation(fields: [listedItemId], references: [id])
-  listedItemId Int
-  assignedAt   DateTime   @default(now())
-  assignedBy   String
-
-  @@id([listId, listedItemId])
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now())
+  lists             List[]
 }
 
 model Accessor {

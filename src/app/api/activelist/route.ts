@@ -27,38 +27,41 @@ export async function POST(request: Request) {
   const { listName, shoppingList } = await request.json();
   console.log("Body", listName, shoppingList);
 
-  let activeList = await prisma.list.findFirst({
+  let activeListandItems = await prisma.list.findFirst({
     where: {
       list_name: listName,
     },
   });
-  console.log("activelist first check", activeList);
-  if (!activeList) {
-    activeList = await prisma.list.create({
+  console.log("activelist first check", activeListandItems);
+
+  const listedItems = [];
+  for (let i = 0; i < shoppingList.length; i++) {
+    if (shoppingList[i].items.length > 0) {
+      for (let j = 0; j < shoppingList[i].items.length; j++) {
+        const listedItem = {
+          listed_item_name: shoppingList[i].items[j].item_name,
+          quantity: shoppingList[i].items[j].quantity,
+          is_purchased: shoppingList[i].items[j].is_purchased,
+          categoryId: shoppingList[i].id,
+        };
+        listedItems.push(listedItem);
+      }
+    }
+  }
+  console.log("Listed items: ", listedItems);
+
+  if (!activeListandItems) {
+    activeListandItems = await prisma.list.create({
       data: {
         list_name: listName,
         is_done: false,
         ownerId: userData?.id,
+        listedItems: {
+          create: listedItems,
+        },
       },
     });
-    console.log("Active list saved", activeList);
-
-    if (activeList) {
-      for (let i = 0; i < shoppingList.length; i++) {
-        if (shoppingList[i].items.length > 0) {
-          for (let j = 0; j < shoppingList[i].items.length; j++) {
-            const item = await prisma.listedItem.create({
-              data: {
-                listed_item_name: shoppingList[i].items[j].item_name,
-                quantity: shoppingList[i].items[j].quantity,
-                is_purchased: shoppingList[i].items[j].is_purchased,
-                categoryId: shoppingList[i].id,
-              },
-            });
-          }
-        }
-      }
-    }
+    console.log("Active list and items saved", activeListandItems);
   } else {
     return NextResponse.json(
       {
@@ -70,7 +73,7 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({
-    activeListId: activeList.id,
+    activeListId: activeListandItems.id,
   });
 }
 
@@ -96,6 +99,5 @@ export async function PATCH(request: Request) {
 
   const { listId, shoppingList } = await request.json();
 
-  // get ids in database list
-  
+  // update list in database
 }
