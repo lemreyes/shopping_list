@@ -108,7 +108,8 @@ model ListedItem {
   categoryId       Int?
   created_at       DateTime  @default(now())
   updated_at       DateTime  @default(now())
-  lists             List[]
+  List             List?     @relation(fields: [listId], references: [id])
+  listId           Int?
 }
 
 model Accessor {
