@@ -61,6 +61,7 @@ model UserData {
   updated_at DateTime   @default(now())
   Category   Category[]
   List       List[]
+  items      Item[]
 }
 
 model Category {
@@ -76,14 +77,17 @@ model Category {
 
 // items that are in the masterlist
 model Item {
-  id           Int       @id @default(autoincrement())
+  id           Int          @id @default(autoincrement())
   item_name    String
   quantity     Int
   is_purchased Boolean
-  Category     Category? @relation(fields: [categoryId], references: [id])
+  Category     Category?    @relation(fields: [categoryId], references: [id])
   categoryId   Int?
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @default(now())
+  listed_items ListedItem[]
+  created_at   DateTime     @default(now())
+  updated_at   DateTime     @default(now())
+  UserData     UserData?    @relation(fields: [userDataId], references: [id])
+  userDataId   Int?
 }
 
 model List {
@@ -110,6 +114,8 @@ model ListedItem {
   updated_at       DateTime  @default(now())
   List             List?     @relation(fields: [listId], references: [id])
   listId           Int?
+  Item             Item?     @relation(fields: [masterItemId], references: [id])
+  masterItemId     Int?
 }
 
 model Accessor {

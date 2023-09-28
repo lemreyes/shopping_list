@@ -54,6 +54,7 @@ export async function POST(request: Request) {
                 is_purchased: shoppingList[i].items[j].is_purchased,
                 categoryId: shoppingList[i].id,
                 listId: activeList.id,
+                masterItemId: shoppingList[i].items[j].id,
               },
             });
           }
@@ -90,4 +91,5 @@ export async function PATCH(request: Request) {
   const { listId, shoppingList } = await request.json();
 
   // update list in database
+  for (let i = 0; i < shoppingList.length; i++) {}
 }
