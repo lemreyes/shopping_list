@@ -66,8 +66,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  console.log("Category", category);
-
   let item = await prisma.item.findFirst({
     where: {
       item_name: {

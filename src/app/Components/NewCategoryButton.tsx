@@ -68,7 +68,6 @@ export default function NewCategoryButton() {
       setSeverity("success");
       setOpenSnackbar(true);
     } catch (error: unknown) {
-      console.log("Error: ", error);
       if (error instanceof Error) {
         setSnackbarMessage(error.message);
         setSeverity("error");

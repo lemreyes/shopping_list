@@ -23,13 +23,9 @@ export async function createNewCategory(category_name: string) {
     }),
   });
 
-  console.log("Response", response);
-
   const responseData = await response.json();
-  console.log("Response data: ", responseData);
 
   if (!response.ok) {
-    console.log("Throw error");
     throw new Error(responseData.errorMessage);
   }
 

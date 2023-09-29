@@ -77,9 +77,6 @@ export default function NewItemFormActiveList({
         });
         updateMaterList(newMasterList);
 
-        // notify success
-        console.log("success add category and item");
-
         setSnackbarMessage(
           `${newCategoryName} category and ${itemName} item was successfully added.`
         );

@@ -6,13 +6,13 @@ import { useShoppingListStore } from "../Store/shoppinglist_store";
 
 export default function ListedItem({
   category_id,
-  item_id,
+  master_item_id,
   item_name,
   quantity,
   edit_mode,
 }: {
   category_id: number;
-  item_id: number;
+  master_item_id: number;
   item_name: string;
   quantity: number;
   edit_mode: boolean;
@@ -34,7 +34,8 @@ export default function ListedItem({
 
     if (categoryIndex >= 0) {
       const itemIndex = newShoppingList[categoryIndex].items.findIndex(
-        (itemInList) => itemInList.id === item_id
+        (itemInList: ShoppingListItem) =>
+          itemInList.master_item_id === master_item_id
       );
 
       if (itemIndex >= 0) {
@@ -55,13 +56,17 @@ export default function ListedItem({
   };
 
   const hdlDecreaseButtonClick = () => {
+    console.log("New shopping list: ", newShoppingList);
     const categoryIndex: number = newShoppingList.findIndex(
       (categoryInList) => categoryInList.id === category_id
     );
+    console.log("Decrease categoryIndex", categoryIndex);
 
     const itemIndex = newShoppingList[categoryIndex].items.findIndex(
-      (itemInList) => itemInList.id === item_id
+      (itemInList: ShoppingListItem) =>
+        itemInList.master_item_id === master_item_id
     );
+    console.log("Decrease Item index", itemIndex);
 
     newShoppingList[categoryIndex].items[itemIndex].quantity--;
     if (newShoppingList[categoryIndex].items[itemIndex].quantity === 0) {
@@ -81,8 +86,10 @@ export default function ListedItem({
     );
 
     const itemIndex = newShoppingList[categoryIndex].items.findIndex(
-      (itemInList) => itemInList.id === item_id
+      (itemInList: ShoppingListItem) =>
+        itemInList.master_item_id === master_item_id
     );
+    console.log("Increase Item index", itemIndex);
 
     newShoppingList[categoryIndex].items[itemIndex].quantity++;
 

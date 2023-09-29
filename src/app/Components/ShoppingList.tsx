@@ -41,12 +41,12 @@ export default function ShoppingList() {
             <div key={category.id}>
               <h3 className="text-sm mt-4">{category.category_name}</h3>
               <ul>
-                {category.items.map((item: Item) => {
+                {category.items.map((item: ShoppingListItem) => {
                   return (
                     <ListedItem
-                      key={item.id}
+                      key={item.master_item_id}
                       category_id={category.id}
-                      item_id={item.id}
+                      master_item_id={item.master_item_id as number}
                       item_name={item.item_name}
                       quantity={item.quantity}
                       edit_mode={editMode}

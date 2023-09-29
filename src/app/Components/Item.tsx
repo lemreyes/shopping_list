@@ -32,6 +32,8 @@ export default function Item({
   const updateShoppingList = useShoppingListStore(
     (state: any) => state.updateShoppingList
   );
+  const activeListId = useShoppingListStore((state: any) => state.activeListId);
+
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const editMode = useMasterlistStore((state: any) => state.editMode);
@@ -111,7 +113,7 @@ export default function Item({
 
     if (matchedCategory) {
       const matchedItem = matchedCategory.items?.find(
-        (itemInList) => itemInList.id === item_id
+        (itemInList: ShoppingListItem) => itemInList.master_item_id === item_id
       );
       if (matchedItem) {
         return matchedItem.quantity;
@@ -129,11 +131,14 @@ export default function Item({
     } else {
       // construct object
       const newShoppingList = [...shoppingList];
-      const newItem: Item = {
-        id: item_id,
+      const newListItem: ShoppingListItem = {
+        id: 0,
         item_name: label,
         quantity: 1,
         is_purchased: false,
+        master_item_id: item_id,
+        category_id: category_id,
+        list_id: activeListId,
       };
 
       // find the category
@@ -143,22 +148,23 @@ export default function Item({
       if (matchedCategory) {
         // find if there is existing item
         const matchedItem = matchedCategory.items?.find(
-          (itemInList) => itemInList.id === item_id
+          (itemInList: ShoppingListItem) =>
+            itemInList.master_item_id === item_id
         );
         if (matchedItem) {
-          let quantity: number = matchedItem.quantity++;
+          matchedItem.quantity++;
         } else {
-          matchedCategory.items?.push(newItem);
+          matchedCategory.items?.push(newListItem);
         }
         updateShoppingList(newShoppingList);
       } else {
         // category not found so add new category
-        const newCategory = {
+        const newCategoryInList = {
           id: category_id,
           category_name: category,
-          items: [newItem],
+          items: [newListItem],
         };
-        newShoppingList.push(newCategory);
+        newShoppingList.push(newCategoryInList);
         updateShoppingList(newShoppingList);
       }
     }
@@ -172,7 +178,7 @@ export default function Item({
         value={label}
         className={`border ${
           itemCount > 0 ? "border-black" : "border-gray-300"
-        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm hover:drop-shadow-2xl hover:border-black hover:bg-gray-200`}
+        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm hover:border-black hover:bg-gray-200`}
         onClick={hdlItemBtnClick}
       >
         {label}{" "}

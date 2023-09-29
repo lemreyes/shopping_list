@@ -32,6 +32,16 @@ export default function Home() {
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
   );
+  // get snackbar store
+  const openSnackbar = useSnackbarStore((state: any) => state.openSnackbar);
+  const snackbarMessage = useSnackbarStore((state: any) => state.message);
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
+  const severity = useSnackbarStore((state: any) => state.severity);
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
+
+  const setOpenSnackbar = useSnackbarStore(
+    (state: any) => state.setOpenSnackbar
+  );
 
   // fetch masterlist data
   useEffect(() => {
@@ -40,20 +50,16 @@ export default function Home() {
         const responseData = await getMasterlist();
         updateCategories(responseData);
       } catch (error) {
-        console.error("Fetch error", error);
+        if (error instanceof Error) {
+          setSnackbarMessage(error.message);
+          setSeverity("error");
+          setOpenSnackbar(true);
+        }
       }
     }
 
     fetchData();
   });
-
-  // get snackbar store
-  const openSnackbar = useSnackbarStore((state: any) => state.openSnackbar);
-  const snackbarMessage = useSnackbarStore((state: any) => state.message);
-  const severity = useSnackbarStore((state: any) => state.severity);
-  const setOpenSnackbar = useSnackbarStore(
-    (state: any) => state.setOpenSnackbar
-  );
 
   const handleCloseSnackber = (
     event?: React.SyntheticEvent | Event,
@@ -76,7 +82,11 @@ export default function Home() {
         autoHideDuration={4000}
         onClose={handleCloseSnackber}
       >
-        <Alert onClose={handleCloseSnackber} severity={severity} sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleCloseSnackber}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>

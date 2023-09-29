@@ -1,7 +1,7 @@
 interface Category {
   id: number;
   category_name: string;
-  items: Array<Item>;
+  items: Array<Item | ShoppingListItem>;
 }
 
 interface Item {
@@ -12,7 +12,7 @@ interface Item {
 }
 
 interface ShoppingListItem extends Item {
-  list_id: number;
-  category_id: number;
-  master_item_id: number;
+  list_id?: number;
+  category_id?: number;
+  master_item_id?: number;
 }
