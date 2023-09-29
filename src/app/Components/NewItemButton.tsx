@@ -15,7 +15,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
 import { createNewItem } from "../Services/fetchWrapper";
-import { useShoppingListStore } from "../Store/shoppinglist_store";
 import { useSnackbarStore } from "../Store/snackbar_store";
 
 export default function NewItemButton({

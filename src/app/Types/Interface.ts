@@ -10,3 +10,9 @@ interface Item {
   quantity: number;
   is_purchased: boolean;
 }
+
+interface ShoppingListItem extends Item {
+  list_id: number;
+  category_id: number;
+  master_item_id: number;
+}
