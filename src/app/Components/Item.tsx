@@ -26,7 +26,7 @@ export default function Item({
   label: string;
   item_id: number;
 }) {
-  const shoppingList: Array<Category> = useShoppingListStore(
+  const shoppingList: Array<ShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
   const updateShoppingList = useShoppingListStore(
@@ -107,13 +107,13 @@ export default function Item({
 
   // find this category in the shoppingList
   const getItemCount = () => {
-    const matchedCategory: Category | undefined = shoppingList.find(
+    const matchedCategory: ShoppingListCategory | undefined = shoppingList.find(
       (categoryInList) => categoryInList.id === category_id
     );
 
     if (matchedCategory) {
       const matchedItem = matchedCategory.items?.find(
-        (itemInList: ShoppingListItem) => itemInList.master_item_id === item_id
+        (itemInList: ShoppingListItem) => itemInList.masterItemId === item_id
       );
       if (matchedItem) {
         return matchedItem.quantity;
@@ -133,23 +133,22 @@ export default function Item({
       const newShoppingList = [...shoppingList];
       const newListItem: ShoppingListItem = {
         id: 0,
-        item_name: label,
+        listed_item_name: label,
         quantity: 1,
         is_purchased: false,
-        master_item_id: item_id,
-        category_id: category_id,
-        list_id: activeListId,
+        masterItemId: item_id,
+        categoryId: category_id,
+        listId: activeListId,
       };
 
       // find the category
-      const matchedCategory: Category | undefined = newShoppingList.find(
+      const matchedCategory: ShoppingListCategory | undefined = newShoppingList.find(
         (categoryInList) => categoryInList.id === category_id
       );
       if (matchedCategory) {
         // find if there is existing item
         const matchedItem = matchedCategory.items?.find(
-          (itemInList: ShoppingListItem) =>
-            itemInList.master_item_id === item_id
+          (itemInList: ShoppingListItem) => itemInList.masterItemId === item_id
         );
         if (matchedItem) {
           matchedItem.quantity++;

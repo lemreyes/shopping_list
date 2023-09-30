@@ -1,7 +1,12 @@
 import React, { ChangeEvent, useState } from "react";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
+import { useMasterlistStore } from "../Store/masterlist_store";
 import { createNewList, updateList } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
+import {
+  createCategorizedShoppingList,
+  getAllShoppingListItems,
+} from "../Utilities/shoppingListUtils";
 
 export default function ListSaveButton() {
   const activeListId = useShoppingListStore((state: any) => state.activeListId);
@@ -14,9 +19,13 @@ export default function ListSaveButton() {
   const updateActiveListName = useShoppingListStore(
     (state: any) => state.updateActiveListName
   );
-  const shoppingList: Array<Category> = useShoppingListStore(
+  const shoppingList: Array<ShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
+  const updateShoppingList = useShoppingListStore(
+    (state: any) => state.updateShoppingList
+  );
+  const masterlist = useMasterlistStore((state: any) => state.categories);
 
   const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
   const setOpenSnackbar = useSnackbarStore(
@@ -36,23 +45,31 @@ export default function ListSaveButton() {
       setIsButtonDisabled(true);
     }
 
-    console.log(isButtonDisabled);
   };
 
   const hdlSaveButton = async () => {
+    // extract all shopping list items
+    const shoppingListItems = getAllShoppingListItems(shoppingList);
+
     if (!activeListId || listName != activeListName) {
       try {
         // no active list, create new list and create listed items on DB
-        const responseData = await createNewList(listName, shoppingList);
+        const responseData = await createNewList(listName, shoppingListItems);
 
         const activeListId = responseData.activeListId;
-        console.log("aciveListId", activeListId);
         updateActiveListId(activeListId);
         updateActiveListName(listName);
 
         setSnackbarMessage(`${listName} list was successfully saved.`);
         setSeverity("success");
         setOpenSnackbar(true);
+
+        const savedShoppingList = createCategorizedShoppingList(
+          responseData.savedShoppingList,
+          masterlist
+        );
+
+        updateShoppingList(savedShoppingList);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setSnackbarMessage(error.message);
@@ -68,7 +85,7 @@ export default function ListSaveButton() {
             create new list entry in db and update active list id
       */
       try {
-        const responseData = await updateList(activeListId, shoppingList);
+        const responseData = await updateList(activeListId, shoppingListItems);
 
         setSnackbarMessage(`${responseData} list was successfully updated.`);
         setSeverity("success");

@@ -14,7 +14,6 @@ export async function POST(request: Request) {
       { status: 401 }
     );
   }
-  console.log("Session: ", session);
 
   // find user data
   const userData = await prisma.userData.findUnique({
@@ -22,17 +21,15 @@ export async function POST(request: Request) {
       email: session?.user?.email as string,
     },
   });
-  console.log("userData: ", userData);
 
   const { listName, shoppingList } = await request.json();
-  console.log("Body", listName, shoppingList);
 
   let activeList = await prisma.list.findFirst({
     where: {
       list_name: listName,
     },
   });
-  console.log("activelist first check", activeList);
+
   if (!activeList) {
     activeList = await prisma.list.create({
       data: {
@@ -41,31 +38,37 @@ export async function POST(request: Request) {
         ownerId: userData?.id,
       },
     });
-    console.log("Active list saved", activeList);
 
-    if (activeList) {
-      for (let i = 0; i < shoppingList.length; i++) {
-        if (shoppingList[i].items.length > 0) {
-          for (let j = 0; j < shoppingList[i].items.length; j++) {
-            const item = await prisma.listedItem.create({
-              data: {
-                listed_item_name: shoppingList[i].items[j].item_name,
-                quantity: shoppingList[i].items[j].quantity,
-                is_purchased: shoppingList[i].items[j].is_purchased,
-                categoryId: shoppingList[i].id,
-                listId: activeList.id,
-                masterItemId: shoppingList[i].items[j].id,
-              },
-            });
-          }
-        }
-      }
-    }
+    // create each
+    const savedShoppingList = await Promise.all(
+      shoppingList.map(async (listItem: ShoppingListItem) => {
+        const savedListItem = await prisma.listedItem.create({
+          data: {
+            listed_item_name: listItem.listed_item_name,
+            quantity: listItem.quantity,
+            is_purchased: false,
+            categoryId: listItem.categoryId,
+            listId: activeList?.id,
+            masterItemId: listItem.masterItemId,
+          },
+        });
+
+        return savedListItem;
+      })
+    );
+
+    return NextResponse.json({
+      activeListId: activeList.id,
+      savedShoppingList: savedShoppingList,
+    });
   }
 
-  return NextResponse.json({
-    activeListId: activeList.id,
-  });
+  return NextResponse.json(
+    {
+      errorMessage: "This list already exists in database.",
+    },
+    { status: 400 }
+  );
 }
 
 export async function PATCH(request: Request) {
@@ -78,7 +81,6 @@ export async function PATCH(request: Request) {
       { status: 401 }
     );
   }
-  console.log("Session: ", session);
 
   // find user data
   const userData = await prisma.userData.findUnique({
@@ -86,7 +88,6 @@ export async function PATCH(request: Request) {
       email: session?.user?.email as string,
     },
   });
-  console.log("userData: ", userData);
 
   const { listId, shoppingList } = await request.json();
 

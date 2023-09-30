@@ -1,7 +1,7 @@
 interface Category {
   id: number;
   category_name: string;
-  items: Array<Item | ShoppingListItem>;
+  items: Array<Item>;
 }
 
 interface Item {
@@ -11,8 +11,18 @@ interface Item {
   is_purchased: boolean;
 }
 
-interface ShoppingListItem extends Item {
-  list_id?: number;
-  category_id?: number;
-  master_item_id?: number;
+interface ShoppingListCategory {
+  id: number;
+  category_name: string;
+  items: Array<ShoppingListItem>;
+}
+
+interface ShoppingListItem {
+  id: number;
+  quantity: number;
+  is_purchased: boolean;
+  listed_item_name: string;
+  listId: number;
+  categoryId: number;
+  masterItemId: number;
 }
