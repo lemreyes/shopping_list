@@ -92,7 +92,7 @@ model Item {
 
 model List {
   id          Int               @id @default(autoincrement())
-  list_name   String            @unique
+  list_name   String            
   is_done     Boolean
   UserData    UserData?         @relation(fields: [ownerId], references: [id])
   ownerId     Int?

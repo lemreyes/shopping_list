@@ -44,7 +44,6 @@ export default function ListSaveButton() {
     } else {
       setIsButtonDisabled(true);
     }
-
   };
 
   const hdlSaveButton = async () => {
@@ -79,17 +78,19 @@ export default function ListSaveButton() {
       }
     } else {
       // there is current active list, perform incremental update
-      /*    
-            if listName is different from name in active list
-            this means user changed the name of list
-            create new list entry in db and update active list id
-      */
       try {
         const responseData = await updateList(activeListId, shoppingListItems);
 
-        setSnackbarMessage(`${responseData} list was successfully updated.`);
+        setSnackbarMessage(`${activeListName} list was successfully updated.`);
         setSeverity("success");
         setOpenSnackbar(true);
+
+        const categorizedShoppingList = createCategorizedShoppingList(
+          responseData.updatedShoppingList,
+          masterlist
+        );
+
+        updateShoppingList(categorizedShoppingList);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setSnackbarMessage(error.message);

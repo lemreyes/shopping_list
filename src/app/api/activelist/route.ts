@@ -91,6 +91,65 @@ export async function PATCH(request: Request) {
 
   const { listId, shoppingList } = await request.json();
 
+  // check if list is existing
+  let targetUpdateList = await prisma.list.findUnique({
+    where: {
+      id: listId,
+    },
+  });
+  if (!targetUpdateList) {
+    return NextResponse.json(
+      {
+        errorMessage: "List not found.",
+      },
+      { status: 404 }
+    );
+  } else {
+    // do nothing
+  }
+
   // update list in database
-  for (let i = 0; i < shoppingList.length; i++) {}
+  const updatedShoppingList = await Promise.all(
+    shoppingList.map(async (listItem: ShoppingListItem) => {
+      const updatedListItem = await prisma.listedItem.upsert({
+        where: {
+          id: listItem.id,
+        },
+        create: {
+          listed_item_name: listItem.listed_item_name,
+          quantity: listItem.quantity,
+          is_purchased: listItem.is_purchased,
+          masterItemId: listItem.masterItemId,
+          listId: listId,
+          categoryId: listItem.categoryId,
+        },
+        update: {
+          listed_item_name: listItem.listed_item_name,
+          quantity: listItem.quantity,
+          is_purchased: listItem.is_purchased,
+          updated_at: new Date(),
+        },
+      });
+
+      return updatedListItem;
+    })
+  );
+
+  const earliestUpdate = updatedShoppingList[0].updated_at;
+
+  // delete items older than the earliest update
+  const deletedItems = await prisma.listedItem.deleteMany({
+    where: {
+      listId: listId,
+      updated_at: {
+        lt: earliestUpdate,
+      },
+    },
+  });
+
+  return NextResponse.json({
+    activeListId: listId,
+    updatedShoppingList: updatedShoppingList,
+    deletedItems: deletedItems,
+  });
 }
