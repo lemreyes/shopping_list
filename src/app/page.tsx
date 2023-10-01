@@ -73,23 +73,27 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col desktop:flex-row">
+    <>
       <Navbar />
-      <Masterlist />
-      <ActiveListPanel />
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackber}
-      >
-        <Alert
+      <div className="flex flex-col desktop:flex-row">
+        {
+          //<Masterlist />
+        }
+        <ActiveListPanel />
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
           onClose={handleCloseSnackber}
-          severity={severity}
-          sx={{ width: "100%" }}
         >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </div>
+          <Alert
+            onClose={handleCloseSnackber}
+            severity={severity}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </div>
+    </>
   );
 }

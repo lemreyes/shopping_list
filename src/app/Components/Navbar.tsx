@@ -1,35 +1,45 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "../../../public/assets/logo.svg";
-import list_icon from "../../../public/assets/list_icon.svg";
-import replay_icon from "../../../public/assets/replay.svg";
-import stats_icon from "../../../public/assets/stats.svg";
-import cart_icon from "../../../public/assets/cart.svg";
+
+import profile_icon from "../../../public/assets/profile.svg";
+import menu_icon from "../../../public/assets/menu_icon.svg";
 
 export default function Navbar() {
   return (
-    <nav className="flex flex-row desktop:flex-col justify-between desktop:justify-center w-screen desktop:h-screen desktop:min-h-screen desktop:max-w-fit fixed desktop:sticky bottom-0 left-0 desktop:top-0 px-4 py-2 desktop:p-0 bg-white border-t border-gray-400 desktop:border-none">
-      <Image src={logo} alt="logo" className="w-10 desktop:mx-8 desktop:mt-8" />
-      <div className="flex flex-row desktop:flex-col">
-        <Image
-          src={list_icon}
-          alt="list_icon"
-          className="w-10 mx-2 desktop:mx-8 desktop:my-8"
-        />
-        <Image
-          src={replay_icon}
-          alt="replay_icon"
-          className="w-10 mx-2 desktop:mx-8 desktop:my-8"
-        />
-        <Image
-          src={stats_icon}
-          alt="stats_icon"
-          className="w-10 mx-2 desktop:mx-8 desktop:my-8"
-        />
+    <nav className="flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4 bg-gray-200">
+      <div>
+        <Image src={menu_icon} alt={menu_icon} className="w-8 mr-4 border border-gray-800 desktop:hidden" />
       </div>
-      <div className="rounded-full p-2 bg-slate-600 flex desktop:hidden items-center justify-center w-10 desktop:mx-8 desktop:mb-4">
-        <Link href="#activeList"><Image src={cart_icon} alt="cart" className="" /></Link>
+      <div className="flex-grow py-2 text-3xl font-bold">
+        Shop<span className="text-orange-600">Sync</span>
+      </div>
+      <div className="flex flex-row items-center">
+        <Link
+          href={""}
+          className="p-8 font-bold hover:bg-white hidden desktop:inline"
+        >
+          Plan
+        </Link>
+        <Link
+          href={""}
+          className="p-8 font-bold hover:bg-white hidden desktop:inline"
+        >
+          Lists
+        </Link>
+        <Link
+          href={""}
+          className="p-8 font-bold hover:bg-white hidden desktop:inline"
+        >
+          Shop
+        </Link>
+        <div className="ml-8">
+          <Image
+            src={profile_icon}
+            alt="profile picture"
+            className="w-8 border border-gray-800 rounded-full"
+          />
+        </div>
       </div>
     </nav>
   );
