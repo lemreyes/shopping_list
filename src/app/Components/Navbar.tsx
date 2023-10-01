@@ -1,15 +1,44 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import profile_icon from "../../../public/assets/profile.svg";
 import menu_icon from "../../../public/assets/menu_icon.svg";
+import MenuCard from "./MenuCard";
+import ProfileMenuCard from "./ProfileMenuCard";
 
 export default function Navbar() {
+  const [showMenu, setShowMenu] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const hdlMenuClick = () => {
+    if (showMenu) {
+      setShowMenu(false);
+    } else {
+      setShowMenu(true);
+    }
+  };
+
+  const hdlProfileClick = () => {
+    if (showProfileMenu) {
+      setShowProfileMenu(false);
+    } else {
+      setShowProfileMenu(true);
+    }
+  };
+
   return (
     <nav className="flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4 bg-gray-200">
       <div>
-        <Image src={menu_icon} alt={menu_icon} className="w-8 mr-4 border border-gray-800 desktop:hidden" />
+        <Image
+          src={menu_icon}
+          alt={menu_icon}
+          className="w-8 mr-4 border border-gray-800 desktop:hidden"
+          onClick={hdlMenuClick}
+        />
+        {showMenu && <MenuCard />}
       </div>
       <div className="flex-grow py-2 text-3xl font-bold">
         Shop<span className="text-orange-600">Sync</span>
@@ -38,7 +67,9 @@ export default function Navbar() {
             src={profile_icon}
             alt="profile picture"
             className="w-8 border border-gray-800 rounded-full"
+            onClick={hdlProfileClick}
           />
+          {showProfileMenu && <ProfileMenuCard />}
         </div>
       </div>
     </nav>
