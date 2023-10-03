@@ -15,7 +15,7 @@ export default function ListCard({
   list_url: string;
 }) {
   return (
-    <article className="border border-gray-200 p-4">
+    <article className="border border-gray-200 p-4 my-4">
       <h2 className="text-xl font-bold">{list_name}</h2>
       <div className="flex flex-row items-center">
         <Image src={calendar_icon} alt="calendar_icon" className="w-8 mr-2" />
