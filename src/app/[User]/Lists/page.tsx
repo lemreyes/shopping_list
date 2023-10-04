@@ -1,9 +1,9 @@
-import Navbar from "../Components/Navbar";
+import Navbar from "../../Components/Navbar";
 import ListCard from "./Components/ListCard";
-import { options } from "../api/auth/[...nextauth]/options";
+import { options } from "../../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 
-import prisma from "../Utilities/prismaUtils";
+import prisma from "../../Utilities/prismaUtils";
 import { redirect } from "next/navigation";
 
 export default async function Lists() {
