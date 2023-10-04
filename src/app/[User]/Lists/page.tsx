@@ -23,6 +23,9 @@ export default async function Lists() {
     where: {
       ownerId: userData?.id,
     },
+    orderBy: {
+      updated_at: "desc",
+    },
   });
   console.log("lists", lists);
 
