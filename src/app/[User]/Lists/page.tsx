@@ -44,7 +44,7 @@ export default async function Lists() {
                   list_name={list.list_name}
                   updated_at={list.updated_at}
                   is_done={list.is_done}
-                  list_url={"localhost:3000/Lists/List1"}
+                  user_id={userData?.id as number}
                 />
               );
             })
