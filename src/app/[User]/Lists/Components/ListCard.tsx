@@ -9,13 +9,13 @@ export default async function ListCard({
   list_name,
   updated_at,
   is_done,
-  user_id
+  user_id,
 }: {
   id: number;
   list_name: string;
   updated_at: Date;
   is_done: boolean;
-  user_id: number
+  user_id: number;
 }) {
   const items = await prisma.listedItem.findMany({
     where: {
@@ -38,7 +38,14 @@ export default async function ListCard({
   }
 
   return (
-    <Link href={`/${user_id}/Lists/${list_name}`}>
+    <Link
+      href={{
+        pathname: `/${user_id}/Lists/${list_name}`,
+        query: {
+          id: id,
+        },
+      }}
+    >
       <article className="border border-gray-200 p-4 my-4">
         <h2 className="text-xl font-bold">{list_name}</h2>
         <div className="grid grid-cols-2">
