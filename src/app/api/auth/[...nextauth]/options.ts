@@ -1,13 +1,12 @@
 import type { NextAuthOptions } from "next-auth";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 
-import prisma from "../../../Utilities/prismaUtils"
+import prisma from "../../../Utilities/prismaUtils";
 
 let userAccount: any = null;
 
