@@ -9,7 +9,7 @@ import menu_icon from "../../../public/assets/menu_icon.svg";
 import MenuCard from "./MenuCard";
 import ProfileMenuCard from "./ProfileMenuCard";
 
-export default function Navbar() {
+export default function Navbar({ userImage }: { userImage: string }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
@@ -56,18 +56,18 @@ export default function Navbar() {
         >
           Lists
         </Link>
-        <Link
-          href={""}
-          className="p-8 font-bold hover:bg-white hidden desktop:inline"
-        >
-          Shop
-        </Link>
         <div className="ml-8">
           <Image
-            src={profile_icon}
+            src={
+              userImage.length > 0 && userImage != null
+                ? userImage
+                : profile_icon
+            }
             alt="profile picture"
             className="w-8 border border-gray-800 rounded-full"
             onClick={hdlProfileClick}
+            width={36}
+            height={36}
           />
           {showProfileMenu && <ProfileMenuCard />}
         </div>

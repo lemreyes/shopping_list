@@ -7,7 +7,7 @@ import ActiveListPanel from "./Components/ActiveListPanel";
 import { useMasterlistStore } from "./Store/masterlist_store";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getMasterlist } from "./Services/fetchWrapper";
 
 import Snackbar from "@mui/material/Snackbar";
@@ -22,12 +22,21 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export default function Home() {
+  const [imageUrl, setImageUrl] = useState("");
+
   // redirect to login if no session
   const { data: session } = useSession();
-  if (session === null) {
-    redirect("/Auth/Login");
-  }
-
+  useEffect(() => {
+    // Use an effect to handle the session and imageUrl updates once.
+    if (session === null) {
+      redirect("/Auth/Login");
+    } else if (session === undefined) {
+      setImageUrl("");
+    } else {
+      setImageUrl(session.user?.image as string);
+    }
+  }, [session]);
+  
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
@@ -74,7 +83,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar userImage={imageUrl} />
       <div className="flex flex-col desktop:flex-row">
         <Masterlist />
         <ActiveListPanel />
