@@ -76,9 +76,7 @@ export default function Home() {
     <>
       <Navbar />
       <div className="flex flex-col desktop:flex-row">
-        {
-          <Masterlist />
-        }
+        <Masterlist />
         <ActiveListPanel />
         <Snackbar
           open={openSnackbar}
