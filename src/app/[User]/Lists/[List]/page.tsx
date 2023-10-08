@@ -14,9 +14,14 @@ export default async function List(props: Props) {
     where: {
       listId: parseInt(props.searchParams.id as string),
     },
-    orderBy: {
-      categoryId: "asc",
-    },
+    orderBy: [
+      {
+        is_purchased: "asc",
+      },
+      {
+        listed_item_name: "asc",
+      },
+    ],
   });
 
   return (
