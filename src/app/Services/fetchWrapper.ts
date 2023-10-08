@@ -144,3 +144,24 @@ export async function updateList(
 
   return responseData;
 }
+
+export async function updateListItemCheck(id: number, checked_status: boolean) {
+  const response = await fetch("/api/listItem", {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      listItemId: id,
+      is_purchased: checked_status,
+    }),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
