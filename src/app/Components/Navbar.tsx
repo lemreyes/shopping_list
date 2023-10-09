@@ -44,7 +44,7 @@ export default function Navbar({
           className="w-8 mr-4 border border-gray-800 desktop:hidden"
           onClick={hdlMenuClick}
         />
-        {showMenu && <MenuCard />}
+        {showMenu && <MenuCard userDataId={userDataId} />}
       </div>
       <div className="flex-grow py-2 text-3xl font-bold">
         Shop<span className="text-orange-600">Sync</span>
