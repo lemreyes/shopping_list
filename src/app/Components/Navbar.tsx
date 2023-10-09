@@ -51,13 +51,13 @@ export default function Navbar({
       </div>
       <div className="flex flex-row items-center">
         <Link
-          href={""}
+          href={"/"}
           className="p-8 font-bold hover:bg-white hidden desktop:inline"
         >
           Plan
         </Link>
         <Link
-          href={""}
+          href={`/${userDataId}/Lists`}
           className="p-8 font-bold hover:bg-white hidden desktop:inline"
         >
           Lists

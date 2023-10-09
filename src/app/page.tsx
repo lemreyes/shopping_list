@@ -84,7 +84,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar userImage={imageUrl} />
+      <Navbar userDataId={session?.user?.userDataId} userImage={imageUrl} />
       <div className="flex flex-col desktop:flex-row">
         <Masterlist />
         <ActiveListPanel />

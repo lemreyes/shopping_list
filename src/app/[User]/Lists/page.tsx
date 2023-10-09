@@ -31,7 +31,7 @@ export default async function Lists() {
 
   return (
     <>
-      <Navbar userImage={userData?.image as string} />
+      <Navbar userDataId={userData?.id as number} userImage={userData?.image as string} />
       <div className="flex justify-center pb-20">
         <div className="w-4/5">
           <h1 className="text-3xl font-bold mt-2 mb-4">Lists</h1>
