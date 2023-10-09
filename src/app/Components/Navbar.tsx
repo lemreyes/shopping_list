@@ -9,7 +9,13 @@ import menu_icon from "../../../public/assets/menu_icon.svg";
 import MenuCard from "./MenuCard";
 import ProfileMenuCard from "./ProfileMenuCard";
 
-export default function Navbar({ userImage }: { userImage: string }) {
+export default function Navbar({
+  userDataId,
+  userImage,
+}: {
+  userDataId: number;
+  userImage: string;
+}) {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 

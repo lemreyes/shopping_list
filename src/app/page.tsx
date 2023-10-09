@@ -34,9 +34,10 @@ export default function Home() {
       setImageUrl("");
     } else {
       setImageUrl(session.user?.image as string);
+      console.log("session", session);
     }
   }, [session]);
-  
+
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories

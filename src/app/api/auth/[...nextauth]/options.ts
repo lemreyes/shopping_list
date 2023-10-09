@@ -1,4 +1,4 @@
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
@@ -8,7 +8,11 @@ import FacebookProvider from "next-auth/providers/facebook";
 
 import prisma from "../../../Utilities/prismaUtils";
 
-let userAccount: any = null;
+
+type MyUser = {
+  userDataId?: string | null;
+  // Add other properties here if needed
+};
 
 export const options: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -47,5 +51,22 @@ export const options: NextAuthOptions = {
   },
   pages: {
     signIn: "/Auth/Login",
+  },
+  callbacks: {
+    async session({ session }: { session: Session; token: any; user: any }) {
+      if (session.user != undefined || session.user != null) {
+        const userData = await prisma.userData.findUnique({
+          where: {
+            email: session.user.email as string,
+          },
+        });
+        // Assign userDataId to the custom user type
+        session.user = {
+          ...session.user,
+          userDataId: userData?.id as number,
+        };
+      }
+      return session;
+    },
   },
 };

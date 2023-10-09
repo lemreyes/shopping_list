@@ -26,3 +26,4 @@ interface ShoppingListItem {
   categoryId: number;
   masterItemId: number;
 }
+
