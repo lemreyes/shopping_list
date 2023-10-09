@@ -27,3 +27,11 @@ interface ShoppingListItem {
   masterItemId: number;
 }
 
+interface IUserData {
+  id: number;
+  email: string;
+  image?: string;
+  name?: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
