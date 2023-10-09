@@ -1,12 +1,19 @@
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
-export default function ProfileMenuCard() {
+export default function ProfileMenuCard({
+  userDataId,
+}: {
+  userDataId: number;
+}) {
   return (
     <div className="absolute -top-16 desktop:top-20 right-0 bg-gray-200">
       <ul className="w-full">
-        <li className="py-1 px-8 font-bold hover:bg-white border-b border-gray-300 w-full">
-          Settings
-        </li>
+        <Link href={`/${userDataId}/Settings`}>
+          <li className="py-1 px-8 font-bold hover:bg-white border-b border-gray-300 w-full">
+            Settings
+          </li>
+        </Link>
         <li
           className="py-1 px-8 font-bold hover:bg-white"
           onClick={() => signOut()}

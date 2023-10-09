@@ -75,7 +75,7 @@ export default function Navbar({
             width={36}
             height={36}
           />
-          {showProfileMenu && <ProfileMenuCard />}
+          {showProfileMenu && <ProfileMenuCard userDataId={userDataId} />}
         </div>
       </div>
     </nav>
