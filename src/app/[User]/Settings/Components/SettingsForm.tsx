@@ -1,13 +1,41 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState, useEffect } from "react";
 import profile_icon from "../../../../../public/assets/profile.svg";
 import Image from "next/image";
 
 export default function SettingsForm({ userData }: { userData: IUserData }) {
+  const profileFileRef = useRef<HTMLInputElement | null>(null);
+  const [srcPreview, setSrcPreview] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [name, setName] = useState(userData.name);
+
+  useEffect(() => {
+    setSrcPreview(userData.image as string);
+  }, [userData.image]);
 
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
+  };
+
+  const hdlChangePicture = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    if (profileFileRef.current) {
+      profileFileRef.current.click();
+    }
+  };
+
+  const hdlFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const fileObj = event.target.files && event.target.files[0];
+    if (!fileObj) {
+      return;
+    }
+
+    // reset file input
+    event.target.value = "";
+
+    const src = URL.createObjectURL(fileObj);
+    setSrcPreview(src);
+    setImageFile(fileObj);
   };
 
   return (
@@ -16,16 +44,19 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
         <div className="flex flex-row items-baseline">
           <Image
             src={
-              userData.image != null && userData.image.length > 0
-                ? userData.image
+              srcPreview != null && srcPreview.length > 0
+                ? srcPreview
                 : profile_icon
             }
             alt="profile picture"
-            className="w-16 bg-gray-800 rounded-full mb-4 border border-gray-900"
+            className="w-16 h-16 overflow-hidden bg-gray-800 rounded-full mb-4 border border-gray-900"
             width={54}
             height={54}
           />
-          <button className="px-2 py-1 h-6 rounded-lg bg-gray-600 text-xs text-white hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600">
+          <button
+            className="px-2 py-1 h-6 rounded-lg bg-gray-600 text-xs text-white hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600"
+            onClick={hdlChangePicture}
+          >
             Change picture
           </button>
         </div>
@@ -50,6 +81,13 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
           className="w-full border border-gray-400 rounded-md pl-2"
           value={name}
           onChange={hdlNameChange}
+        />
+        <input
+          className="hidden"
+          ref={profileFileRef}
+          type="file"
+          onChange={hdlFileChange}
+          accept="jpg, jpeg"
         />
       </form>
       <button className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600">
