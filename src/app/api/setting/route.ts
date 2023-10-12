@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
   const userDataForUpdate: IUserData = {
     id: userData.id,
     email: userData.email,
+    updated_at: new Date(),
   };
 
   const name = formData.get("name");

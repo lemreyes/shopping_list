@@ -2,20 +2,26 @@
 import { ChangeEvent, useRef, useState, useEffect } from "react";
 import profile_icon from "../../../../../public/assets/profile.svg";
 import Image from "next/image";
-import { useSnackbarStore } from "@/app/Store/snackbar_store";
 import { updateSetting } from "@/app/Services/fetchWrapper";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
+import React from "react";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function SettingsForm({ userData }: { userData: IUserData }) {
   const profileFileRef = useRef<HTMLInputElement | null>(null);
   const [srcPreview, setSrcPreview] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [name, setName] = useState(userData.name);
-
-  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
-  const setOpenSnackbar = useSnackbarStore(
-    (state: any) => state.setOpenSnackbar
-  );
-  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [severity, setSeverity] = useState("Success");
 
   useEffect(() => {
     setSrcPreview(userData.image as string);
@@ -44,6 +50,17 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
     const src = URL.createObjectURL(fileObj);
     setSrcPreview(src);
     setImageFile(fileObj);
+  };
+
+  const handleCloseSnackber = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
   };
 
   const hdlUpdate = async (event: React.MouseEvent<HTMLElement>) => {
@@ -123,6 +140,19 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
       >
         Update
       </button>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackber}
+      >
+        <Alert
+          onClose={handleCloseSnackber}
+          severity={severity as AlertColor}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
