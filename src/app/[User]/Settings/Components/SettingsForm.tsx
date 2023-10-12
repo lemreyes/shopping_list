@@ -2,12 +2,20 @@
 import { ChangeEvent, useRef, useState, useEffect } from "react";
 import profile_icon from "../../../../../public/assets/profile.svg";
 import Image from "next/image";
+import { useSnackbarStore } from "@/app/Store/snackbar_store";
+import { updateSetting } from "@/app/Services/fetchWrapper";
 
 export default function SettingsForm({ userData }: { userData: IUserData }) {
   const profileFileRef = useRef<HTMLInputElement | null>(null);
   const [srcPreview, setSrcPreview] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [name, setName] = useState(userData.name);
+
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
+  const setOpenSnackbar = useSnackbarStore(
+    (state: any) => state.setOpenSnackbar
+  );
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
   useEffect(() => {
     setSrcPreview(userData.image as string);
@@ -36,6 +44,25 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
     const src = URL.createObjectURL(fileObj);
     setSrcPreview(src);
     setImageFile(fileObj);
+  };
+
+  const hdlUpdate = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    try {
+      const responseData = await updateSetting(userData.id, imageFile, name);
+      console.log("Response data: ", responseData);
+
+      setSnackbarMessage(`Settings was successfully updated.`);
+      setSeverity("success");
+      setOpenSnackbar(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setSeverity("error");
+        setOpenSnackbar(true);
+      }
+    }
   };
 
   return (
@@ -90,7 +117,10 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
           accept="jpg, jpeg"
         />
       </form>
-      <button className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600">
+      <button
+        className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600"
+        onClick={hdlUpdate}
+      >
         Update
       </button>
     </>

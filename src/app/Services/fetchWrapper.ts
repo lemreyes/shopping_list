@@ -165,3 +165,39 @@ export async function updateListItemCheck(id: number, checked_status: boolean) {
 
   return responseData;
 }
+
+export async function updateSetting(
+  id: number,
+  profile_image: File | null,
+  name: string | undefined
+) {
+  const body = new FormData();
+
+  body.append("id", id.toString());
+  if (name) {
+    body.append("name", name);
+  }
+
+  if (profile_image) {
+    body.append("profile_image", profile_image);
+  }
+
+  const isEmpty = body.entries().next().done;
+  console.log("isEmpty", isEmpty);
+  if (isEmpty) {
+    throw new Error("Nothing to update.");
+  }
+
+  const response = await fetch("/api/setting/", {
+    method: "POST",
+    body,
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
