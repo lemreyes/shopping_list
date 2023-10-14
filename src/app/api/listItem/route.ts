@@ -4,6 +4,41 @@ import { options } from "../auth/[...nextauth]/options";
 import prisma from "../../Utilities/prismaUtils";
 import { Prisma } from "@prisma/client";
 
+export async function POST(request: NextRequest) {
+  const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+
+  const { listId } = await request.json();
+
+  try {
+    const listItems = await prisma.listedItem.findMany({
+      where: {
+        listId: listId,
+      },
+    });
+
+    return NextResponse.json(listItems);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return NextResponse.json(
+          {
+            errorMessage: "No items found.",
+          },
+          { status: 404 }
+        );
+      }
+    }
+  }
+}
+
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(options);
   if (!session) {
@@ -34,7 +69,7 @@ export async function PUT(request: NextRequest) {
       if (error.code === "P2025") {
         return NextResponse.json(
           {
-            errorMessage: "The item to be deleted was not found.",
+            errorMessage: "The item to be updated was not found.",
           },
           { status: 404 }
         );

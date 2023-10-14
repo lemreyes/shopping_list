@@ -27,7 +27,6 @@ export default async function Lists() {
       updated_at: "desc",
     },
   });
-  console.log("lists", lists);
 
   return (
     <>

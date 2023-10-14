@@ -19,8 +19,6 @@ export default function ListItem({
   const [checkStatus, setCheckStatus] = useState(is_purchased);
 
   const hdlOnClick = async (event: ChangeEvent<HTMLInputElement>) => {
-    console.log("Checkbox: ", event.target.checked);
-
     updateListItemCheck(id, event.target.checked);
     setCheckStatus(event.target.checked);
     hdlListUpdate(event.target.checked);

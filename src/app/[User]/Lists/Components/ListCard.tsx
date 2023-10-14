@@ -1,40 +1,48 @@
+"use client";
 import calendar_icon from "../../../../../public/assets/calendar_icon.svg";
 import Image from "next/image";
-
-import prisma from "../../../Utilities/prismaUtils";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getListItems } from "@/app/Services/fetchWrapper";
 
-export default async function ListCard({
+export default function ListCard({
   id,
   list_name,
   updated_at,
-  is_done,
   user_id,
 }: {
   id: number;
   list_name: string;
   updated_at: Date;
-  is_done: boolean;
   user_id: number;
 }) {
-  const items = await prisma.listedItem.findMany({
-    where: {
-      listId: id,
-    },
-  });
+  const [items, setItems] = useState<Array<ShoppingListItem> | undefined>(undefined);
+  useEffect(() => {
+    const fetchData = async () => {
+      const items = await getListItems(id);
+      setItems(items);
+    };
 
-  const count = items.length > 5 ? 5 : items.length;
+    fetchData();
+  }, [id]);
+
   let previewString = "";
-  if (count === 0) {
-    previewString = "Empty list.";
+  if (items) {
+    const count = items.length > 5 ? 5 : items.length;
+
+    if (count === 0) {
+      previewString = "Empty list.";
+    } else {
+      for (let i = 0; i < count; i++) {
+        previewString = previewString.concat(`${items[i].listed_item_name}, `);
+      }
+      if (items.length > 5) {
+        previewString =
+          previewString.substring(0, previewString.length - 2) + "...";
+      }
+    }
   } else {
-    for (let i = 0; i < count; i++) {
-      previewString = previewString.concat(`${items[i].listed_item_name}, `);
-    }
-    if (items.length > 5) {
-      previewString =
-        previewString.substring(0, previewString.length - 2) + "...";
-    }
+    previewString = "Loading ...";
   }
 
   return (

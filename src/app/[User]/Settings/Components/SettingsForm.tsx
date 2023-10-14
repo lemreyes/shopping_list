@@ -36,12 +36,11 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
     } else {
       setUpdateBtnDisable(true);
     }
-    console.log("evalUpdateBtnDisable updateBtnDisable", updateBtnDisable);
+
   };
 
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-    console.log("event.target.value", event.target.value);
 
     if (event.target.value === userData.name) {
       setIsNameChanged(false);
@@ -91,7 +90,6 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
 
     try {
       const responseData = await updateSetting(userData.id, imageFile, name);
-      console.log("Response data: ", responseData);
 
       setSnackbarMessage(`Settings was successfully updated.`);
       setSeverity("success");

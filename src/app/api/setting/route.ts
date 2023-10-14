@@ -16,10 +16,7 @@ export async function POST(request: NextRequest) {
   }
 
   const formData = await request.formData();
-  console.log("formData", formData);
-
   const userDataId = parseInt(formData.get("id") as string);
-  console.log(userDataId);
 
   const userData = await prisma.userData.findUnique({
     where: {
@@ -42,7 +39,6 @@ export async function POST(request: NextRequest) {
   };
 
   const name = formData.get("name");
-  console.log(name);
   if (name) {
     userDataForUpdate.name = name as string;
   }
@@ -57,7 +53,6 @@ export async function POST(request: NextRequest) {
   }
 
   const updateData = { ...userData, ...userDataForUpdate };
-  console.log("updateData", updateData);
 
   const updatedUserData = await prisma.userData.update({
     where: {

@@ -50,7 +50,7 @@ export default async function List(props: Props) {
         userImage={userData?.image as string}
       />
       <div className="flex justify-center pb-20">
-        <div className="w-4/5 desktop:w-1/3">
+        <div className="w-5/6 desktop:w-1/3">
           <h1 className="text-3xl font-bold mt-2 mb-4">{list?.list_name}</h1>
           <ListItemContainer listItems={listItems as Array<ShoppingListItem>} />
         </div>

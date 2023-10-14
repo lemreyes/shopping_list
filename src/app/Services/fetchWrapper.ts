@@ -145,6 +145,26 @@ export async function updateList(
   return responseData;
 }
 
+export async function getListItems(id: number) {
+  const response = await fetch("/api/listItem", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      listId: id,
+    }),
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
+
 export async function updateListItemCheck(id: number, checked_status: boolean) {
   const response = await fetch("/api/listItem", {
     method: "PUT",
@@ -183,7 +203,6 @@ export async function updateSetting(
   }
 
   const isEmpty = body.entries().next().done;
-  console.log("isEmpty", isEmpty);
   if (isEmpty) {
     throw new Error("Nothing to update.");
   }
