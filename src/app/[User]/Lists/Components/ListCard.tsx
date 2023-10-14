@@ -59,10 +59,7 @@ export default async function ListCard({
                 alt="calendar_icon"
                 className="w-6 mr-1"
               />
-              <p className="text-sm">{updated_at.toLocaleDateString()}</p>
-            </div>
-            <div className="mt-2 border border-gray-600 bg-gray-200 w-24 rounded-full align-middle text-center text-xs justify-end">
-              {is_done ? "Finished" : "Not finished"}
+              <p className="text-sm">{updated_at.toLocaleString()}</p>
             </div>
           </div>
         </div>
