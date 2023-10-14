@@ -1,6 +1,5 @@
 "use client";
 import calendar_icon from "../../../../../public/assets/calendar_icon.svg";
-import trash_icon from "../../../../../public/assets/trash_icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,12 +11,14 @@ export default function ListCard({
   updated_at,
   user_id,
   editMode,
+  hdlDeleteBtn,
 }: {
   id: number;
   list_name: string;
   updated_at: Date;
   user_id: number;
   editMode: boolean;
+  hdlDeleteBtn: any;
 }) {
   const [items, setItems] = useState<Array<ShoppingListItem> | undefined>(
     undefined
@@ -50,6 +51,10 @@ export default function ListCard({
     previewString = "Loading ...";
   }
 
+  const hdlDeleteBtnClick = () => {
+    hdlDeleteBtn(list_name);
+  };
+
   return (
     <article className="border border-gray-200 px-4 py-1 my-4">
       <Link
@@ -78,7 +83,10 @@ export default function ListCard({
         </div>
       </Link>
       {editMode && (
-        <button className="px-4 py-1 border border-red-800 bg-red-800 hover:bg-white hover:text-red-800 text-white text-xs font-bold rounded-md mt-1 mb-1 w-full">
+        <button
+          className="px-4 py-1 border border-red-800 bg-red-800 hover:bg-white hover:text-red-800 text-white text-xs font-bold rounded-md mt-1 mb-1 w-full"
+          onClick={hdlDeleteBtnClick}
+        >
           Delete List
         </button>
       )}

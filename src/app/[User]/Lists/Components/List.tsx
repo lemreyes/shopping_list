@@ -2,6 +2,13 @@
 import ListCard from "./ListCard";
 import { useState } from "react";
 
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 export default function List({
   list_items,
   userId,
@@ -10,6 +17,30 @@ export default function List({
   userId: number;
 }) {
   const [editMode, setEditMode] = useState(false);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [label, setLabel] = useState("");
+  const [deleteId, setDeleteId] = useState(0);
+
+  const handleClickOpen = (id: number, list_name: string) => {
+    setOpenDialog(true);
+    setLabel(list_name);
+    setDeleteId(id)
+  };
+
+  const handleCloseYes = async () => {
+    // delete in database
+    try {
+      setOpenDialog(false);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+      }
+    }
+  };
+
+  const handleCloseNo = () => {
+    setOpenDialog(false);
+  };
 
   const hdlEditBtnClick = () => {
     if (editMode) {
@@ -44,12 +75,36 @@ export default function List({
               updated_at={list_items.updated_at}
               user_id={userId}
               editMode={editMode}
+              hdlDeleteBtn={(list_name: string) => {
+                handleClickOpen(list_items.id, list_name);
+              }}
             />
           );
         })
       ) : (
         <p>No lists found.</p>
       )}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseNo}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`Delete ${label} from Lists`}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete {label} from the lists?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseNo}>No</Button>
+          <Button onClick={handleCloseYes} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
