@@ -83,7 +83,7 @@ export default function NewItemButton({
   return (
     <>
       <button
-        className={`border rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-orange-800 bg-orange-200 hover:drop-shadow-2xl hover:border-orange-800 hover:bg-orange-100`}
+        className={`border rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-orange-800 bg-orange-200 hover:border-orange-800 hover:bg-orange-100`}
         onClick={handleClickOpen}
       >
         {" "}
