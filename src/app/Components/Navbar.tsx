@@ -70,7 +70,7 @@ export default function Navbar({
                 : profile_icon
             }
             alt="profile picture"
-            className="w-8 border border-gray-800 rounded-full"
+            className="w-8 h-8 overflow-hidden border border-gray-800 rounded-full"
             onClick={hdlProfileClick}
             width={36}
             height={36}

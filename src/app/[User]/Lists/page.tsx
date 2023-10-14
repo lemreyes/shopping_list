@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 
 import prisma from "../../Utilities/prismaUtils";
 import { redirect } from "next/navigation";
+import List from "./Components/List";
 
 export default async function Lists() {
   const session = await getServerSession(options);
@@ -31,26 +32,17 @@ export default async function Lists() {
 
   return (
     <>
-      <Navbar userDataId={userData?.id as number} userImage={userData?.image as string} />
+      <Navbar
+        userDataId={userData?.id as number}
+        userImage={userData?.image as string}
+      />
       <div className="flex justify-center pb-20">
         <div className="w-4/5">
           <h1 className="text-3xl font-bold mt-2 mb-4">Lists</h1>
-          {lists.length > 0 ? (
-            lists.map((list) => {
-              return (
-                <ListCard
-                  key={list.id}
-                  id={list.id}
-                  list_name={list.list_name}
-                  updated_at={list.updated_at}
-                  is_done={list.is_done}
-                  user_id={userData?.id as number}
-                />
-              );
-            })
-          ) : (
-            <p>No lists found.</p>
-          )}
+          <List
+            list_items={lists as Array<IList>}
+            userId={userData?.id as number}
+          />
         </div>
       </div>
     </>

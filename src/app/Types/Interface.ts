@@ -35,3 +35,11 @@ interface IUserData {
   created_at?: Date;
   updated_at?: Date;
 }
+
+interface IList {
+  id: number;
+  list_name: string;
+  is_done: boolean;
+  ownerId: number;
+  updated_at: Date;
+}
