@@ -22,13 +22,34 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [severity, setSeverity] = useState("Success");
+  const [updateBtnDisable, setUpdateBtnDisable] = useState(true);
+  const [isNameChanged, setIsNameChanged] = useState(false);
+  const [isProfileChanged, setIsProfileChanged] = useState(false);
 
   useEffect(() => {
     setSrcPreview(userData.image as string);
   }, [userData.image]);
 
+  const evalUpdateBtnDisable = () => {
+    if (isNameChanged || isProfileChanged) {
+      setUpdateBtnDisable(false);
+    } else {
+      setUpdateBtnDisable(true);
+    }
+    console.log("evalUpdateBtnDisable updateBtnDisable", updateBtnDisable);
+  };
+
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
+    console.log("event.target.value", event.target.value);
+
+    if (event.target.value === userData.name) {
+      setIsNameChanged(false);
+    } else {
+      setIsNameChanged(true);
+    }
+
+    evalUpdateBtnDisable();
   };
 
   const hdlChangePicture = (event: React.MouseEvent<HTMLElement>) => {
@@ -36,6 +57,7 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
     if (profileFileRef.current) {
       profileFileRef.current.click();
     }
+    setIsProfileChanged(true);
   };
 
   const hdlFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +72,7 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
     const src = URL.createObjectURL(fileObj);
     setSrcPreview(src);
     setImageFile(fileObj);
+    evalUpdateBtnDisable();
   };
 
   const handleCloseSnackber = (
@@ -135,8 +158,9 @@ export default function SettingsForm({ userData }: { userData: IUserData }) {
         />
       </form>
       <button
-        className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600"
+        className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600 disabled:bg-gray-200 disabled:text-gray-800"
         onClick={hdlUpdate}
+        disabled={updateBtnDisable}
       >
         Update
       </button>
