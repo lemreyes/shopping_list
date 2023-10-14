@@ -1,5 +1,6 @@
 "use client";
 import calendar_icon from "../../../../../public/assets/calendar_icon.svg";
+import trash_icon from "../../../../../public/assets/trash_icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,13 +11,17 @@ export default function ListCard({
   list_name,
   updated_at,
   user_id,
+  editMode,
 }: {
   id: number;
   list_name: string;
   updated_at: Date;
   user_id: number;
+  editMode: boolean;
 }) {
-  const [items, setItems] = useState<Array<ShoppingListItem> | undefined>(undefined);
+  const [items, setItems] = useState<Array<ShoppingListItem> | undefined>(
+    undefined
+  );
   useEffect(() => {
     const fetchData = async () => {
       const items = await getListItems(id);
@@ -46,32 +51,37 @@ export default function ListCard({
   }
 
   return (
-    <Link
-      href={{
-        pathname: `/${user_id}/Lists/${list_name}`,
-        query: {
-          id: id,
-        },
-      }}
-    >
-      <article className="border border-gray-200 p-4 my-4">
+    <article className="border border-gray-200 px-4 py-1 my-4">
+      <Link
+        href={{
+          pathname: `/${user_id}/Lists/${list_name}`,
+          query: {
+            id: id,
+          },
+        }}
+      >
         <h2 className="text-xl font-bold">{list_name}</h2>
-        <div className="grid grid-cols-2">
-          <div>
-            <p className="text-sm">{previewString}</p>
+        <div className="flex flex-row justify-between">
+          <div className="w-2/3">
+            <p className="text-xs">{previewString}</p>
           </div>
-          <div className="justify-self-end">
-            <div className="flex flex-row items-center">
+          <div className="">
+            <div className=" justify-self-end flex flex-row items-center">
               <Image
                 src={calendar_icon}
                 alt="calendar_icon"
                 className="w-6 mr-1"
               />
-              <p className="text-sm">{updated_at.toLocaleString()}</p>
+              <p className="text-sm">{updated_at.toLocaleDateString()}</p>
             </div>
           </div>
         </div>
-      </article>
-    </Link>
+      </Link>
+      {editMode && (
+        <button className="px-4 py-1 border border-red-800 bg-red-800 hover:bg-white hover:text-red-800 text-white text-xs font-bold rounded-md mt-1 mb-1 w-full">
+          Delete List
+        </button>
+      )}
+    </article>
   );
 }
