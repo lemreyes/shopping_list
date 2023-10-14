@@ -1,10 +1,10 @@
 import Navbar from "@/app/Components/Navbar";
 import prisma from "../../../Utilities/prismaUtils";
 import { ListedItem } from "@prisma/client";
-import ListItem from "./Components/ListItem";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import ListItemContainer from "./Components/ListItemContainer";
 
 export default async function List(props: Props) {
   const session = await getServerSession(options);
@@ -45,27 +45,14 @@ export default async function List(props: Props) {
 
   return (
     <>
-      <Navbar userDataId={userData?.id as number} userImage={userData?.image as string} />
+      <Navbar
+        userDataId={userData?.id as number}
+        userImage={userData?.image as string}
+      />
       <div className="flex justify-center pb-20">
         <div className="w-4/5 desktop:w-1/3">
           <h1 className="text-3xl font-bold mt-2 mb-4">{list?.list_name}</h1>
-          <ul>
-            {listItems.length > 0 ? (
-              listItems.map((listItem) => {
-                return (
-                  <ListItem
-                    key={listItem.id}
-                    id={listItem.id}
-                    item_name={listItem.listed_item_name}
-                    quantity={listItem.quantity}
-                    is_purchased={listItem.is_purchased}
-                  />
-                );
-              })
-            ) : (
-              <p>No items found.</p>
-            )}
-          </ul>
+          <ListItemContainer listItems={listItems as Array<ShoppingListItem>} />
         </div>
       </div>
     </>

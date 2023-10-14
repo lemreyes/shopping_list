@@ -1,5 +1,4 @@
 import Navbar from "../../Components/Navbar";
-import ListCard from "./Components/ListCard";
 import { options } from "../../api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 

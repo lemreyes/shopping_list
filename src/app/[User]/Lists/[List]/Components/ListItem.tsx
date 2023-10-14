@@ -8,11 +8,13 @@ export default function ListItem({
   item_name,
   quantity,
   is_purchased,
+  hdlListUpdate,
 }: {
   id: number;
   item_name: string;
   quantity: number;
   is_purchased: boolean;
+  hdlListUpdate: any
 }) {
   const [checkStatus, setCheckStatus] = useState(is_purchased);
 
@@ -20,7 +22,8 @@ export default function ListItem({
     console.log("Checkbox: ", event.target.checked);
 
     updateListItemCheck(id, event.target.checked);
-    setCheckStatus(event.target.checked)
+    setCheckStatus(event.target.checked);
+    hdlListUpdate(event.target.checked);
   };
 
   return (
