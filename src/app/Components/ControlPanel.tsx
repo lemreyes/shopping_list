@@ -17,7 +17,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function ControlPanel({
   masterList,
 }: {
-  masterList: Array<Category>;
+  masterList: Array<TCategory>;
 }) {
   // update masterlist store
   const updateCategories = useMasterlistStore(

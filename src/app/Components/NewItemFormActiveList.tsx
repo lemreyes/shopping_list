@@ -13,7 +13,7 @@ export default function NewItemFormActiveList({
 }) {
   const NEW_CATEGORY_ID = 0;
 
-  const categories: Array<Category> = useMasterlistStore(
+  const categories: Array<TCategory> = useMasterlistStore(
     (state: any) => state.categories
   );
 
@@ -51,7 +51,7 @@ export default function NewItemFormActiveList({
   };
 
   const hdlAddItem = async () => {
-    const newMasterList: Array<Category> = [...masterlist];
+    const newMasterList: Array<TCategory> = [...masterlist];
     try {
       if (selectedCategory === 0) {
         // add category
@@ -88,7 +88,7 @@ export default function NewItemFormActiveList({
         const responseData = await createNewItem(itemName, selectedCategory);
 
         const categoryIndex: number = newMasterList.findIndex(
-          (categoryInList: Category) => categoryInList.id === selectedCategory
+          (categoryInList: TCategory) => categoryInList.id === selectedCategory
         );
 
         // update masterlist store

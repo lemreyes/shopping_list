@@ -10,9 +10,9 @@ import NewCategoryButton from "./NewCategoryButton";
 
 export default function Masterlist() {
   let [searchString, setSearchString] = useState("");
-  let [filterResults, setFilterResults] = useState<Category[]>([]);
+  let [filterResults, setFilterResults] = useState<TCategory[]>([]);
 
-  const categories: Array<Category> = useMasterlistStore(
+  const categories: Array<TCategory> = useMasterlistStore(
     (state: any) => state.categories
   );
   const editMode = useMasterlistStore((state: any) => state.editMode);
@@ -24,13 +24,13 @@ export default function Masterlist() {
     searchString = searchString.toLowerCase();
 
     const searchResults = categories.reduce(
-      (results: Category[], category: Category) => {
+      (results: TCategory[], category: TCategory) => {
         const matchingItems = category.items?.filter((item) =>
           item.item_name.toLowerCase().includes(searchString)
         );
 
         if (matchingItems.length > 0) {
-          let filteredCategory: Category = {
+          let filteredCategory: TCategory = {
             id: category.id,
             category_name: category.category_name,
             items: matchingItems,
@@ -87,10 +87,10 @@ export default function Masterlist() {
       {editMode && <NewCategoryButton />}
 
       {searchString.length === 0
-        ? categories.map((category: Category) => {
+        ? categories.map((category: TCategory) => {
             return <CategoryGroup key={category.id} category={category} />;
           })
-        : filterResults.map((category: Category) => {
+        : filterResults.map((category: TCategory) => {
             return <CategoryGroup key={category.id} category={category} />;
           })}
     </main>

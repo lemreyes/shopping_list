@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export const useShoppingListStore = create((set) => ({
   shoppingList: [],
-  updateShoppingList: (updatedList: Array<Item>) =>
+  updateShoppingList: (updatedList: Array<TItem>) =>
     set({
       shoppingList: updatedList,
     }),

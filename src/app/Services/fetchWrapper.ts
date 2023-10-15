@@ -99,7 +99,7 @@ export async function createItemWithNewCategory(
 
 export async function createNewList(
   list_name: string,
-  shopping_list: Array<ShoppingListItem>
+  shopping_list: Array<TShoppingListItem>
 ) {
   const response = await fetch("/api/activelist", {
     method: "POST",
@@ -123,7 +123,7 @@ export async function createNewList(
 
 export async function updateList(
   list_id: number,
-  shopping_list: Array<ShoppingListItem>
+  shopping_list: Array<TShoppingListItem>
 ) {
   const response = await fetch("/api/activelist", {
     method: "PATCH",

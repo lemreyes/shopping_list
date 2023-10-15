@@ -41,7 +41,7 @@ export async function POST(request: Request) {
 
     // create each
     const savedShoppingList = await Promise.all(
-      shoppingList.map(async (listItem: ShoppingListItem) => {
+      shoppingList.map(async (listItem: TShoppingListItem) => {
         const savedListItem = await prisma.listedItem.create({
           data: {
             listed_item_name: listItem.listed_item_name,
@@ -110,7 +110,7 @@ export async function PATCH(request: Request) {
 
   // update list in database
   const updatedShoppingList = await Promise.all(
-    shoppingList.map(async (listItem: ShoppingListItem) => {
+    shoppingList.map(async (listItem: TShoppingListItem) => {
       const updatedListItem = await prisma.listedItem.upsert({
         where: {
           id: listItem.id,

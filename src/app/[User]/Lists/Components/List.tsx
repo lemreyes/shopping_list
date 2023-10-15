@@ -23,7 +23,7 @@ export default function List({
   list_items,
   userId,
 }: {
-  list_items: Array<IList>;
+  list_items: Array<TList>;
   userId: number;
 }) {
   const [editMode, setEditMode] = useState(false);

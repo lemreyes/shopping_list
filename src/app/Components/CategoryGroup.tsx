@@ -3,7 +3,7 @@ import Image from "next/image";
 import Item from "./Item";
 import NewItemButton from "./NewItemButton";
 
-export default function CategoryGroup({ category }: { category: Category }) {
+export default function CategoryGroup({ category }: { category: TCategory }) {
   const editMode = useMasterlistStore((state: any) => state.editMode);
 
   return (

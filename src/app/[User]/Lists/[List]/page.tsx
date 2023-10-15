@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import ListItemContainer from "./Components/ListItemContainer";
 
-export default async function List(props: Props) {
+export default async function List(props: QueryProps) {
   const session = await getServerSession(options);
   if (session === null) {
     redirect("/Auth/Login");
@@ -52,7 +52,7 @@ export default async function List(props: Props) {
       <div className="flex justify-center pb-20">
         <div className="w-5/6 desktop:w-1/3">
           <h1 className="text-3xl font-bold mt-2 mb-4">{list?.list_name}</h1>
-          <ListItemContainer listItems={listItems as Array<ShoppingListItem>} />
+          <ListItemContainer listItems={listItems as Array<TShoppingListItem>} />
         </div>
       </div>
     </>

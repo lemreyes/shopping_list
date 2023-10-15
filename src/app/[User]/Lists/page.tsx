@@ -38,7 +38,7 @@ export default async function Lists() {
         <div className="w-4/5">
           <h1 className="text-3xl font-bold mt-2 mb-4">Lists</h1>
           <List
-            list_items={lists as Array<IList>}
+            list_items={lists as Array<TList>}
             userId={userData?.id as number}
           />
         </div>

@@ -20,7 +20,7 @@ export default function ListCard({
   editMode: boolean;
   hdlDeleteBtn: any;
 }) {
-  const [items, setItems] = useState<Array<ShoppingListItem> | undefined>(
+  const [items, setItems] = useState<Array<TShoppingListItem> | undefined>(
     undefined
   );
   useEffect(() => {

@@ -17,7 +17,7 @@ export default function ListedItem({
   quantity: number;
   edit_mode: boolean;
 }) {
-  const shoppingList: Array<ShoppingListCategory> = useShoppingListStore(
+  const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
 
@@ -34,7 +34,7 @@ export default function ListedItem({
 
     if (categoryIndex >= 0) {
       const itemIndex = newShoppingList[categoryIndex].items.findIndex(
-        (itemInList: ShoppingListItem) =>
+        (itemInList: TShoppingListItem) =>
           itemInList.masterItemId === master_item_id
       );
 
@@ -61,7 +61,7 @@ export default function ListedItem({
     );
 
     const itemIndex = newShoppingList[categoryIndex].items.findIndex(
-      (itemInList: ShoppingListItem) =>
+      (itemInList: TShoppingListItem) =>
         itemInList.masterItemId === master_item_id
     );
 
@@ -83,7 +83,7 @@ export default function ListedItem({
     );
 
     const itemIndex = newShoppingList[categoryIndex].items.findIndex(
-      (itemInList: ShoppingListItem) =>
+      (itemInList: TShoppingListItem) =>
         itemInList.masterItemId === master_item_id
     );
 

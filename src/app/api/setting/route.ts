@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const userDataForUpdate: IUserData = {
+  const userDataForUpdate: TUserData = {
     id: userData.id,
     email: userData.email,
     updated_at: new Date(),

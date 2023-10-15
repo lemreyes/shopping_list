@@ -5,10 +5,10 @@ import ListItem from "./ListItem";
 export default function ListItemContainer({
   listItems,
 }: {
-  listItems: Array<ShoppingListItem>;
+  listItems: Array<TShoppingListItem>;
 }) {
   const [listItemsArray, setListItemsArray] =
-    useState<Array<ShoppingListItem>>(listItems);
+    useState<Array<TShoppingListItem>>(listItems);
 
   const hdlListUpdate = (id: number, isPurchased: boolean) => {
     const index = listItemsArray.findIndex((listItem) => listItem.id === id);

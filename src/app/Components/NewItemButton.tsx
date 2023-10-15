@@ -52,10 +52,10 @@ export default function NewItemButton({
 
   const handleAddItem = async () => {
     try {
-      const newMasterList: Array<Category> = [...masterlist];
+      const newMasterList: Array<TCategory> = [...masterlist];
 
       const categoryIndex: number = newMasterList.findIndex(
-        (categoryInList: Category) => categoryInList.id === category_id
+        (categoryInList: TCategory) => categoryInList.id === category_id
       );
 
       const responseData = await createNewItem(itemName, category_id);

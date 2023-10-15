@@ -11,7 +11,7 @@ import { useShoppingListStore } from "../Store/shoppinglist_store";
 export default function ShoppingList() {
   let [editMode, setEditMode] = useState(false);
 
-  const shoppingList: Array<ShoppingListCategory> = useShoppingListStore(
+  const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
 
@@ -36,12 +36,12 @@ export default function ShoppingList() {
           </button>
         </div>
 
-        {shoppingList.map((category: ShoppingListCategory) => {
+        {shoppingList.map((category: TShoppingListCategory) => {
           return (
             <div key={category.id}>
               <h3 className="text-sm mt-4">{category.category_name}</h3>
               <ul>
-                {category.items.map((item: ShoppingListItem) => {
+                {category.items.map((item: TShoppingListItem) => {
                   return (
                     <ListedItem
                       key={item.masterItemId}

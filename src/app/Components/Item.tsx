@@ -26,7 +26,7 @@ export default function Item({
   label: string;
   item_id: number;
 }) {
-  const shoppingList: Array<ShoppingListCategory> = useShoppingListStore(
+  const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
   const updateShoppingList = useShoppingListStore(
@@ -61,12 +61,12 @@ export default function Item({
       // update master list
       const newMasterList = [...masterlist];
       const categoryIndex: number = masterlist.findIndex(
-        (categoryInList: Category) => categoryInList.id === category_id
+        (categoryInList: TCategory) => categoryInList.id === category_id
       );
 
       if (categoryIndex >= 0) {
         const itemIndex = masterlist[categoryIndex].items.findIndex(
-          (itemInList: Item) => itemInList.id === item_id
+          (itemInList: TItem) => itemInList.id === item_id
         );
 
         itemName = masterlist[categoryIndex].items[itemIndex].item_name;
@@ -107,13 +107,13 @@ export default function Item({
 
   // find this category in the shoppingList
   const getItemCount = () => {
-    const matchedCategory: ShoppingListCategory | undefined = shoppingList.find(
+    const matchedCategory: TShoppingListCategory | undefined = shoppingList.find(
       (categoryInList) => categoryInList.id === category_id
     );
 
     if (matchedCategory) {
       const matchedItem = matchedCategory.items?.find(
-        (itemInList: ShoppingListItem) => itemInList.masterItemId === item_id
+        (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
       );
       if (matchedItem) {
         return matchedItem.quantity;
@@ -131,7 +131,7 @@ export default function Item({
     } else {
       // construct object
       const newShoppingList = [...shoppingList];
-      const newListItem: ShoppingListItem = {
+      const newListItem: TShoppingListItem = {
         id: 0,
         listed_item_name: label,
         quantity: 1,
@@ -142,13 +142,13 @@ export default function Item({
       };
 
       // find the category
-      const matchedCategory: ShoppingListCategory | undefined = newShoppingList.find(
+      const matchedCategory: TShoppingListCategory | undefined = newShoppingList.find(
         (categoryInList) => categoryInList.id === category_id
       );
       if (matchedCategory) {
         // find if there is existing item
         const matchedItem = matchedCategory.items?.find(
-          (itemInList: ShoppingListItem) => itemInList.masterItemId === item_id
+          (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
         );
         if (matchedItem) {
           matchedItem.quantity++;

@@ -10,24 +10,24 @@ export function getAllShoppingListItems(shoppingList: Array<ShoppingListCategory
 }
 
 export function createCategorizedShoppingList(
-  shoppingListItems: Array<ShoppingListItem>,
-  masterList: Array<Category>
+  shoppingListItems: Array<TShoppingListItem>,
+  masterList: Array<TCategory>
 ) {
-  const categorizedShoppingList: Array<ShoppingListCategory> = [];
+  const categorizedShoppingList: Array<TShoppingListCategory> = [];
 
   for (let i = 0; i < shoppingListItems.length; i++) {
     // find if existing cateogry
-    const category = categorizedShoppingList.find((category: ShoppingListCategory) => {
+    const category = categorizedShoppingList.find((category: TShoppingListCategory) => {
       return category.id === shoppingListItems[i].categoryId;
     });
     if (!category) {
       // find category name from masterlist
-      const masterCategory = masterList.find((category: Category) => {
+      const masterCategory = masterList.find((category: TCategory) => {
         return category.id === shoppingListItems[i].categoryId;
       });
 
       // create new category
-      const newCategory: ShoppingListCategory = {
+      const newCategory: TShoppingListCategory = {
         id: masterCategory?.id as number,
         category_name: masterCategory?.category_name as string,
         items: [],

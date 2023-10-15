@@ -15,7 +15,7 @@ export async function GET() {
   });
 
   // populate masterlist with categories
-  const categories: Array<Category> = await prisma.category.findMany({
+  const categories: Array<TCategory> = await prisma.category.findMany({
     where: {
       userDataId: userData?.id,
     },
@@ -28,7 +28,7 @@ export async function GET() {
 
   const newMasterList = await Promise.all(
     categories.map(async (category) => {
-      const items: Array<Item> = await prisma.item.findMany({
+      const items: Array<TItem> = await prisma.item.findMany({
         where: {
           categoryId: category.id as number,
         },

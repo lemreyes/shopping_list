@@ -19,7 +19,7 @@ export default function ListSaveButton() {
   const updateActiveListName = useShoppingListStore(
     (state: any) => state.updateActiveListName
   );
-  const shoppingList: Array<ShoppingListCategory> = useShoppingListStore(
+  const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
   const updateShoppingList = useShoppingListStore(

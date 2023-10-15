@@ -14,7 +14,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export default function SettingsForm({ userData }: { userData: IUserData }) {
+export default function SettingsForm({ userData }: { userData: TUserData }) {
   const profileFileRef = useRef<HTMLInputElement | null>(null);
   const [srcPreview, setSrcPreview] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
