@@ -5,78 +5,36 @@ export default function Login() {
     <div className="desktop:grid desktop:grid-cols-3 desktop:w-full desktop:h-screen p-4 desktop:p-0">
       <div id="landing" className="col-span-2 px-8 py-4 block">
         <h1 className="text-5xl mb-8">
-          Welcome to <span className="text-orange-600 font-bold">ShopSync</span>
+          Welcome to List
+          <span className="text-green-600 font-bold">Easy</span>
         </h1>
+        <h2 className="font-bold text-xl">Your Ultimate Shopping Companion!</h2>
         <section className="mt-8">
-          <h2 className="text-xl font-bold">Shop Smarter, Together </h2>
-          <p className="ml-4">
-            ShopSync is your ultimate shopping companion. Say goodbye to the
-            confusion of mismatched shopping lists and missed items. With
-            ShopSync, you can effortlessly create, share, and update shopping
-            lists in real-time with friends and family, ensuring that everyone
-            stays on the same page.
+          <p className="mb-4">
+            Never miss an item at the grocery store again! With ListEasy, your
+            shopping experience is about to get a whole lot smoother. Say
+            goodbye to those last-minute frantic runs to the store and embrace
+            the convenience of organized shopping at your fingertips.
           </p>
-        </section>
-        <section className="mt-8">
-          <h2 className="text-xl font-bold mt-8">Why Choose ShopSync?</h2>
-          <ul className="list-disc">
-            <li className="ml-8">
-              <span className="font-bold">Real-time Syncing:</span> Stay
-              connected with your shopping partners and see updates instantly as
-              they add or check off items.
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Collaborative Shopping:</span>
-              Collaborate with friends, family, or roommates to create the
-              perfect shopping list together.
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Never Forget an Item:</span> With
-              shared lists and automatic updates, you will never miss a thing on
-              your grocery run.
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Smart Organization:</span> Organize
-              your lists by categories, making your shopping trip faster and
-              more efficient.
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Synchronize Anywhere:</span> Access
-              your shopping lists on any device - your phone, tablet, or
-              computer. ShopSync is with you wherever you go.
-            </li>
-          </ul>
-        </section>
-        <section className="mt-8">
-          <h2 className="text-xl font-bold">How It Works</h2>
-          <ol className="list-decimal">
-            <li className="ml-8">
-              <span className="font-bold">Create Your List:</span> Start by
-              creating a new shopping list. Add items quickly and easily.
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Share with Friends:</span> Invite your
-              shopping buddies to join your list with a simple click. No more
-              phone calls or texts to coordinate.
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Shop with Confidence:</span> As you
-              and your friends shop, your lists are updated in real-time. No
-              more duplicates or forgotten items.{" "}
-            </li>
-            <li className="ml-8">
-              <span className="font-bold">Check Off Items:</span> Mark items as
-              you pick them up, and everyone in your group will see the changes
-              instantly.{" "}
-            </li>
-          </ol>
-        </section>
-        <section className="mt-8">
-          <h2 className="text-xl font-bold">Join ShopSync Today</h2>
-          <p className="ml-4">
-            Shopping has never been this convenient and stress-free. Try
-            ShopSync now and experience the future of collaborative shopping.
-            Sign up today and say hello to smarter, synchronized shopping trips.
+          <p className="mb-4">
+            Effortlessly plan your shopping with your master list of grocery
+            items. You have the ability to add new items and categories to the
+            master list, you have the power to customize your shopping
+            experience according to your unique preferences and needs.
+          </p>
+          <p className="mb-4">
+            But that is not all! ListEasy offers the flexibility to create
+            multiple lists, empowering you to stay on top of various shopping
+            needs, whether it is for your weekly groceries, special occasions,
+            or upcoming events. Seamlessly switch between lists and keep track
+            of everything you need with just a few taps.
+          </p>
+          <p className="mb-4">
+            Embrace the convenience, simplicity, and organization that ListEasy
+            brings to your shopping routine. Let us take the hassle out of your
+            shopping trips so you can focus on the things that truly matter.
+            Sign in to ListEasy now and unlock a smarter, more efficient way to
+            shop!
           </p>
         </section>
       </div>

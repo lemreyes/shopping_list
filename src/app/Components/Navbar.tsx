@@ -36,7 +36,7 @@ export default function Navbar({
   };
 
   return (
-    <nav className="flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4 bg-gray-200">
+    <nav className="flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4 bg-gray-800">
       <div>
         <Image
           src={menu_icon}
@@ -46,19 +46,19 @@ export default function Navbar({
         />
         {showMenu && <MenuCard userDataId={userDataId} />}
       </div>
-      <div className="flex-grow py-2 text-3xl font-bold">
-        Shop<span className="text-orange-600">Sync</span>
+      <div className="flex-grow py-2 text-3xl font-bold text-white">
+        List<span className="text-green-600">Easy</span>
       </div>
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center text-white">
         <Link
           href={"/"}
-          className="p-8 font-bold hover:bg-white hidden desktop:inline"
+          className="p-8 font-bold hover:bg-white hover:text-gray-800 hidden desktop:inline"
         >
           Plan
         </Link>
         <Link
           href={`/${userDataId}/Lists`}
-          className="p-8 font-bold hover:bg-white hidden desktop:inline"
+          className="p-8 font-bold hover:bg-white hover:text-gray-800 hidden desktop:inline"
         >
           Lists
         </Link>
