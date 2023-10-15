@@ -145,6 +145,27 @@ export async function updateList(
   return responseData;
 }
 
+export async function deleteList(listId: number) {
+  const response = await fetch("/api/lists", {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      listId: listId,
+    }),
+  });
+
+  const responseData = await response.json();
+  console.log("deleteList responseData", responseData);
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
+
 export async function getListItems(id: number) {
   const response = await fetch("/api/listItem", {
     method: "POST",
