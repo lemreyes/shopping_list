@@ -16,7 +16,6 @@ export async function DELETE(request: NextRequest) {
   }
 
   const { listId } = await request.json();
-  console.log("DELETE listId", listId);
 
   try {
     // delete itemList contents of the list
@@ -31,7 +30,6 @@ export async function DELETE(request: NextRequest) {
         id: listId,
       },
     });
-    console.log("DELETE deletedList", deletedList);
 
     return NextResponse.json(deletedList);
   } catch (error) {

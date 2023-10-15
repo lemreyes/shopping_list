@@ -157,7 +157,6 @@ export async function deleteList(listId: number) {
   });
 
   const responseData = await response.json();
-  console.log("deleteList responseData", responseData);
 
   if (!response.ok) {
     throw new Error(responseData.errorMessage);
