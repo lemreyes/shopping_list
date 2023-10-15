@@ -1,6 +1,6 @@
 // get all items from all categories
-export function getAllShoppingListItems(shoppingList: Array<ShoppingListCategory>) {
-  let shoppingListItems: Array<ShoppingListItem> = [];
+export function getAllShoppingListItems(shoppingList: Array<TShoppingListCategory>) {
+  let shoppingListItems: Array<TShoppingListItem> = [];
 
   for (let i = 0; i < shoppingList.length; i++) {
     shoppingListItems = shoppingListItems.concat(shoppingList[i].items);
