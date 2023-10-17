@@ -18,6 +18,7 @@ export default function Navbar({
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const theme = "light";
 
   const hdlMenuClick = () => {
     if (showMenu) {
@@ -36,7 +37,9 @@ export default function Navbar({
   };
 
   return (
-    <nav className="flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4 bg-gray-800">
+    <nav
+      className={`theme-${theme} bg-navbarBg flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4`}
+    >
       <div>
         <Image
           src={menu_icon}

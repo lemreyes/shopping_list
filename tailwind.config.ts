@@ -9,7 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "login_bg": "url(/public/assets/splash.jpg)",
+        login_bg: "url(/public/assets/splash.jpg)",
+      },
+      colors: {
+        navbarBg: "var(--navbarBg)",
       },
     },
     screens: {
