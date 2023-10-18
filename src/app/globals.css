@@ -3,14 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  .theme-light {
-    --navbarBg: theme("colors.gray.800");
-  }
-
-  .theme-dark {
-    --navbarBg: theme("colors.gray.400");
-  }
 }
 
-body {
+.theme-light {
+  --navbarBg: theme("colors.gray.800");
+}
+
+.theme-dark {
+  --navbarBg: theme("colors.gray.400");
 }
