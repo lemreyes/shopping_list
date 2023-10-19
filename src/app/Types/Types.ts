@@ -1,28 +1,30 @@
-type QueryProps = {
+import { Themes } from "./Enums";
+
+export type QueryProps = {
   params: {};
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-type TCategory = {
+export type TCategory = {
   id: number;
   category_name: string;
   items: Array<TItem>;
 };
 
-type TItem = {
+export type TItem = {
   id: number;
   item_name: string;
   quantity: number;
   is_purchased: boolean;
 };
 
-type TShoppingListCategory = {
+export type TShoppingListCategory = {
   id: number;
   category_name: string;
   items: Array<TShoppingListItem>;
 };
 
-type TShoppingListItem = {
+export type TShoppingListItem = {
   id: number;
   quantity: number;
   is_purchased: boolean;
@@ -32,16 +34,17 @@ type TShoppingListItem = {
   masterItemId: number;
 };
 
-type TUserData = {
+export type TUserData = {
   id: number;
   email: string;
   image?: string;
   name?: string;
+  theme: Themes;
   created_at?: Date;
   updated_at?: Date;
 };
 
-type TList = {
+export type TList = {
   id: number;
   list_name: string;
   is_done: boolean;

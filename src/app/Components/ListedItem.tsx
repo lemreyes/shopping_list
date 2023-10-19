@@ -3,6 +3,7 @@ import trash_icon from "../../../public/assets/trash_icon.svg";
 import add_icon from "../../../public/assets/add_icon.svg";
 import subtract_icon from "../../../public/assets/subtract_icon.svg";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
+import { TShoppingListCategory, TShoppingListItem } from "../Types/Types";
 
 export default function ListedItem({
   category_id,

@@ -2,6 +2,7 @@ import { useMasterlistStore } from "../Store/masterlist_store";
 import Image from "next/image";
 import Item from "./Item";
 import NewItemButton from "./NewItemButton";
+import { TCategory } from "../Types/Types";
 
 export default function CategoryGroup({ category }: { category: TCategory }) {
   const editMode = useMasterlistStore((state: any) => state.editMode);

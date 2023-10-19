@@ -57,6 +57,7 @@ model UserData {
   name       String?
   email      String     @unique
   image      String?
+  theme      Int
   created_at DateTime   @default(now())
   updated_at DateTime   @default(now())
   Category   Category[]
@@ -92,7 +93,7 @@ model Item {
 
 model List {
   id          Int               @id @default(autoincrement())
-  list_name   String            
+  list_name   String
   is_done     Boolean
   UserData    UserData?         @relation(fields: [ownerId], references: [id])
   ownerId     Int?

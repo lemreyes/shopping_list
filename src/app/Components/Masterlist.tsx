@@ -7,6 +7,7 @@ import CategoryGroup from "./CategoryGroup";
 
 import { useMasterlistStore } from "../Store/masterlist_store";
 import NewCategoryButton from "./NewCategoryButton";
+import { TCategory } from "../Types/Types";
 
 export default function Masterlist() {
   let [searchString, setSearchString] = useState("");

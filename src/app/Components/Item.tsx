@@ -14,6 +14,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { deleteItem } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
+import { TCategory, TItem, TShoppingListCategory, TShoppingListItem } from "../Types/Types";
 
 export default function Item({
   category_id,

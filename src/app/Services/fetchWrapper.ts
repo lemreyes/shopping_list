@@ -1,3 +1,6 @@
+import { Themes } from "../Types/Enums";
+import { TShoppingListItem } from "../Types/Types";
+
 export async function getMasterlist() {
   const response = await fetch("/api/masterlist", {
     method: "GET",
@@ -209,7 +212,8 @@ export async function updateListItemCheck(id: number, checked_status: boolean) {
 export async function updateSetting(
   id: number,
   profile_image: File | null,
-  name: string | undefined
+  name: string | undefined,
+  theme: Themes
 ) {
   const body = new FormData();
 
@@ -220,6 +224,10 @@ export async function updateSetting(
 
   if (profile_image) {
     body.append("profile_image", profile_image);
+  }
+
+  if (theme) {
+    body.append("theme", theme.toString());
   }
 
   const isEmpty = body.entries().next().done;

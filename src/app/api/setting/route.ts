@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { options } from "../auth/[...nextauth]/options";
 import prisma from "@/app/Utilities/prismaUtils";
 import fs from "fs";
+import { TUserData } from "@/app/Types/Types";
+import { Themes } from "@/app/Types/Enums";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
@@ -36,6 +38,7 @@ export async function POST(request: NextRequest) {
     id: userData.id,
     email: userData.email,
     updated_at: new Date(),
+    theme: userData.theme,
   };
 
   const name = formData.get("name");
@@ -50,6 +53,12 @@ export async function POST(request: NextRequest) {
     fs.writeFileSync(`public/${file.name}`, buffer);
 
     userDataForUpdate.image = `${process.env.HOST_URL}/${file.name}`;
+  }
+
+  const theme = formData.get("theme");
+  if (theme) {
+    userDataForUpdate.theme = parseInt(theme as string);
+    console.log("POST theme", theme)
   }
 
   const updateData = { ...userData, ...userDataForUpdate };

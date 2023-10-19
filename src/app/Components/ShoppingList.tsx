@@ -7,6 +7,7 @@ import edit_active_icon from "../../../public/assets/edit_active_icon.svg";
 import ListedItem from "./ListedItem";
 
 import { useShoppingListStore } from "../Store/shoppinglist_store";
+import { TShoppingListCategory, TShoppingListItem } from "../Types/Types";
 
 export default function ShoppingList() {
   let [editMode, setEditMode] = useState(false);

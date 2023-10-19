@@ -1,3 +1,5 @@
+import { TShoppingListCategory, TShoppingListItem, TCategory } from "../Types/Types";
+
 // get all items from all categories
 export function getAllShoppingListItems(shoppingList: Array<TShoppingListCategory>) {
   let shoppingListItems: Array<TShoppingListItem> = [];

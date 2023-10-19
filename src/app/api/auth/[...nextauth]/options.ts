@@ -7,7 +7,7 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 
 import prisma from "../../../Utilities/prismaUtils";
-
+import { Themes } from "@/app/Types/Enums";
 
 type MyUser = {
   userDataId?: string | null;
@@ -40,11 +40,13 @@ export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     createUser: async (message) => {
+      const theme: Themes = Themes.ThemeLight;
       const userData = await prisma.userData.create({
         data: {
           email: message.user.email as string,
           name: message.user.name as string,
           image: message.user.image as string,
+          theme: theme as number,
         },
       });
     },

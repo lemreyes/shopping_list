@@ -6,6 +6,7 @@ import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useSnackbarStore } from "../Store/snackbar_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import React from "react";
+import { TCategory } from "../Types/Types";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,

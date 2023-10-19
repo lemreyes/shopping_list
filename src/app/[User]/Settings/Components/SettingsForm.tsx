@@ -6,6 +6,8 @@ import { updateSetting } from "@/app/Services/fetchWrapper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
 import React from "react";
+import { TUserData } from "@/app/Types/Types";
+import { Themes } from "@/app/Types/Enums";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -19,25 +21,31 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
   const [srcPreview, setSrcPreview] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [name, setName] = useState(userData.name);
+  const [theme, setTheme] = useState(userData.theme);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [severity, setSeverity] = useState("Success");
   const [updateBtnDisable, setUpdateBtnDisable] = useState(true);
   const [isNameChanged, setIsNameChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
+  const [isThemeChanged, setIsThemeChanged] = useState(false);
 
   useEffect(() => {
     setSrcPreview(userData.image as string);
   }, [userData.image]);
 
-  const evalUpdateBtnDisable = () => {
-    if (isNameChanged || isProfileChanged) {
-      setUpdateBtnDisable(false);
-    } else {
-      setUpdateBtnDisable(true);
-    }
+  useEffect(() => {
+    const evalUpdateBtnDisable = () => {
+      console.log("evalUpdateBtnDisable isThemeChanged", isThemeChanged);
+      if (isNameChanged || isProfileChanged || isThemeChanged) {
+        setUpdateBtnDisable(false);
+      } else {
+        setUpdateBtnDisable(true);
+      }
+    };
 
-  };
+    evalUpdateBtnDisable();
+  }, [isThemeChanged, isNameChanged, isProfileChanged]);
 
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -47,8 +55,6 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
     } else {
       setIsNameChanged(true);
     }
-
-    evalUpdateBtnDisable();
   };
 
   const hdlChangePicture = (event: React.MouseEvent<HTMLElement>) => {
@@ -71,7 +77,20 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
     const src = URL.createObjectURL(fileObj);
     setSrcPreview(src);
     setImageFile(fileObj);
-    evalUpdateBtnDisable();
+  };
+
+  const hdlThemeChange = (event: React.FormEvent<HTMLSelectElement>) => {
+    console.log("hdlThemeChange ", parseInt(event.currentTarget.value));
+    setTheme(parseInt(event.currentTarget.value));
+
+    console.log("userData.theme", userData.theme);
+    if (parseInt(event.currentTarget.value) === (userData.theme as number)) {
+      console.log("go to false");
+      setIsThemeChanged(false);
+    } else {
+      console.log("go to true");
+      setIsThemeChanged(true);
+    }
   };
 
   const handleCloseSnackber = (
@@ -86,10 +105,13 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
   };
 
   const hdlUpdate = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-
     try {
-      const responseData = await updateSetting(userData.id, imageFile, name);
+      const responseData = await updateSetting(
+        userData.id,
+        imageFile,
+        name,
+        theme
+      );
 
       setSnackbarMessage(`Settings was successfully updated.`);
       setSeverity("success");
@@ -154,11 +176,25 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           onChange={hdlFileChange}
           accept="jpg, jpeg"
         />
+        <label htmlFor="color-theme" className="text-sm">
+          Color Theme
+        </label>
+        <select
+          id="color-theme"
+          name="color-theme"
+          className="w-full border border-gray-400 rounded-md pl-2"
+          onChange={hdlThemeChange}
+          value={theme}
+        >
+          <option value={Themes.ThemeLight}>Light</option>
+          <option value={Themes.ThemeDark}>Dark</option>
+        </select>
       </form>
       <button
         className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600 disabled:bg-gray-200 disabled:text-gray-800"
         onClick={hdlUpdate}
         disabled={updateBtnDisable}
+        type="submit"
       >
         Update
       </button>

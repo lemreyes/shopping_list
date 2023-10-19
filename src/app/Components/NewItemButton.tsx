@@ -16,6 +16,7 @@ import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
 import { createNewItem } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
+import { TCategory } from "../Types/Types";
 
 export default function NewItemButton({
   category_id,

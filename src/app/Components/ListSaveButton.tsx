@@ -7,6 +7,7 @@ import {
   createCategorizedShoppingList,
   getAllShoppingListItems,
 } from "../Utilities/shoppingListUtils";
+import { TShoppingListCategory } from "../Types/Types";
 
 export default function ListSaveButton() {
   const activeListId = useShoppingListStore((state: any) => state.activeListId);

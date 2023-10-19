@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { TItem } from "../Types/Types";
 
 export const useShoppingListStore = create((set) => ({
   shoppingList: [],

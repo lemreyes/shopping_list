@@ -5,6 +5,7 @@ import {
   createNewItem,
 } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
+import { TCategory } from "../Types/Types";
 
 export default function NewItemFormActiveList({
   cancelHandler,

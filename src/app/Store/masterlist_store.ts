@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { TCategory } from "../Types/Types";
 
 interface MasterList {
   categories: Array<TCategory>;
