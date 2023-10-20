@@ -36,7 +36,6 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
 
   useEffect(() => {
     const evalUpdateBtnDisable = () => {
-      console.log("evalUpdateBtnDisable isThemeChanged", isThemeChanged);
       if (isNameChanged || isProfileChanged || isThemeChanged) {
         setUpdateBtnDisable(false);
       } else {
@@ -80,15 +79,11 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
   };
 
   const hdlThemeChange = (event: React.FormEvent<HTMLSelectElement>) => {
-    console.log("hdlThemeChange ", parseInt(event.currentTarget.value));
     setTheme(parseInt(event.currentTarget.value));
 
-    console.log("userData.theme", userData.theme);
     if (parseInt(event.currentTarget.value) === (userData.theme as number)) {
-      console.log("go to false");
       setIsThemeChanged(false);
     } else {
-      console.log("go to true");
       setIsThemeChanged(true);
     }
   };

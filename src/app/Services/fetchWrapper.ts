@@ -226,7 +226,7 @@ export async function updateSetting(
     body.append("profile_image", profile_image);
   }
 
-  if (theme) {
+  if (theme != null) {
     body.append("theme", theme.toString());
   }
 

@@ -58,7 +58,6 @@ export async function POST(request: NextRequest) {
   const theme = formData.get("theme");
   if (theme) {
     userDataForUpdate.theme = parseInt(theme as string);
-    console.log("POST theme", theme)
   }
 
   const updateData = { ...userData, ...userDataForUpdate };
