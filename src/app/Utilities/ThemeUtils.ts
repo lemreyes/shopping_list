@@ -10,7 +10,7 @@ export function getThemeClassName(theme: Themes) {
       themeClassName = "theme-dark";
       break;
     default:
-      themeClassName = "theme-ligh";
+      themeClassName = "theme-light";
   }
 
   return themeClassName;

@@ -14,6 +14,15 @@ const config: Config = {
       colors: {
         navbarBg: "var(--navbarBg)",
         bodyBg: "var(--bodyBg)",
+        formBorderColor: "var(--formBorderColor)",
+        formBg: "var(--formBg)",
+        formBgDisabled: "var(--formBgDisabled)",
+        formButtonBg: "var(--formButtonBg)",
+        formButtonBgDisabled: "var(--formButtonBgDisabled)",
+        formButtonBorder: "var(--formButtonBorder)",
+        formButtonBgHover: "var(--formButtonBgHover)",
+        formButtonText: "var(--formButtonText)",
+        formButtonTextHover: "var(--formButtonTextHover)",
       },
     },
     screens: {

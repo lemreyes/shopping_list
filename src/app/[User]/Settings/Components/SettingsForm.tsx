@@ -8,6 +8,7 @@ import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
 import React from "react";
 import { TUserData } from "@/app/Types/Types";
 import { Themes } from "@/app/Types/Enums";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -45,6 +46,8 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
 
     evalUpdateBtnDisable();
   }, [isThemeChanged, isNameChanged, isProfileChanged]);
+
+  const themeClassName = getThemeClassName(theme);
 
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -133,12 +136,12 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
                 : profile_icon
             }
             alt="profile picture"
-            className="w-16 h-16 overflow-hidden bg-gray-800 rounded-full mb-4 border border-gray-900"
+            className={`${themeClassName} w-16 h-16 overflow-hidden bg-formBg rounded-full mb-4 border border-formBorderColor`}
             width={54}
             height={54}
           />
           <button
-            className="px-2 py-1 h-6 rounded-lg bg-gray-600 text-xs text-white hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600"
+            className={`${themeClassName} px-2 py-1 h-6 rounded-lg bg-formButtonBg text-xs text-formButtonText hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder`}
             onClick={hdlChangePicture}
           >
             Change picture
@@ -151,7 +154,7 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           type="email"
           id="account"
           name="account"
-          className="mb-4 w-full border border-gray-400 rounded-md bg-gray-200 pl-2"
+          className={`${themeClassName} mb-4 w-full border border-formBorderColor rounded-md bg-formBgDisabled pl-2`}
           value={userData.email}
           disabled
         />
@@ -162,7 +165,7 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           type="text"
           id="name"
           name="name"
-          className="mb-4 w-full border border-gray-400 rounded-md pl-2"
+          className={`${themeClassName} mb-4 w-full border border-formBorderColor rounded-md pl-2`}
           value={name}
           onChange={hdlNameChange}
         />
@@ -179,7 +182,7 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
         <select
           id="color-theme"
           name="color-theme"
-          className="w-full border border-gray-400 rounded-md pl-2"
+          className={`${themeClassName} w-full border border-formBorderColor rounded-md pl-2`}
           onChange={hdlThemeChange}
           value={theme}
         >
@@ -187,7 +190,7 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           <option value={Themes.ThemeDark}>Dark</option>
         </select>
         <button
-          className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600 disabled:bg-gray-200 disabled:text-gray-800"
+          className={`${themeClassName} mt-6 px-2 py-1 rounded-lg bg-formButtonBg text-formButtonText font-bold hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder disabled:bg-formButtonBgDisabled disabled:text-formButtonText`}
           onClick={hdlUpdate}
           disabled={updateBtnDisable}
           type="submit"
