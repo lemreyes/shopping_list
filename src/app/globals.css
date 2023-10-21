@@ -7,8 +7,10 @@
 
 .theme-light {
   --navbarBg: theme("colors.gray.800");
+  --bodyBg: theme("colors.white");
 }
 
 .theme-dark {
   --navbarBg: theme("colors.gray.400");
+  --bodyBg: theme("colors.gray.900");
 }

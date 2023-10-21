@@ -4,6 +4,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import SettingsForm from "./Components/SettingsForm";
+import { TUserData } from "@/app/Types/Types";
 
 export default async function Settings() {
   const session = await getServerSession(options);

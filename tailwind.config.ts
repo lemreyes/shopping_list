@@ -13,6 +13,7 @@ const config: Config = {
       },
       colors: {
         navbarBg: "var(--navbarBg)",
+        bodyBg: "var(--bodyBg)",
       },
     },
     screens: {

@@ -4,6 +4,7 @@ import ControlPanel from "./Components/ControlPanel";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import prisma from "./Utilities/prismaUtils";
+import { TCategory, TItem } from "./Types/Types";
 
 export default async function Home() {
   const session = await getServerSession(options);
