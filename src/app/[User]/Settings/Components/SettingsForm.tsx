@@ -117,6 +117,8 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
         setSeverity("error");
         setOpenSnackbar(true);
       }
+    } finally {
+      window.location.reload();
     }
   };
 
@@ -160,7 +162,7 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           type="text"
           id="name"
           name="name"
-          className="w-full border border-gray-400 rounded-md pl-2"
+          className="mb-4 w-full border border-gray-400 rounded-md pl-2"
           value={name}
           onChange={hdlNameChange}
         />
@@ -184,15 +186,16 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           <option value={Themes.ThemeLight}>Light</option>
           <option value={Themes.ThemeDark}>Dark</option>
         </select>
+        <button
+          className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600 disabled:bg-gray-200 disabled:text-gray-800"
+          onClick={hdlUpdate}
+          disabled={updateBtnDisable}
+          type="submit"
+        >
+          Update
+        </button>
       </form>
-      <button
-        className="mt-6 px-2 py-1 rounded-lg bg-gray-600 text-white font-bold hover:bg-white hover:text-gray-800 hover:border hover:border-gray-600 disabled:bg-gray-200 disabled:text-gray-800"
-        onClick={hdlUpdate}
-        disabled={updateBtnDisable}
-        type="submit"
-      >
-        Update
-      </button>
+
       <Snackbar
         open={openSnackbar}
         autoHideDuration={4000}
