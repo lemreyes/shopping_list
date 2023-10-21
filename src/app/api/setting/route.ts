@@ -60,6 +60,8 @@ export async function POST(request: NextRequest) {
     userDataForUpdate.theme = parseInt(theme as string);
   }
 
+  // copy to updataData the data to be updated
+  // use existing userData then overwrite with userDataForUpdate
   const updateData = { ...userData, ...userDataForUpdate };
 
   const updatedUserData = await prisma.userData.update({
@@ -68,6 +70,8 @@ export async function POST(request: NextRequest) {
     },
     data: updateData,
   });
+
+  console.log("updatedUserData", updatedUserData);
 
   return NextResponse.json(updatedUserData);
 }

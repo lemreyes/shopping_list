@@ -227,6 +227,7 @@ export async function updateSetting(
   }
 
   if (theme != null) {
+    console.log("theme append to body");
     body.append("theme", theme.toString());
   }
 

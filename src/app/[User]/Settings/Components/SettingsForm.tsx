@@ -26,6 +26,9 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [severity, setSeverity] = useState("Success");
+  const [isSnackbarClosed, setIsSnackbarClosed] = useState<boolean | undefined>(
+    undefined
+  );
   const [updateBtnDisable, setUpdateBtnDisable] = useState(true);
   const [isNameChanged, setIsNameChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
@@ -47,7 +50,13 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
     evalUpdateBtnDisable();
   }, [isThemeChanged, isNameChanged, isProfileChanged]);
 
-  const themeClassName = getThemeClassName(theme);
+  useEffect(() => {
+    if (isSnackbarClosed === true) {
+      window.location.reload();
+    }
+  });
+
+  const themeClassName = getThemeClassName(userData.theme);
 
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -83,6 +92,10 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
 
   const hdlThemeChange = (event: React.FormEvent<HTMLSelectElement>) => {
     setTheme(parseInt(event.currentTarget.value));
+    console.log(
+      "hdlThemeChange event.currentTarget.value",
+      event.currentTarget.value
+    );
 
     if (parseInt(event.currentTarget.value) === (userData.theme as number)) {
       setIsThemeChanged(false);
@@ -100,10 +113,14 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
     }
 
     setOpenSnackbar(false);
+    setIsSnackbarClosed(true);
   };
 
   const hdlUpdate = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
     try {
+      console.log("hdlUpdate theme", theme);
+
       const responseData = await updateSetting(
         userData.id,
         imageFile,
@@ -114,14 +131,14 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
       setSnackbarMessage(`Settings was successfully updated.`);
       setSeverity("success");
       setOpenSnackbar(true);
+      setIsSnackbarClosed(false);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setSnackbarMessage(error.message);
         setSeverity("error");
         setOpenSnackbar(true);
+        setIsSnackbarClosed(false);
       }
-    } finally {
-      window.location.reload();
     }
   };
 
@@ -200,7 +217,9 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           <option value={Themes.ThemeDark}>Dark</option>
         </select>
         <button
-          className={`${themeClassName} mt-6 px-2 py-1 rounded-lg bg-formButtonBg text-formButtonText font-bold hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
+          className={`${themeClassName} mt-6 px-2 py-1 rounded-lg bg-formButtonBg text-formButtonText font-bold 
+                      hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder 
+                      disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
           onClick={hdlUpdate}
           disabled={updateBtnDisable}
           type="submit"
