@@ -14,6 +14,7 @@ const config: Config = {
       colors: {
         navbarBg: "var(--navbarBg)",
         bodyBg: "var(--bodyBg)",
+        defaultColor: "var(--defaultColor)",
         formBorderColor: "var(--formBorderColor)",
         formBg: "var(--formBg)",
         formBgDisabled: "var(--formBgDisabled)",
@@ -22,6 +23,7 @@ const config: Config = {
         formButtonBorder: "var(--formButtonBorder)",
         formButtonBgHover: "var(--formButtonBgHover)",
         formButtonText: "var(--formButtonText)",
+        formButtonTextDisabled: "var(--formButtonTextDisabled)",
         formButtonTextHover: "var(--formButtonTextHover)",
       },
     },

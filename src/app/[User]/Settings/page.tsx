@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import SettingsForm from "./Components/SettingsForm";
 import { TUserData } from "@/app/Types/Types";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
+import { Themes } from "@/app/Types/Enums";
 
 export default async function Settings() {
   const session = await getServerSession(options);
@@ -19,6 +21,9 @@ export default async function Settings() {
     },
   });
 
+  const themeClassName = getThemeClassName(userData?.theme as Themes);
+  console.log("themeClassName", themeClassName);
+
   return (
     <>
       <Navbar
@@ -27,7 +32,13 @@ export default async function Settings() {
       />
       <div className="flex justify-center pb-20">
         <div className="w-4/5 desktop:w-1/3">
-          <h1 className="text-3xl font-bold mt-2 mb-4">Settings</h1>
+          <h1
+            className={`${getThemeClassName(
+              userData?.theme as Themes
+            )} text-defaultColor text-3xl font-bold mt-2 mb-4`}
+          >
+            Settings
+          </h1>
           <SettingsForm userData={userData as TUserData} />
         </div>
       </div>

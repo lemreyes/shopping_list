@@ -141,13 +141,17 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
             height={54}
           />
           <button
-            className={`${themeClassName} px-2 py-1 h-6 rounded-lg bg-formButtonBg text-xs text-formButtonText hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder`}
+            className={`${themeClassName} px-2 py-1 h-6 rounded-lg bg-formButtonBg text-xs text-formButtonText hover:bg-formButtonBgHover 
+                        hover:text-formButtonTextHover hover:border hover:border-formButtonBorder`}
             onClick={hdlChangePicture}
           >
             Change picture
           </button>
         </div>
-        <label htmlFor="account" className="text-sm">
+        <label
+          htmlFor="account"
+          className={`${themeClassName} text-sm text-defaultColor`}
+        >
           Account
         </label>
         <input
@@ -158,7 +162,10 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           value={userData.email}
           disabled
         />
-        <label htmlFor="name" className="text-sm">
+        <label
+          htmlFor="name"
+          className={`${themeClassName} text-sm text-defaultColor`}
+        >
           Name
         </label>
         <input
@@ -176,7 +183,10 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           onChange={hdlFileChange}
           accept="jpg, jpeg"
         />
-        <label htmlFor="color-theme" className="text-sm">
+        <label
+          htmlFor="color-theme"
+          className={`${themeClassName} text-sm text-defaultColor`}
+        >
           Color Theme
         </label>
         <select
@@ -190,7 +200,7 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           <option value={Themes.ThemeDark}>Dark</option>
         </select>
         <button
-          className={`${themeClassName} mt-6 px-2 py-1 rounded-lg bg-formButtonBg text-formButtonText font-bold hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder disabled:bg-formButtonBgDisabled disabled:text-formButtonText`}
+          className={`${themeClassName} mt-6 px-2 py-1 rounded-lg bg-formButtonBg text-formButtonText font-bold hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border hover:border-formButtonBorder disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
           onClick={hdlUpdate}
           disabled={updateBtnDisable}
           type="submit"

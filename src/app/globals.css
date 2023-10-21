@@ -8,28 +8,32 @@
 .theme-light {
   --navbarBg: theme("colors.gray.800");
   --bodyBg: theme("colors.white");
+  --defaultColor: theme("colors.gray.900");
   --formBorderColor: theme("colors.gray.800");
   --formBg: theme("colors.gray.200");
-  --formBgDisabled: theme("colors.gray.600")
+  --formBgDisabled: theme("colors.gray.400");
   --formButtonBg: theme("colors.gray.600");
   --formButtonBgDisabled: theme("colors.gray.200");
   --formButtonBorder: theme("colors.gray.600");
   --formButtonBgHover: theme("colors.white");
-  --formButtonText: theme("colors.gray.800");
+  --formButtonText: theme("colors.white");
+  --formButtonTextDisabled: theme("colors.gray.800")
   --formButtonTextHover: theme("colors.gray.800");
 }
 
 .theme-dark {
   --navbarBg: theme("colors.gray.400");
   --bodyBg: theme("colors.gray.900");
+  --defaultColor: theme("colors.white");
 
   --formBorderColor: theme("colors.gray.800");
   --formBg: theme("colors.gray.800");
-  --formBgDisabled: theme("colors.gray.600")
+  --formBgDisabled: theme("colors.gray.600");
   --formButtonBg: theme("colors.gray.600");
   --formButtonBgDisabled: theme("colors.gray.200");
   --formButtonBorder: theme("colors.gray.600");
   --formButtonBgHover: theme("colors.white");
   --formButtonText: theme("colors.white");
+  --formButtonTextDisabled: theme("colors.gray.800");
   --formButtonTextHover: theme("colors.gray.800");
 }
