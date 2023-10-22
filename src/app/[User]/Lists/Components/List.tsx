@@ -11,6 +11,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { deleteList } from "@/app/Services/fetchWrapper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
+import { TList } from "@/app/Types/Types";
+import { Themes } from "@/app/Types/Enums";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -22,9 +25,11 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function List({
   list_items,
   userId,
+  theme,
 }: {
   list_items: Array<TList>;
   userId: number;
+  theme: Themes;
 }) {
   const [editMode, setEditMode] = useState(false);
 
@@ -41,6 +46,8 @@ export default function List({
     setLabel(list_name);
     setDeleteId(id);
   };
+
+  const themeClassName = getThemeClassName(theme);
 
   const handleCloseYes = async () => {
     // delete in database
@@ -94,17 +101,22 @@ export default function List({
   return (
     <>
       <div
-        className={`flex flex-rows items-center p-2 ${
-          editMode ? `bg-orange-100` : `bg-white`
+        className={`${themeClassName} flex flex-rows items-center p-2 ${
+          editMode ? `bg-orange-100` : `bg-bodyBg`
         } rounded-lg`}
       >
         <button
-          className="px-4 py-1 font-bold text-lg border border-gray-900 bg-white hover:bg-gray-600 hover:text-white rounded-lg hover:"
+          className={`${themeClassName} px-4 py-1 text-lg border border-formButtonBorder bg-formButtonBg text-formButtonText 
+                      hover:bg-formButtonBgHover hover:text-formButtonTextHover rounded-lg`}
           onClick={hdlEditBtnClick}
         >
           {editMode ? "Stop Editing" : "Edit List"}
         </button>
-        {editMode && <h2 className="ml-2 text-red-900">Edit mode is on.</h2>}
+        {editMode && (
+          <h2 className={`${themeClassName} ml-2 text-colorWarning`}>
+            Edit mode is on.
+          </h2>
+        )}
       </div>
       {arrayList.length > 0 ? (
         arrayList.map((list) => {
@@ -119,11 +131,12 @@ export default function List({
               hdlDeleteBtn={(list_name: string) => {
                 handleClickOpen(list.id, list_name);
               }}
+              theme={theme}
             />
           );
         })
       ) : (
-        <p>No lists found.</p>
+        <p className={`${themeClassName} text-defaultColor`}>No lists found.</p>
       )}
       <Dialog
         open={openDialog}

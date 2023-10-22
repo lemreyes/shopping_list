@@ -5,6 +5,9 @@ import { getServerSession } from "next-auth";
 import prisma from "../../Utilities/prismaUtils";
 import { redirect } from "next/navigation";
 import List from "./Components/List";
+import { TList } from "@/app/Types/Types";
+import { Themes } from "@/app/Types/Enums";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 
 export default async function Lists() {
   const session = await getServerSession(options);
@@ -28,6 +31,8 @@ export default async function Lists() {
     },
   });
 
+  const themeClassName = getThemeClassName(userData?.theme as Themes);
+
   return (
     <>
       <Navbar
@@ -36,10 +41,11 @@ export default async function Lists() {
       />
       <div className="flex justify-center pb-20">
         <div className="w-4/5">
-          <h1 className="text-3xl font-bold mt-2 mb-4">Lists</h1>
+          <h1 className={`${themeClassName} text-defaultColor text-3xl font-bold mt-2 mb-4`}>Lists</h1>
           <List
             list_items={lists as Array<TList>}
             userId={userData?.id as number}
+            theme={userData?.theme as Themes}
           />
         </div>
       </div>

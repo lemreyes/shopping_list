@@ -1,9 +1,13 @@
 "use client";
 import calendar_icon from "../../../../../public/assets/calendar_icon.svg";
+import calendar_icon_dark from "../../../../../public/assets/calendar_icon_dark.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getListItems } from "@/app/Services/fetchWrapper";
+import { TShoppingListItem } from "@/app/Types/Types";
+import { Themes } from "@/app/Types/Enums";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 
 export default function ListCard({
   id,
@@ -12,6 +16,7 @@ export default function ListCard({
   user_id,
   editMode,
   hdlDeleteBtn,
+  theme,
 }: {
   id: number;
   list_name: string;
@@ -19,6 +24,7 @@ export default function ListCard({
   user_id: number;
   editMode: boolean;
   hdlDeleteBtn: any;
+  theme: Themes;
 }) {
   const [items, setItems] = useState<Array<TShoppingListItem> | undefined>(
     undefined
@@ -55,8 +61,12 @@ export default function ListCard({
     hdlDeleteBtn(list_name);
   };
 
+  const themeClassName = getThemeClassName(theme);
+
   return (
-    <article className="border border-gray-200 px-4 py-1 my-4">
+    <article
+      className={`${themeClassName} border border-gray-200 px-4 py-1 my-4`}
+    >
       <Link
         href={{
           pathname: `/${user_id}/Lists/${list_name}`,
@@ -65,26 +75,33 @@ export default function ListCard({
           },
         }}
       >
-        <h2 className="text-xl font-bold">{list_name}</h2>
+        <h2 className={`${themeClassName} text-defaultColor text-xl font-bold`}>
+          {list_name}
+        </h2>
         <div className="flex flex-row justify-between">
           <div className="w-2/3">
-            <p className="text-xs">{previewString}</p>
+            <p className={`${themeClassName} text-xs text-defaultColor`}>
+              {previewString}
+            </p>
           </div>
           <div className="">
             <div className=" justify-self-end flex flex-row items-center">
               <Image
-                src={calendar_icon}
+                src={theme === 0 ? calendar_icon : calendar_icon_dark}
                 alt="calendar_icon"
-                className="w-6 mr-1"
+                className="w-6 mr-1 "
               />
-              <p className="text-sm">{updated_at.toLocaleDateString()}</p>
+              <p className={`${themeClassName} text-sm text-defaultColor`}>
+                {updated_at.toLocaleDateString()}
+              </p>
             </div>
           </div>
         </div>
       </Link>
       {editMode && (
         <button
-          className="px-4 py-1 border border-red-800 bg-red-800 hover:bg-white hover:text-red-800 text-white text-xs font-bold rounded-md mt-1 mb-1 w-full"
+          className={`${themeClassName} px-4 py-1 border border-colorWarning bg-colorWarning hover:bg-white hover:text-red-800 
+                    text-white text-xs rounded-md mt-4 mb-1 w-full`}
           onClick={hdlDeleteBtnClick}
         >
           Delete List

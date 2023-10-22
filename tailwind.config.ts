@@ -25,6 +25,7 @@ const config: Config = {
         formButtonText: "var(--formButtonText)",
         formButtonTextDisabled: "var(--formButtonTextDisabled)",
         formButtonTextHover: "var(--formButtonTextHover)",
+        colorWarning: "var(--colorWarning)",
       },
     },
     screens: {
