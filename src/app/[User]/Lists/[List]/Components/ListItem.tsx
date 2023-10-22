@@ -1,7 +1,9 @@
 "use client";
 
+import { Themes } from "@/app/Types/Enums";
 import { updateListItemCheck } from "../../../../Services/fetchWrapper";
 import { ChangeEvent, useState } from "react";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 
 export default function ListItem({
   id,
@@ -9,14 +11,17 @@ export default function ListItem({
   quantity,
   is_purchased,
   hdlListUpdate,
+  theme,
 }: {
   id: number;
   item_name: string;
   quantity: number;
   is_purchased: boolean;
-  hdlListUpdate: any
+  hdlListUpdate: any;
+  theme: Themes;
 }) {
   const [checkStatus, setCheckStatus] = useState(is_purchased);
+  const themeClassName = getThemeClassName(theme);
 
   const hdlOnClick = async (event: ChangeEvent<HTMLInputElement>) => {
     updateListItemCheck(id, event.target.checked);
@@ -25,7 +30,7 @@ export default function ListItem({
   };
 
   return (
-    <li className="flex flex-row p-2 border border-gray-200 rounded-lg mt-2">
+    <li className={`${themeClassName} flex flex-row p-2 border border-gray-200 text-defaultColor rounded-lg mt-2`}>
       <input
         type="checkbox"
         className="w-8 mr-4"

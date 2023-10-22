@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
 import ListItem from "./ListItem";
+import { TShoppingListItem } from "@/app/Types/Types";
+import { Themes } from "@/app/Types/Enums";
 
 export default function ListItemContainer({
   listItems,
+  theme,
 }: {
   listItems: Array<TShoppingListItem>;
+  theme: Themes;
 }) {
   const [listItemsArray, setListItemsArray] =
     useState<Array<TShoppingListItem>>(listItems);
@@ -41,6 +45,7 @@ export default function ListItemContainer({
               hdlListUpdate={(isPurchased: boolean) =>
                 hdlListUpdate(listItemsArray.id, isPurchased)
               }
+              theme={theme}
             />
           );
         })

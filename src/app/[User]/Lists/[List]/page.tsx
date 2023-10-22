@@ -5,6 +5,9 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import ListItemContainer from "./Components/ListItemContainer";
+import { QueryProps, TShoppingListItem } from "@/app/Types/Types";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
+import { Themes } from "@/app/Types/Enums";
 
 export default async function List(props: QueryProps) {
   const session = await getServerSession(options);
@@ -43,6 +46,8 @@ export default async function List(props: QueryProps) {
     ],
   });
 
+  const themeClassName = getThemeClassName(userData?.theme as Themes);
+
   return (
     <>
       <Navbar
@@ -51,8 +56,15 @@ export default async function List(props: QueryProps) {
       />
       <div className="flex justify-center pb-20">
         <div className="w-5/6 desktop:w-1/3">
-          <h1 className="text-3xl font-bold mt-2 mb-4">{list?.list_name}</h1>
-          <ListItemContainer listItems={listItems as Array<TShoppingListItem>} />
+          <h1
+            className={`${themeClassName} text-defaultColor text-3xl font-bold mt-2 mb-4`}
+          >
+            {list?.list_name}
+          </h1>
+          <ListItemContainer
+            listItems={listItems as Array<TShoppingListItem>}
+            theme={userData?.theme as Themes}
+          />
         </div>
       </div>
     </>
