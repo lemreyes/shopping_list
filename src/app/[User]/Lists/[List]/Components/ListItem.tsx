@@ -30,10 +30,12 @@ export default function ListItem({
   };
 
   return (
-    <li className={`${themeClassName} flex flex-row p-2 border border-gray-200 text-defaultColor rounded-lg mt-2`}>
+    <li
+      className={`${themeClassName} flex flex-row p-2 border border-gray-200 text-defaultColor rounded-lg mt-2`}
+    >
       <input
         type="checkbox"
-        className="w-8 mr-4"
+        className={`${themeClassName} accent-colorBrand w-8 mr-4`}
         onChange={hdlOnClick}
         checked={checkStatus}
       />

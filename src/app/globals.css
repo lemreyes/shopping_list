@@ -20,6 +20,7 @@
   --formButtonTextDisabled: theme("colors.gray.800")
   --formButtonTextHover: theme("colors.gray.800");
   --colorWarning: theme("colors.red.800");
+  --colorBrand: theme("colors.green.600");
 }
 
 .theme-dark {
@@ -36,6 +37,6 @@
   --formButtonText: theme("colors.white");
   --formButtonTextDisabled: theme("colors.gray.800");
   --formButtonTextHover: theme("colors.gray.800");
-
   --colorWarning: theme("colors.red.800");
+  --colorBrand: theme("colors.green.600");
 }
