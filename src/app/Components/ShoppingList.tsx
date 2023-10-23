@@ -21,7 +21,7 @@ export default function ShoppingList() {
   };
 
   return (
-    <div className="flex flex-col justify-between min-h-full">
+    <div className="flex flex-col justify-between">
       <div>
         <div className="flex flex-row justify-between">
           <h2 className="font-bold text-2xl">Shopping List</h2>
