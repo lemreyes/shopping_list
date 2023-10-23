@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import prisma from "./Utilities/prismaUtils";
 import { TCategory, TItem } from "./Types/Types";
+import { Themes } from "./Types/Enums";
 
 export default async function Home() {
   const session = await getServerSession(options);
@@ -54,7 +55,7 @@ export default async function Home() {
         userDataId={userData?.id as number}
         userImage={userData?.image as string}
       />
-      <ControlPanel masterList={masterList} />
+      <ControlPanel masterList={masterList} theme={userData?.theme as Themes} />
     </>
   );
 }

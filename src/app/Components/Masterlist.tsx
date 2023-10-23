@@ -8,8 +8,10 @@ import CategoryGroup from "./CategoryGroup";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import NewCategoryButton from "./NewCategoryButton";
 import { TCategory } from "../Types/Types";
+import { Themes } from "../Types/Enums";
+import { getThemeClassName } from "../Utilities/ThemeUtils";
 
-export default function Masterlist() {
+export default function Masterlist({ theme }: { theme: Themes }) {
   let [searchString, setSearchString] = useState("");
   let [filterResults, setFilterResults] = useState<TCategory[]>([]);
 
@@ -56,19 +58,34 @@ export default function Masterlist() {
     }
   };
 
+  const themeClassName = getThemeClassName(theme);
+
   return (
     <main className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8 desktop:w-[70%]">
-      <div className="flex flex-row">
-        <h2 className="font-bold text-2xl">Master List</h2>
+      <div
+        className={`${themeClassName} flex flex-row p-4 ${
+          editMode && `bg-orange-200`
+        }`}
+      >
+        <h2
+          className={`${themeClassName} font-bold text-2xl ${
+            editMode ? `text-gray-800` : `text-defaultColor`
+          }`}
+        >
+          Master List
+        </h2>
         <button
-          className="border border-gray-800 rounded-lg ml-16 px-4 hover:bg-gray-300 disabled:bg-gray-400"
+          className={`${themeClassName} border border-formButtonBorder bg-formButtonBg text-formButtonText rounded-lg ml-16 px-4 
+                      hover:bg-formButtonBgHover hover:text-formButtonTextHover disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
           onClick={hdlMasterlistEdit}
           disabled={searchString.length > 0}
         >
           Edit
         </button>
         {editMode && (
-          <span className="text-red-600 ml-2">Edit masterlist mode ON</span>
+          <span className={`${themeClassName} text-colorWarning ml-2`}>
+            Edit masterlist mode ON
+          </span>
         )}
       </div>
       <div className="flex flex-row">
@@ -89,10 +106,22 @@ export default function Masterlist() {
 
       {searchString.length === 0
         ? categories.map((category: TCategory) => {
-            return <CategoryGroup key={category.id} category={category} />;
+            return (
+              <CategoryGroup
+                key={category.id}
+                category={category}
+                theme={theme}
+              />
+            );
           })
         : filterResults.map((category: TCategory) => {
-            return <CategoryGroup key={category.id} category={category} />;
+            return (
+              <CategoryGroup
+                key={category.id}
+                category={category}
+                theme={theme}
+              />
+            );
           })}
     </main>
   );

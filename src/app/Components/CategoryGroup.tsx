@@ -3,13 +3,24 @@ import Image from "next/image";
 import Item from "./Item";
 import NewItemButton from "./NewItemButton";
 import { TCategory } from "../Types/Types";
+import { Themes } from "../Types/Enums";
+import { getThemeClassName } from "../Utilities/ThemeUtils";
 
-export default function CategoryGroup({ category }: { category: TCategory }) {
+export default function CategoryGroup({
+  category,
+  theme,
+}: {
+  category: TCategory;
+  theme: Themes;
+}) {
   const editMode = useMasterlistStore((state: any) => state.editMode);
+  const themeClassName = getThemeClassName(theme);
 
   return (
     <div key={category.id}>
-      <h3 className="text-lg font-medium mt-2 desktop:mt-4">
+      <h3
+        className={`${themeClassName} text-defaultColor text-lg font-medium mt-2 desktop:mt-4`}
+      >
         {category.category_name}
       </h3>
       {category.items.length > 0 ? (
@@ -21,6 +32,7 @@ export default function CategoryGroup({ category }: { category: TCategory }) {
               category={category.category_name}
               label={item.item_name}
               item_id={item.id}
+              theme={theme}
             />
           );
         })

@@ -1,6 +1,8 @@
 import React from "react";
 import add_icon from "../../../public/assets/add_icon.svg";
+import add_icon_dark from "../../../public/assets/add_icon_dark.svg";
 import trash_icon from "../../../public/assets/trash_icon.svg";
+import trash_icon_dark from "../../../public/assets/trash_icon_dark.svg";
 import Image from "next/image";
 
 import { useShoppingListStore } from "../Store/shoppinglist_store";
@@ -14,18 +16,27 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { deleteItem } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
-import { TCategory, TItem, TShoppingListCategory, TShoppingListItem } from "../Types/Types";
+import {
+  TCategory,
+  TItem,
+  TShoppingListCategory,
+  TShoppingListItem,
+} from "../Types/Types";
+import { Themes } from "../Types/Enums";
+import { getThemeClassName } from "../Utilities/ThemeUtils";
 
 export default function Item({
   category_id,
   category,
   label,
   item_id,
+  theme,
 }: {
   category_id: number;
   category: string;
   label: string;
   item_id: number;
+  theme: Themes;
 }) {
   const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
@@ -48,6 +59,8 @@ export default function Item({
     (state: any) => state.setOpenSnackbar
   );
   const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
+
+  const themeClassName = getThemeClassName(theme);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -108,9 +121,8 @@ export default function Item({
 
   // find this category in the shoppingList
   const getItemCount = () => {
-    const matchedCategory: TShoppingListCategory | undefined = shoppingList.find(
-      (categoryInList) => categoryInList.id === category_id
-    );
+    const matchedCategory: TShoppingListCategory | undefined =
+      shoppingList.find((categoryInList) => categoryInList.id === category_id);
 
     if (matchedCategory) {
       const matchedItem = matchedCategory.items?.find(
@@ -143,9 +155,10 @@ export default function Item({
       };
 
       // find the category
-      const matchedCategory: TShoppingListCategory | undefined = newShoppingList.find(
-        (categoryInList) => categoryInList.id === category_id
-      );
+      const matchedCategory: TShoppingListCategory | undefined =
+        newShoppingList.find(
+          (categoryInList) => categoryInList.id === category_id
+        );
       if (matchedCategory) {
         // find if there is existing item
         const matchedItem = matchedCategory.items?.find(
@@ -176,18 +189,28 @@ export default function Item({
     <>
       <button
         value={label}
-        className={`border ${
+        className={`${themeClassName} border ${
           itemCount > 0 ? "border-black" : "border-gray-300"
-        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm hover:border-black hover:bg-gray-200`}
+        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-formButtonText bg-formButtonBg 
+          hover:border-formButtonBorder hover:text-formButtonTextHover hover:bg-formButtonBgHover`}
         onClick={hdlItemBtnClick}
       >
-        {label}{" "}
+        {label}
+        {"  "}
         {editMode ? (
-          <Image src={trash_icon} alt="delete" className="inline w-6" />
+          <Image
+            src={theme === Themes.ThemeLight ? trash_icon : trash_icon_dark}
+            alt="delete"
+            className="inline w-6"
+          />
         ) : itemCount > 0 ? (
           <span className="text_lg ml-3">{itemCount}</span>
         ) : (
-          <Image src={add_icon} alt="add" className="inline w-6" />
+          <Image
+            src={theme === Themes.ThemeLight ? add_icon : add_icon_dark}
+            alt="add"
+            className="inline w-6"
+          />
         )}
       </button>
       <Dialog

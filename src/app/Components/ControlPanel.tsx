@@ -7,6 +7,7 @@ import { useSnackbarStore } from "../Store/snackbar_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import React from "react";
 import { TCategory } from "../Types/Types";
+import { Themes } from "../Types/Enums";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -17,8 +18,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 export default function ControlPanel({
   masterList,
+  theme,
 }: {
   masterList: Array<TCategory>;
+  theme: Themes;
 }) {
   // update masterlist store
   const updateCategories = useMasterlistStore(
@@ -48,8 +51,8 @@ export default function ControlPanel({
 
   return (
     <div className="flex flex-col desktop:flex-row">
-      <Masterlist />
-      <ActiveListPanel />
+      <Masterlist theme={theme} />
+      <ActiveListPanel theme={theme} />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={4000}
