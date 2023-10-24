@@ -52,7 +52,7 @@ export default function ControlPanel({
   return (
     <div className="flex flex-col desktop:flex-row">
       <Masterlist theme={theme} />
-      <ActiveListPanel theme={theme} />
+      <ActiveListPanel />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={4000}

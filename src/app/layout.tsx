@@ -2,14 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import { NextAuthProvider } from "./providers";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import prisma from "./Utilities/prismaUtils";
-import { options } from "./api/auth/[...nextauth]/options";
-import { getThemeClassName } from "./Utilities/ThemeUtils";
-import { Themes } from "./Types/Enums";
 
-const inter = Quicksand({ subsets: ["latin"] });
+const qs = Quicksand({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "List Easy",
@@ -21,24 +15,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(options);
-  if (session === null) {
-    redirect("/Auth/Login");
-  }
-
-  // find user data
-  const userData = await prisma.userData.findUnique({
-    where: {
-      email: session?.user?.email as string,
-    },
-  });
+  console.log("Layout");
 
   return (
     <html lang="en">
       <NextAuthProvider>
-        <body className={`${inter.className} ${getThemeClassName(userData?.theme as Themes)} bg-bodyBg`}>
-          {children}
-        </body>
+        <body className={`${qs.className}`}>{children}</body>
       </NextAuthProvider>
     </html>
   );
