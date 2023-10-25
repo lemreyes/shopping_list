@@ -58,6 +58,11 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
 
   const themeClassName = getThemeClassName(userData.theme);
 
+  useEffect(() => {
+    document.body.classList.add(`${themeClassName}`);
+    document.body.classList.add(`bg-bodyBg`);
+  }, [themeClassName]);
+
   const hdlNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
 
