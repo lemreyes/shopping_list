@@ -22,7 +22,6 @@ export default async function Settings() {
   });
 
   const themeClassName = getThemeClassName(userData?.theme as Themes);
-  console.log("themeClassName", themeClassName);
 
   return (
     <>

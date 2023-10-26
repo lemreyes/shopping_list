@@ -97,10 +97,6 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
 
   const hdlThemeChange = (event: React.FormEvent<HTMLSelectElement>) => {
     setTheme(parseInt(event.currentTarget.value));
-    console.log(
-      "hdlThemeChange event.currentTarget.value",
-      event.currentTarget.value
-    );
 
     if (parseInt(event.currentTarget.value) === (userData.theme as number)) {
       setIsThemeChanged(false);
@@ -124,8 +120,6 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
   const hdlUpdate = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     try {
-      console.log("hdlUpdate theme", theme);
-
       const responseData = await updateSetting(
         userData.id,
         imageFile,

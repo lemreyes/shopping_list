@@ -28,7 +28,7 @@ export default function NewItemButton({
   const [itemName, setItemName] = useState("");
   const [openNewItemForm, setOpenNewItemForm] = React.useState(false);
   const masterlist = useMasterlistStore((state: any) => state.categories);
-  const updateMaterList = useMasterlistStore(
+  const updateMasterList = useMasterlistStore(
     (state: any) => state.updateCategories
   );
   const setSnackbarMessage = useSnackbarStore(
@@ -63,7 +63,7 @@ export default function NewItemButton({
 
       // update masterlist store
       newMasterList[categoryIndex].items.push(responseData);
-      updateMaterList(newMasterList);
+      updateMasterList(newMasterList);
 
       setOpenNewItemForm(false);
 

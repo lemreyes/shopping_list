@@ -18,6 +18,7 @@ export default function Masterlist({ theme }: { theme: Themes }) {
   const categories: Array<TCategory> = useMasterlistStore(
     (state: any) => state.categories
   );
+
   const editMode = useMasterlistStore((state: any) => state.editMode);
   const setEditMode = useMasterlistStore((state: any) => state.setEditMode);
 
@@ -61,7 +62,7 @@ export default function Masterlist({ theme }: { theme: Themes }) {
   const themeClassName = getThemeClassName(theme);
 
   return (
-    <main className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8 desktop:w-[70%]">
+    <div className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8 desktop:w-[70%]">
       <div
         className={`${themeClassName} flex flex-row p-4 ${
           editMode && `bg-orange-200`
@@ -123,6 +124,6 @@ export default function Masterlist({ theme }: { theme: Themes }) {
               />
             );
           })}
-    </main>
+    </div>
   );
 }

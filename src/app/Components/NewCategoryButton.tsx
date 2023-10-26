@@ -26,9 +26,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function NewCategoryButton() {
   const [categoryName, setCategoryName] = useState("");
   const [openNewCategoryForm, setOpenNewCategoryForm] = useState(false);
-  const setSnackbarMessage = useSnackbarStore(
-    (state: any) => state.setMessage
-  );
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
   const setOpenSnackbar = useSnackbarStore(
     (state: any) => state.setOpenSnackbar
   );
@@ -58,6 +56,7 @@ export default function NewCategoryButton() {
       const responseData = await createNewCategory(categoryName);
 
       newMasterList.push(responseData);
+
       updateCategories(newMasterList);
 
       setOpenNewCategoryForm(false);

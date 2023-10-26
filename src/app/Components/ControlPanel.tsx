@@ -5,7 +5,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useSnackbarStore } from "../Store/snackbar_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
-import React from "react";
+import React, { useEffect } from "react";
 import { TCategory } from "../Types/Types";
 import { Themes } from "../Types/Enums";
 
@@ -23,11 +23,15 @@ export default function ControlPanel({
   masterList: Array<TCategory>;
   theme: Themes;
 }) {
+
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
   );
-  updateCategories(masterList);
+
+  useEffect(() => {
+    updateCategories(masterList);
+  }, [masterList, updateCategories]);
 
   // get snackbar store
   const openSnackbar = useSnackbarStore((state: any) => state.openSnackbar);
@@ -50,7 +54,7 @@ export default function ControlPanel({
   };
 
   return (
-    <div className="flex flex-col desktop:flex-row">
+    <main className="flex flex-col desktop:flex-row">
       <Masterlist theme={theme} />
       <ActiveListPanel />
       <Snackbar
@@ -66,6 +70,6 @@ export default function ControlPanel({
           {snackbarMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </main>
   );
 }

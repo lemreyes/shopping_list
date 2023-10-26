@@ -71,7 +71,5 @@ export async function POST(request: NextRequest) {
     data: updateData,
   });
 
-  console.log("updatedUserData", updatedUserData);
-
   return NextResponse.json(updatedUserData);
 }

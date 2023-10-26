@@ -15,8 +15,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("Layout");
-
   return (
     <html lang="en">
       <NextAuthProvider>
