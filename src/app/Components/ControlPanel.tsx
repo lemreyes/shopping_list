@@ -54,7 +54,7 @@ export default function ControlPanel({
   };
 
   return (
-    <main className="flex flex-col desktop:flex-row">
+    <main className="flex flex-col desktop:flex-row min-h-[92vh]">
       <Masterlist theme={theme} />
       <ActiveListPanel />
       <Snackbar

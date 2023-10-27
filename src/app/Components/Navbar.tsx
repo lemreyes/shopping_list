@@ -38,7 +38,7 @@ export default function Navbar({
 
   return (
     <nav
-      className={`theme-${theme} bg-navbarBg flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 left-0 px-4`}
+      className={`theme-${theme} bg-navbarBg flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 desktop:h-[8vh] left-0 px-4`}
     >
       <div>
         <Image
@@ -49,19 +49,19 @@ export default function Navbar({
         />
         {showMenu && <MenuCard userDataId={userDataId} />}
       </div>
-      <div className="flex-grow py-2 text-3xl font-bold text-white">
+      <div className="flex-grow text-3xl font-bold text-white">
         List<span className="text-green-600">Easy</span>
       </div>
       <div className="flex flex-row items-center text-white">
         <Link
           href={"/"}
-          className="p-8 font-bold hover:bg-white hover:text-gray-800 hidden desktop:inline"
+          className="p-10 font-bold hover:bg-white hover:text-gray-800 hidden desktop:inline"
         >
           Plan
         </Link>
         <Link
           href={`/${userDataId}/Lists`}
-          className="p-8 font-bold hover:bg-white hover:text-gray-800 hidden desktop:inline"
+          className="p-10 font-bold hover:bg-white hover:text-gray-800 hidden desktop:inline"
         >
           Lists
         </Link>
