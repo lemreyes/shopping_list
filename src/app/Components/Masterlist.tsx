@@ -81,7 +81,7 @@ export default function Masterlist({ theme }: { theme: Themes }) {
           onClick={hdlMasterlistEdit}
           disabled={searchString.length > 0}
         >
-          Edit
+          {editMode ? "Stop Editing" : "Edit"}
         </button>
         {editMode && (
           <span className={`${themeClassName} text-colorWarning ml-2`}>
