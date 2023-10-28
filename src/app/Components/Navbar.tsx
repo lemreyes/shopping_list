@@ -38,7 +38,8 @@ export default function Navbar({
 
   return (
     <nav
-      className={`theme-${theme} bg-navbarBg flex flex-row items-center justify-between fixed w-full bottom-0 desktop:static desktop:top-0 desktop:h-[8vh] left-0 px-4`}
+      className={`theme-${theme} py-2 bg-navbarBg flex flex-row items-center justify-between fixed w-full bottom-0 
+                  desktop:static desktop:top-0 desktop:h-[8vh] left-0 px-4`}
     >
       <div>
         <Image

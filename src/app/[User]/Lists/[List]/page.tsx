@@ -8,6 +8,7 @@ import ListItemContainer from "./Components/ListItemContainer";
 import { QueryProps, TShoppingListItem } from "@/app/Types/Types";
 import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 import { Themes } from "@/app/Types/Enums";
+import ListPanel from "./Components/ListPanel";
 
 export default async function List(props: QueryProps) {
   const session = await getServerSession(options);
@@ -63,6 +64,10 @@ export default async function List(props: QueryProps) {
           </h1>
           <ListItemContainer
             listItems={listItems as Array<TShoppingListItem>}
+            theme={userData?.theme as Themes}
+          />
+          <ListPanel
+            isArchived={list?.is_done as boolean}
             theme={userData?.theme as Themes}
           />
         </div>
