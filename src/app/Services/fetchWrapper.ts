@@ -148,6 +148,36 @@ export async function updateList(
   return responseData;
 }
 
+/**
+ * Updates the archive status of the list
+ * @param list_id ID of targeted list
+ * @param is_archived Archiving status
+ * @returns The updated list.
+ */
+export async function updateListArchiveStatus(
+  list_id: number,
+  is_archived: boolean
+) {
+  const response = await fetch("/api/lists", {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      listId: list_id,
+      archivedStatus: is_archived,
+    }),
+  });
+
+  const responseData = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
+
 export async function deleteList(listId: number) {
   const response = await fetch("/api/lists", {
     method: "DELETE",

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 import prisma from "../../Utilities/prismaUtils";
+import { TShoppingListItem } from "@/app/Types/Types";
 
 // create new list and store all items in DB
 export async function POST(request: Request) {

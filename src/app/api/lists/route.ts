@@ -45,3 +45,34 @@ export async function DELETE(request: NextRequest) {
     }
   }
 }
+
+/**
+ * Toggles the list is_done for archiving/reopening
+ * @param request
+ * @returns NextResponse
+ */
+export async function PATCH(request: NextRequest) {
+  const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+
+  const { listId, archivedStatus } = await request.json();
+
+  const updatedList = await prisma.list.update({
+    where: {
+      id: listId,
+    },
+    data: {
+      is_done: archivedStatus,
+      updated_at: new Date(),
+    },
+  });
+
+  return NextResponse.json(updatedList);
+}

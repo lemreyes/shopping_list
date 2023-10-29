@@ -67,6 +67,7 @@ export default async function List(props: QueryProps) {
             theme={userData?.theme as Themes}
           />
           <ListPanel
+            listId={parseInt(props.searchParams.id as string)}
             isArchived={list?.is_done as boolean}
             theme={userData?.theme as Themes}
           />
