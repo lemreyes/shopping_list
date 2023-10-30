@@ -8,7 +8,7 @@ import archive_icon from "@/../public/assets/archive_icon.svg";
 import { updateListArchiveStatus } from "@/app/Services/fetchWrapper";
 
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import ConfirmationDialog from "@/app/Components/ConfirmationDialog";
 import { Snackbar } from "@mui/material";
 
@@ -36,19 +36,22 @@ export default function ListPanel({
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [severity, setSeverity] = useState("Success");
+  const [isSnackbarClosed, setIsSnackbarClosed] = useState<boolean | undefined>(
+    undefined
+  );
 
-  const btnHdlArchiveList = async () => {
-    setIsOpenDialog(true);
-    setDialogTitle("Confirm Archiving of List");
-    setDialogContent("Do you want to archive this list?");
-  };
+  useEffect(() => {
+    if (isSnackbarClosed === true) {
+      window.location.reload();
+    }
+  });
 
-  const handleCloseYes = async () => {
+  const handleCloseYesArchive = async () => {
     try {
-      updateListArchiveStatus(listId, true);
+      await updateListArchiveStatus(listId, true);
 
       setIsOpenDialog(false);
-      setSnackbarMessage("");
+      setSnackbarMessage("The list was archived.");
       setSeverity("success");
       setOpenSnackbar(true);
     } catch (error: unknown) {
@@ -58,6 +61,35 @@ export default function ListPanel({
         setOpenSnackbar(true);
       }
     }
+  };
+
+  const handleCloseYesReopen = async () => {
+    try {
+      await updateListArchiveStatus(listId, false);
+
+      setIsOpenDialog(false);
+      setSnackbarMessage("The list was reopened.");
+      setSeverity("success");
+      setOpenSnackbar(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setSeverity("error");
+        setOpenSnackbar(true);
+      }
+    }
+  };
+
+  const btnHdlArchiveList = async () => {
+    setDialogTitle("Confirm Archiving of List");
+    setDialogContent("Do you want to archive this list?");
+    setIsOpenDialog(true);
+  };
+
+  const btnHdlReopenList = async () => {
+    setDialogTitle("Confirm Reopening of List");
+    setDialogContent("Do you want to reopen this list?");
+    setIsOpenDialog(true);
   };
 
   const handleCloseNo = () => {
@@ -73,27 +105,51 @@ export default function ListPanel({
     }
 
     setOpenSnackbar(false);
+    setIsSnackbarClosed(true);
   };
 
   return (
     <div className={`${themeClassName} flex flex-row justify-between mt-8`}>
       {isArchived ? (
-        <button
-          className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
+        <>
+          <button
+            className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-        >
-          <Image src={reopen_icon} className={`w-8 mr-2`} alt="reopen icon" />
-          Reopen this list
-        </button>
+            onClick={btnHdlReopenList}
+          >
+            <Image src={reopen_icon} className={`w-8 mr-2`} alt="reopen icon" />
+            Reopen this list
+          </button>
+          <ConfirmationDialog
+            isDialogOpen={isOpenDialog}
+            dialogTitle={dialogTitle}
+            dialogContent={dialogContent}
+            hdlCloseNo={handleCloseNo}
+            hdlCloseYes={handleCloseYesReopen}
+          />
+        </>
       ) : (
-        <button
-          className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
+        <>
+          <button
+            className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-          onClick={btnHdlArchiveList}
-        >
-          <Image src={archive_icon} className={`w-8 mr-2`} alt="archive icon" />
-          Archive this list
-        </button>
+            onClick={btnHdlArchiveList}
+          >
+            <Image
+              src={archive_icon}
+              className={`w-8 mr-2`}
+              alt="archive icon"
+            />
+            Archive this list
+          </button>
+          <ConfirmationDialog
+            isDialogOpen={isOpenDialog}
+            dialogTitle={dialogTitle}
+            dialogContent={dialogContent}
+            hdlCloseNo={handleCloseNo}
+            hdlCloseYes={handleCloseYesArchive}
+          />
+        </>
       )}
       <button
         className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
@@ -102,13 +158,6 @@ export default function ListPanel({
         <Image src={copy_icon} className={`w-8 mr-2`} alt="copy icon" />
         Copy this List
       </button>{" "}
-      <ConfirmationDialog
-        isDialogOpen={isOpenDialog}
-        dialogTitle={dialogTitle}
-        dialogContent={dialogContent}
-        hdlCloseNo={handleCloseNo}
-        hdlCloseYes={handleCloseYes}
-      />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={4000}
