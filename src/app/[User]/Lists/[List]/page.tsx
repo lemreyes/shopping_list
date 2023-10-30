@@ -64,7 +64,7 @@ export default async function List(props: QueryProps) {
           </h1>
           {list?.is_done && (
             <div
-              className={`${themeClassName} text-defaultColor bg-gray-300 p-4`}
+              className={`${themeClassName} text-gray-900 bg-gray-300 p-4`}
             >
               <p>{"This list is archived."}</p>
             </div>

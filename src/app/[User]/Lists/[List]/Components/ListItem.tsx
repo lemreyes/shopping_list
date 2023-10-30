@@ -34,8 +34,8 @@ export default function ListItem({
   return (
     <li
       className={`${themeClassName} flex flex-row p-2 border border-gray-300 ${
-        isDisabled ? "bg-gray-300" : "bg-white"
-      } text-defaultColor rounded-lg mt-2`}
+        isDisabled ? "bg-gray-300 text-gray-900" : "bg-bodyBg text-defaultColor"
+      }  rounded-lg mt-2`}
     >
       <input
         type="checkbox"
