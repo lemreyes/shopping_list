@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 
 import search_icon from "../../../public/assets/search_icon.svg";
@@ -60,6 +60,11 @@ export default function Masterlist({ theme }: { theme: Themes }) {
   };
 
   const themeClassName = getThemeClassName(theme);
+
+  useEffect(() => {
+    document.body.classList.add(`${themeClassName}`);
+    document.body.classList.add(`bg-bodyBg`);
+  }, [themeClassName]);
 
   return (
     <div className="ml-4 mt-2 p-1 desktop:ml-4 desktop:mt-8 desktop:w-[70%]">

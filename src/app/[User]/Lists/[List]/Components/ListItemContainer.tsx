@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListItem from "./ListItem";
 import { TShoppingListItem } from "@/app/Types/Types";
 import { Themes } from "@/app/Types/Enums";
+import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 
 export default function ListItemContainer({
   listItems,
@@ -15,6 +16,11 @@ export default function ListItemContainer({
 }) {
   const [listItemsArray, setListItemsArray] =
     useState<Array<TShoppingListItem>>(listItems);
+
+  useEffect(() => {
+    document.body.classList.add(`${getThemeClassName(theme)}`);
+    document.body.classList.add(`bg-bodyBg`);
+  }, [theme]);
 
   const hdlListUpdate = (id: number, isPurchased: boolean) => {
     const index = listItemsArray.findIndex((listItem) => listItem.id === id);

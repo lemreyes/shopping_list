@@ -37,7 +37,9 @@ export default function CategoryGroup({
           );
         })
       ) : (
-        <p>No items listed.</p>
+        <p className={`${themeClassName} text-defaultColor`}>
+          No items listed.
+        </p>
       )}
       {editMode && (
         <NewItemButton

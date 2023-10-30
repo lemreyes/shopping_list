@@ -41,7 +41,11 @@ export default async function Lists() {
       />
       <div className="flex justify-center pb-20">
         <div className="w-4/5">
-          <h1 className={`${themeClassName} text-defaultColor text-3xl font-bold mt-2 mb-4`}>Lists</h1>
+          <h1
+            className={`${themeClassName} text-defaultColor text-3xl font-bold mt-2 mb-4`}
+          >
+            Lists
+          </h1>
           <List
             list_items={lists as Array<TList>}
             userId={userData?.id as number}

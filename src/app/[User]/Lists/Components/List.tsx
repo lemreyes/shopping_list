@@ -1,6 +1,6 @@
 "use client";
 import ListCard from "./ListCard";
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -48,6 +48,11 @@ export default function List({
   };
 
   const themeClassName = getThemeClassName(theme);
+
+  useEffect(() => {
+    document.body.classList.add(`${themeClassName}`);
+    document.body.classList.add(`bg-bodyBg`);
+  }, [themeClassName]);
 
   const handleCloseYes = async () => {
     // delete in database
