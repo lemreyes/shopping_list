@@ -12,6 +12,7 @@ export default function ListItem({
   is_purchased,
   hdlListUpdate,
   theme,
+  isDisabled,
 }: {
   id: number;
   item_name: string;
@@ -19,6 +20,7 @@ export default function ListItem({
   is_purchased: boolean;
   hdlListUpdate: any;
   theme: Themes;
+  isDisabled: boolean;
 }) {
   const [checkStatus, setCheckStatus] = useState(is_purchased);
   const themeClassName = getThemeClassName(theme);
@@ -31,13 +33,16 @@ export default function ListItem({
 
   return (
     <li
-      className={`${themeClassName} flex flex-row p-2 border border-gray-200 text-defaultColor rounded-lg mt-2`}
+      className={`${themeClassName} flex flex-row p-2 border border-gray-300 ${
+        isDisabled ? "bg-gray-300" : "bg-white"
+      } text-defaultColor rounded-lg mt-2`}
     >
       <input
         type="checkbox"
         className={`${themeClassName} accent-colorBrand w-8 mr-4`}
         onChange={hdlOnClick}
         checked={checkStatus}
+        disabled={isDisabled}
       />
       <div className="flex flex-row justify-between w-full">
         <div>{item_name}</div>

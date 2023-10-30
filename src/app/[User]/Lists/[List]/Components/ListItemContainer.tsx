@@ -6,9 +6,11 @@ import { Themes } from "@/app/Types/Enums";
 
 export default function ListItemContainer({
   listItems,
+  isArchived,
   theme,
 }: {
   listItems: Array<TShoppingListItem>;
+  isArchived: boolean;
   theme: Themes;
 }) {
   const [listItemsArray, setListItemsArray] =
@@ -46,6 +48,7 @@ export default function ListItemContainer({
                 hdlListUpdate(listItemsArray.id, isPurchased)
               }
               theme={theme}
+              isDisabled={isArchived}
             />
           );
         })

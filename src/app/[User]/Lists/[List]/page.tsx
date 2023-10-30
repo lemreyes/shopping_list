@@ -62,8 +62,16 @@ export default async function List(props: QueryProps) {
           >
             {list?.list_name}
           </h1>
+          {list?.is_done && (
+            <div
+              className={`${themeClassName} text-defaultColor bg-gray-300 p-4`}
+            >
+              <p>{"This list is archived."}</p>
+            </div>
+          )}
           <ListItemContainer
             listItems={listItems as Array<TShoppingListItem>}
+            isArchived={list?.is_done as boolean}
             theme={userData?.theme as Themes}
           />
           <ListPanel
