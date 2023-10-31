@@ -11,6 +11,7 @@ import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
 import { forwardRef, useEffect, useState } from "react";
 import ConfirmationDialog from "@/app/Components/ConfirmationDialog";
 import { Snackbar } from "@mui/material";
+import NewObjectDialog from "@/app/Components/NewObjectDialog";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -32,6 +33,8 @@ export default function ListPanel({
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogContent, setDialogContent] = useState("");
+  const [dialogConfirmationText, setDialogConfirmationText] = useState("");
+  const [dialogCopyListName, setDialogCopyListName] = useState("");
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -80,6 +83,29 @@ export default function ListPanel({
     }
   };
 
+  const handleCloseYesCopyList = async () => {
+    try {
+      // TO DO: call wrapper for duplicate list
+
+      setIsOpenDialog(false);
+      setSnackbarMessage("The list was successfully copied.");
+      setSeverity("success");
+      setOpenSnackbar(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setSnackbarMessage(error.message);
+        setSeverity("error");
+        setOpenSnackbar(true);
+      }
+    }
+  };
+
+  const handleCopyDialogOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDialogCopyListName(event.target.value);
+  };
+
   const btnHdlArchiveList = async () => {
     setDialogTitle("Confirm Archiving of List");
     setDialogContent("Do you want to archive this list?");
@@ -89,6 +115,13 @@ export default function ListPanel({
   const btnHdlReopenList = async () => {
     setDialogTitle("Confirm Reopening of List");
     setDialogContent("Do you want to reopen this list?");
+    setIsOpenDialog(true);
+  };
+
+  const btnHdlCopyList = async () => {
+    setDialogTitle("Copy Current List to New List");
+    setDialogContent("Enter new name of copy list");
+    setDialogConfirmationText("Copy");
     setIsOpenDialog(true);
   };
 
@@ -154,10 +187,20 @@ export default function ListPanel({
       <button
         className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                     hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
+        onClick={btnHdlCopyList}
       >
         <Image src={copy_icon} className={`w-8 mr-2`} alt="copy icon" />
         Copy this List
       </button>{" "}
+      <NewObjectDialog
+        isNewObjectDialogOpen={isOpenDialog}
+        dialogTitle={dialogTitle}
+        dialogContentText={dialogContent}
+        confirmationText={dialogConfirmationText}
+        hdlCloseNo={handleCloseNo}
+        hdlCloseYes={handleCloseYesCopyList}
+        hdlOnChange={handleCopyDialogOnChange}
+      />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={4000}
