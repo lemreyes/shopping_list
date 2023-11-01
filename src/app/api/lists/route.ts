@@ -4,6 +4,108 @@ import { options } from "../auth/[...nextauth]/options";
 import prisma from "@/app/Utilities/prismaUtils";
 import { Prisma } from "@prisma/client";
 
+export async function POST(request: NextRequest) {
+  const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+
+  // find user data
+  const userData = await prisma.userData.findUnique({
+    where: {
+      email: session?.user?.email as string,
+    },
+  });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found",
+      },
+      { status: 404 }
+    );
+  }
+
+  const { srcListId, destListName } = await request.json();
+
+  // validate source list id
+  const srcList = await prisma.list.findUnique({
+    where: {
+      id: srcListId,
+      ownerId: userData.id,
+    },
+  });
+  if (!srcList) {
+    return NextResponse.json(
+      {
+        errorMessage: "Source list was not found.",
+      },
+      { status: 404 }
+    );
+  }
+
+  // validate destination list name
+  const existingList = await prisma.list.findFirst({
+    where: {
+      ownerId: userData.id,
+      list_name: destListName,
+    },
+  });
+  if (existingList) {
+    return NextResponse.json(
+      {
+        errorMessage: "An existing list with this name already exists.",
+      },
+      { status: 400 }
+    );
+  }
+
+  // create the new list
+  const newList = await prisma.list.create({
+    data: {
+      list_name: destListName,
+      ownerId: userData.id,
+      is_done: false,
+    },
+  });
+  if (!newList) {
+    return NextResponse.json(
+      {
+        errorMessage: "Error in list creation.  Please try again later.",
+      },
+      { status: 500 }
+    );
+  }
+
+  // copy the existing list
+  const itemsFromSrcList = await prisma.listedItem.findMany({
+    where: {
+      listId: srcListId,
+    },
+  });
+
+  const itemsInCopyList = await Promise.all(
+    itemsFromSrcList.map(async (srcListItem) => {
+      const newListItem = await prisma.listedItem.create({
+        data: {
+          listed_item_name: srcListItem.listed_item_name,
+          quantity: srcListItem.quantity,
+          listId: newList.id,
+          is_purchased: false,
+        },
+      });
+
+      return newListItem;
+    })
+  );
+
+  return NextResponse.json(newList);
+}
+
 export async function DELETE(request: NextRequest) {
   const session = await getServerSession(options);
   if (!session) {

@@ -170,7 +170,34 @@ export async function updateListArchiveStatus(
   });
 
   const responseData = await response.json();
-  
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
+
+/**
+ * @description Fetch wrapper to copy and create a new list
+ * @param srcListId Id of list to be copied
+ * @param destListName Name of the new list
+ * @returns
+ */
+export async function copyList(srcListId: number, destListName: string) {
+  const response = await fetch("/api/lists", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      srcListId: srcListId,
+      destListName: destListName,
+    }),
+  });
+
+  const responseData = await response.json();
+
   if (!response.ok) {
     throw new Error(responseData.errorMessage);
   }

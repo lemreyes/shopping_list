@@ -5,7 +5,7 @@ import Image from "next/image";
 import reopen_icon from "@/../public/assets/reopen_icon.svg";
 import copy_icon from "@/../public/assets/duplicate_icon.svg";
 import archive_icon from "@/../public/assets/archive_icon.svg";
-import { updateListArchiveStatus } from "@/app/Services/fetchWrapper";
+import { copyList, updateListArchiveStatus } from "@/app/Services/fetchWrapper";
 
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
 import { forwardRef, useEffect, useState } from "react";
@@ -85,7 +85,7 @@ export default function ListPanel({
 
   const handleCloseYesCopyList = async () => {
     try {
-      // TO DO: call wrapper for duplicate list
+      await copyList(listId, dialogCopyListName);
 
       setIsOpenDialog(false);
       setSnackbarMessage("The list was successfully copied.");
