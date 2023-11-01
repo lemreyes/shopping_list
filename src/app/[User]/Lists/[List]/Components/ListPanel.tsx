@@ -93,7 +93,6 @@ export default function ListPanel({
   const handleCloseYesCopyList = async () => {
     try {
       const copyResult = await copyList(listId, dialogCopyListName);
-      console.log("copyResult", copyResult);
 
       setIsOpenCopyDialog(false);
       setSnackbarMessage("The list was successfully copied.");
