@@ -132,6 +132,7 @@ export default function List({
               list_name={list.list_name}
               updated_at={list.updated_at}
               user_id={userId}
+              is_archived={list.is_done}
               editMode={editMode}
               hdlDeleteBtn={(list_name: string) => {
                 handleClickOpen(list.id, list_name);

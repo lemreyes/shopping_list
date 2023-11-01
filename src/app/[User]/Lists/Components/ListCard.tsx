@@ -14,6 +14,7 @@ export default function ListCard({
   list_name,
   updated_at,
   user_id,
+  is_archived,
   editMode,
   hdlDeleteBtn,
   theme,
@@ -22,6 +23,7 @@ export default function ListCard({
   list_name: string;
   updated_at: Date;
   user_id: number;
+  is_archived: boolean;
   editMode: boolean;
   hdlDeleteBtn: any;
   theme: Themes;
@@ -75,16 +77,33 @@ export default function ListCard({
           },
         }}
       >
-        <h2 className={`${themeClassName} text-defaultColor text-xl font-bold`}>
-          {list_name}
-        </h2>
         <div className="flex flex-row justify-between">
           <div className="w-2/3">
+            <h2
+              className={`${themeClassName} text-defaultColor text-xl font-bold`}
+            >
+              {list_name}
+            </h2>
             <p className={`${themeClassName} text-xs text-defaultColor`}>
               {previewString}
             </p>
           </div>
           <div className="">
+            <div className="mb-1">
+              {is_archived ? (
+                <div
+                  className={`${themeClassName} text-gray-900 text-center text-xs p-0.5 rounded-md bg-gray-300`}
+                >
+                  Archived
+                </div>
+              ) : (
+                <div
+                  className={`${themeClassName} text-white text-center text-xs p-0.5 rounded-md bg-green-600`}
+                >
+                  Open
+                </div>
+              )}
+            </div>
             <div className=" justify-self-end flex flex-row items-center">
               <Image
                 src={theme === 0 ? calendar_icon : calendar_icon_dark}
