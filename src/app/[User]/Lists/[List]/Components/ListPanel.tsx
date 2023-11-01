@@ -35,9 +35,6 @@ export default function ListPanel({
   const themeClassName = getThemeClassName(theme);
   const [isOpenArchiveReopenDialog, setIsOpenArchiveReopenDialog] =
     useState(false);
-  const [dialogTitleArchiveReopen, setDialogTitleArchiveReopen] = useState("");
-  const [dialogContentArchiveReopen, setDialogContentArchiveReopen] =
-    useState("");
 
   const [isOpenCopyDialog, setIsOpenCopyDialog] = useState(false);
   const [dialogCopyTitle, setDialogCopyTitle] = useState("");
@@ -57,10 +54,12 @@ export default function ListPanel({
   );
 
   useEffect(() => {
-    if (isSnackbarClosed === true) {
+    // reload window after snackbar show for Archive and Reopen
+    // If Copy Result component is displayed, do not reload.
+    if (isSnackbarClosed === true && isShowCopyResult !== true) {
       window.location.reload();
     }
-  }, [isSnackbarClosed]);
+  }, [isSnackbarClosed, isShowCopyResult]);
 
   const handleCloseYesArchive = async () => {
     try {
@@ -123,15 +122,7 @@ export default function ListPanel({
     setDialogCopyListName(event.target.value);
   };
 
-  const btnHdlArchiveList = async () => {
-    setDialogTitleArchiveReopen("Confirm Archiving of List");
-    setDialogContentArchiveReopen("Do you want to archive this list?");
-    setIsOpenArchiveReopenDialog(true);
-  };
-
-  const btnHdlReopenList = async () => {
-    setDialogTitleArchiveReopen("Confirm Reopening of List");
-    setDialogContentArchiveReopen("Do you want to reopen this list?");
+  const btnHdlArchiveReopenList = async () => {
     setIsOpenArchiveReopenDialog(true);
   };
 
@@ -170,7 +161,7 @@ export default function ListPanel({
             <button
               className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-              onClick={btnHdlReopenList}
+              onClick={btnHdlArchiveReopenList}
             >
               <Image
                 src={reopen_icon}
@@ -183,8 +174,8 @@ export default function ListPanel({
             </button>
             <ConfirmationDialog
               isDialogOpen={isOpenArchiveReopenDialog}
-              dialogTitle={dialogTitleArchiveReopen}
-              dialogContent={dialogContentArchiveReopen}
+              dialogTitle="Confirm Reopening of List"
+              dialogContent="Do you really want to reopen this list?"
               hdlCloseNo={handleArchiveReopenDlgCloseNo}
               hdlCloseYes={handleCloseYesReopen}
             />
@@ -194,7 +185,7 @@ export default function ListPanel({
             <button
               className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-              onClick={btnHdlArchiveList}
+              onClick={btnHdlArchiveReopenList}
             >
               <Image
                 src={archive_icon}
@@ -207,8 +198,8 @@ export default function ListPanel({
             </button>
             <ConfirmationDialog
               isDialogOpen={isOpenArchiveReopenDialog}
-              dialogTitle={dialogTitleArchiveReopen}
-              dialogContent={dialogContentArchiveReopen}
+              dialogTitle="Confirm Archiving of List"
+              dialogContent="Do you really want to archive this list?"
               hdlCloseNo={handleArchiveReopenDlgCloseNo}
               hdlCloseYes={handleCloseYesArchive}
             />
