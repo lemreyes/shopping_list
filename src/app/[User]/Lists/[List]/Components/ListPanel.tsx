@@ -37,12 +37,7 @@ export default function ListPanel({
     useState(false);
 
   const [isOpenCopyDialog, setIsOpenCopyDialog] = useState(false);
-  const [dialogCopyTitle, setDialogCopyTitle] = useState("");
-  const [dialogCopyContent, setDialogCopyContent] = useState("");
-  const [dialogCopyConfirmationText, setDialogCopyConfirmationText] =
-    useState("");
   const [dialogCopyListName, setDialogCopyListName] = useState("");
-
   const [isShowCopyResult, setIsShowCopyResult] = useState(false);
   const [duplicateListName, setDuplicateListName] = useState("");
   const [duplicateListId, setDuplicateListId] = useState(0);
@@ -127,9 +122,6 @@ export default function ListPanel({
   };
 
   const btnHdlCopyList = async () => {
-    setDialogCopyTitle("Copy Current List to New List");
-    setDialogCopyContent("Enter new name of copy list");
-    setDialogCopyConfirmationText("Copy");
     setIsOpenCopyDialog(true);
   };
 
@@ -215,9 +207,9 @@ export default function ListPanel({
         </button>{" "}
         <NewObjectDialog
           isNewObjectDialogOpen={isOpenCopyDialog}
-          dialogTitle={dialogCopyTitle}
-          dialogContentText={dialogCopyContent}
-          confirmationText={dialogCopyConfirmationText}
+          dialogTitle="Copy Current List to New List"
+          dialogContentText="Enter new name of copy list"
+          confirmationText="Copy"
           hdlCloseNo={handleCopyDlgCloseNo}
           hdlCloseYes={handleCloseYesCopyList}
           hdlOnChange={handleCopyDialogOnChange}
