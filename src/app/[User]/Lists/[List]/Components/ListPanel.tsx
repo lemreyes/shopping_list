@@ -9,9 +9,10 @@ import { copyList, updateListArchiveStatus } from "@/app/Services/fetchWrapper";
 
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
 import { forwardRef, useEffect, useState } from "react";
-import ConfirmationDialog from "@/app/Components/ConfirmationDialog";
 import { Snackbar } from "@mui/material";
+import ConfirmationDialog from "@/app/Components/ConfirmationDialog";
 import NewObjectDialog from "@/app/Components/NewObjectDialog";
+import ListCopyResult from "./ListCopyResult";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -21,21 +22,33 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export default function ListPanel({
+  userId,
   listId,
   isArchived,
   theme,
 }: {
+  userId: number;
   listId: number;
   isArchived: boolean;
   theme: Themes;
 }) {
   const themeClassName = getThemeClassName(theme);
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [dialogTitle, setDialogTitle] = useState("");
-  const [dialogContent, setDialogContent] = useState("");
-  const [dialogConfirmationText, setDialogConfirmationText] = useState("");
+  const [isOpenArchiveReopenDialog, setIsOpenArchiveReopenDialog] =
+    useState(false);
+  const [dialogTitleArchiveReopen, setDialogTitleArchiveReopen] = useState("");
+  const [dialogContentArchiveReopen, setDialogContentArchiveReopen] =
+    useState("");
+
+  const [isOpenCopyDialog, setIsOpenCopyDialog] = useState(false);
+  const [dialogCopyTitle, setDialogCopyTitle] = useState("");
+  const [dialogCopyContent, setDialogCopyContent] = useState("");
+  const [dialogCopyConfirmationText, setDialogCopyConfirmationText] =
+    useState("");
   const [dialogCopyListName, setDialogCopyListName] = useState("");
 
+  const [isShowCopyResult, setIsShowCopyResult] = useState(false);
+  const [duplicateListName, setDuplicateListName] = useState("");
+  const [duplicateListId, setDuplicateListId] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [severity, setSeverity] = useState("Success");
@@ -53,7 +66,7 @@ export default function ListPanel({
     try {
       await updateListArchiveStatus(listId, true);
 
-      setIsOpenDialog(false);
+      setIsOpenArchiveReopenDialog(false);
       setSnackbarMessage("The list was archived.");
       setSeverity("success");
       setOpenSnackbar(true);
@@ -70,7 +83,7 @@ export default function ListPanel({
     try {
       await updateListArchiveStatus(listId, false);
 
-      setIsOpenDialog(false);
+      setIsOpenArchiveReopenDialog(false);
       setSnackbarMessage("The list was reopened.");
       setSeverity("success");
       setOpenSnackbar(true);
@@ -85,12 +98,16 @@ export default function ListPanel({
 
   const handleCloseYesCopyList = async () => {
     try {
-      await copyList(listId, dialogCopyListName);
+      const copyResult = await copyList(listId, dialogCopyListName);
+      console.log("copyResult", copyResult);
 
-      setIsOpenDialog(false);
+      setIsOpenCopyDialog(false);
       setSnackbarMessage("The list was successfully copied.");
       setSeverity("success");
       setOpenSnackbar(true);
+      setDuplicateListId(copyResult.id);
+      setDuplicateListName(copyResult.list_name);
+      setIsShowCopyResult(true);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setSnackbarMessage(error.message);
@@ -107,26 +124,30 @@ export default function ListPanel({
   };
 
   const btnHdlArchiveList = async () => {
-    setDialogTitle("Confirm Archiving of List");
-    setDialogContent("Do you want to archive this list?");
-    setIsOpenDialog(true);
+    setDialogTitleArchiveReopen("Confirm Archiving of List");
+    setDialogContentArchiveReopen("Do you want to archive this list?");
+    setIsOpenArchiveReopenDialog(true);
   };
 
   const btnHdlReopenList = async () => {
-    setDialogTitle("Confirm Reopening of List");
-    setDialogContent("Do you want to reopen this list?");
-    setIsOpenDialog(true);
+    setDialogTitleArchiveReopen("Confirm Reopening of List");
+    setDialogContentArchiveReopen("Do you want to reopen this list?");
+    setIsOpenArchiveReopenDialog(true);
   };
 
   const btnHdlCopyList = async () => {
-    setDialogTitle("Copy Current List to New List");
-    setDialogContent("Enter new name of copy list");
-    setDialogConfirmationText("Copy");
-    setIsOpenDialog(true);
+    setDialogCopyTitle("Copy Current List to New List");
+    setDialogCopyContent("Enter new name of copy list");
+    setDialogCopyConfirmationText("Copy");
+    setIsOpenCopyDialog(true);
   };
 
-  const handleCloseNo = () => {
-    setIsOpenDialog(false);
+  const handleArchiveReopenDlgCloseNo = () => {
+    setIsOpenArchiveReopenDialog(false);
+  };
+
+  const handleCopyDlgCloseNo = () => {
+    setIsOpenCopyDialog(false);
   };
 
   const handleCloseSnackber = (
@@ -142,86 +163,97 @@ export default function ListPanel({
   };
 
   return (
-    <div className={`${themeClassName} flex flex-row justify-between mt-8`}>
-      {isArchived ? (
-        <>
-          <button
-            className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
+    <div>
+      <div className={`${themeClassName} flex flex-row justify-between mt-8`}>
+        {isArchived ? (
+          <>
+            <button
+              className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-            onClick={btnHdlReopenList}
-          >
-            <Image
-              src={reopen_icon}
-              width={32}
-              height={32}
-              className={`w-8 mr-2`}
-              alt="reopen icon"
+              onClick={btnHdlReopenList}
+            >
+              <Image
+                src={reopen_icon}
+                width={32}
+                height={32}
+                className={`w-8 mr-2`}
+                alt="reopen icon"
+              />
+              Reopen this list
+            </button>
+            <ConfirmationDialog
+              isDialogOpen={isOpenArchiveReopenDialog}
+              dialogTitle={dialogTitleArchiveReopen}
+              dialogContent={dialogContentArchiveReopen}
+              hdlCloseNo={handleArchiveReopenDlgCloseNo}
+              hdlCloseYes={handleCloseYesReopen}
             />
-            Reopen this list
-          </button>
-          <ConfirmationDialog
-            isDialogOpen={isOpenDialog}
-            dialogTitle={dialogTitle}
-            dialogContent={dialogContent}
-            hdlCloseNo={handleCloseNo}
-            hdlCloseYes={handleCloseYesReopen}
-          />
-        </>
-      ) : (
-        <>
-          <button
-            className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
+          </>
+        ) : (
+          <>
+            <button
+              className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-            onClick={btnHdlArchiveList}
-          >
-            <Image
-              src={archive_icon}
-              width={32}
-              height={32}
-              className={`w-8 mr-2`}
-              alt="archive icon"
+              onClick={btnHdlArchiveList}
+            >
+              <Image
+                src={archive_icon}
+                width={32}
+                height={32}
+                className={`w-8 mr-2`}
+                alt="archive icon"
+              />
+              Archive this list
+            </button>
+            <ConfirmationDialog
+              isDialogOpen={isOpenArchiveReopenDialog}
+              dialogTitle={dialogTitleArchiveReopen}
+              dialogContent={dialogContentArchiveReopen}
+              hdlCloseNo={handleArchiveReopenDlgCloseNo}
+              hdlCloseYes={handleCloseYesArchive}
             />
-            Archive this list
-          </button>
-          <ConfirmationDialog
-            isDialogOpen={isOpenDialog}
-            dialogTitle={dialogTitle}
-            dialogContent={dialogContent}
-            hdlCloseNo={handleCloseNo}
-            hdlCloseYes={handleCloseYesArchive}
-          />
-        </>
-      )}
-      <button
-        className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
+          </>
+        )}
+        <button
+          className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                     hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
-        onClick={btnHdlCopyList}
-      >
-        <Image src={copy_icon} className={`w-8 mr-2`} alt="copy icon" />
-        Copy this List
-      </button>{" "}
-      <NewObjectDialog
-        isNewObjectDialogOpen={isOpenDialog}
-        dialogTitle={dialogTitle}
-        dialogContentText={dialogContent}
-        confirmationText={dialogConfirmationText}
-        hdlCloseNo={handleCloseNo}
-        hdlCloseYes={handleCloseYesCopyList}
-        hdlOnChange={handleCopyDialogOnChange}
-      />
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackber}
-      >
-        <Alert
-          onClose={handleCloseSnackber}
-          severity={severity as AlertColor}
-          sx={{ width: "100%" }}
+          onClick={btnHdlCopyList}
         >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+          <Image src={copy_icon} className={`w-8 mr-2`} alt="copy icon" />
+          Copy this List
+        </button>{" "}
+        <NewObjectDialog
+          isNewObjectDialogOpen={isOpenCopyDialog}
+          dialogTitle={dialogCopyTitle}
+          dialogContentText={dialogCopyContent}
+          confirmationText={dialogCopyConfirmationText}
+          hdlCloseNo={handleCopyDlgCloseNo}
+          hdlCloseYes={handleCloseYesCopyList}
+          hdlOnChange={handleCopyDialogOnChange}
+        />
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
+          onClose={handleCloseSnackber}
+        >
+          <Alert
+            onClose={handleCloseSnackber}
+            severity={severity as AlertColor}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </div>
+      <div>
+        {isShowCopyResult && (
+          <ListCopyResult
+            userDataId={userId}
+            listId={duplicateListId}
+            listName={duplicateListName}
+          />
+        )}
+      </div>
     </div>
   );
 }
