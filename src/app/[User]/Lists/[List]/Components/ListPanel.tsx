@@ -47,7 +47,7 @@ export default function ListPanel({
     if (isSnackbarClosed === true) {
       window.location.reload();
     }
-  });
+  }, [isSnackbarClosed]);
 
   const handleCloseYesArchive = async () => {
     try {
@@ -150,7 +150,13 @@ export default function ListPanel({
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
             onClick={btnHdlReopenList}
           >
-            <Image src={reopen_icon} className={`w-8 mr-2`} alt="reopen icon" />
+            <Image
+              src={reopen_icon}
+              width={32}
+              height={32}
+              className={`w-8 mr-2`}
+              alt="reopen icon"
+            />
             Reopen this list
           </button>
           <ConfirmationDialog
@@ -170,6 +176,8 @@ export default function ListPanel({
           >
             <Image
               src={archive_icon}
+              width={32}
+              height={32}
               className={`w-8 mr-2`}
               alt="archive icon"
             />
