@@ -29,9 +29,9 @@ export type TShoppingListItem = {
   quantity: number;
   is_purchased: boolean;
   listed_item_name: string;
-  listId: number;
-  categoryId: number;
-  masterItemId: number;
+  listId: number | null;
+  categoryId: number | null;
+  masterItemId: number | null;
 };
 
 export type TUserData = {

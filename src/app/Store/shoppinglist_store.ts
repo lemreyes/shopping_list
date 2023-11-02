@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { TItem } from "../Types/Types";
+import { TShoppingListItem } from "../Types/Types";
 
 export const useShoppingListStore = create((set) => ({
   shoppingList: [],
-  updateShoppingList: (updatedList: Array<TItem>) =>
+  updateShoppingList: (updatedList: Array<TShoppingListItem>) =>
     set({
       shoppingList: updatedList,
     }),

@@ -4,7 +4,13 @@ import ControlPanel from "./Components/ControlPanel";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import prisma from "./Utilities/prismaUtils";
-import { QueryProps, TCategory, TItem } from "./Types/Types";
+import {
+  QueryProps,
+  TCategory,
+  TItem,
+  TList,
+  TShoppingListItem,
+} from "./Types/Types";
 import { Themes } from "./Types/Enums";
 
 export default async function Home(props: QueryProps) {
@@ -56,8 +62,41 @@ export default async function Home(props: QueryProps) {
     })
   );
 
+  let shoppingListItems: Array<TShoppingListItem> = [];
+  let listInfo = undefined;
   if (listId !== undefined) {
-    
+    // get list information
+    listInfo = await prisma.list.findFirst({
+      where: {
+        id: parseInt(listId as string),
+      },
+      select: {
+        id: true,
+        list_name: true,
+        is_done: true,
+        ownerId: true,
+        updated_at: true,
+      },
+    });
+    if (listInfo === null) {
+      throw Error("List not found.");
+    }
+
+    // get shooping list items
+    shoppingListItems = await prisma.listedItem.findMany({
+      where: {
+        listId: parseInt(listId as string),
+      },
+      select: {
+        id: true,
+        quantity: true,
+        is_purchased: true,
+        listed_item_name: true,
+        listId: true,
+        categoryId: true,
+        masterItemId: true,
+      },
+    });
   }
 
   return (
@@ -68,7 +107,8 @@ export default async function Home(props: QueryProps) {
       />
       <ControlPanel
         masterList={masterList}
-        listId={parseInt(listId as string)}
+        editListInfo={listInfo as TList}
+        editShoppingListItems={shoppingListItems}
         userId={parseInt(ownerId as string)}
         theme={userData?.theme as Themes}
       />

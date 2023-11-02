@@ -5,8 +5,9 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useSnackbarStore } from "../Store/snackbar_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
+import { useShoppingListStore } from "../Store/shoppinglist_store";
 import React, { useEffect } from "react";
-import { TCategory } from "../Types/Types";
+import { TCategory, TList, TShoppingListItem } from "../Types/Types";
 import { Themes } from "../Types/Enums";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -18,12 +19,17 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 export default function ControlPanel({
   masterList,
+  editListInfo,
+  editShoppingListItems,
+  userId,
   theme,
 }: {
   masterList: Array<TCategory>;
+  editListInfo: TList;
+  editShoppingListItems: Array<TShoppingListItem>;
+  userId: number;
   theme: Themes;
 }) {
-
   // update masterlist store
   const updateCategories = useMasterlistStore(
     (state: any) => state.updateCategories
@@ -32,6 +38,31 @@ export default function ControlPanel({
   useEffect(() => {
     updateCategories(masterList);
   }, [masterList, updateCategories]);
+
+  // update shopping list store
+  const updateShoppingList = useShoppingListStore(
+    (state: any) => state.updateShoppingList
+  );
+
+  const updateActiveListId = useShoppingListStore(
+    (state: any) => state.updateActiveListId
+  );
+
+  const updateActiveListName = useShoppingListStore(
+    (state: any) => state.updateActiveListName
+  );
+
+  useEffect(() => {
+    updateShoppingList(editShoppingListItems);
+    updateActiveListId(editListInfo.id);
+    updateActiveListName(editListInfo.list_name);
+  }, [
+    editListInfo,
+    editShoppingListItems,
+    updateShoppingList,
+    updateActiveListId,
+    updateActiveListName,
+  ]);
 
   // get snackbar store
   const openSnackbar = useSnackbarStore((state: any) => state.openSnackbar);
