@@ -4,10 +4,10 @@ import ControlPanel from "./Components/ControlPanel";
 import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import prisma from "./Utilities/prismaUtils";
-import { TCategory, TItem } from "./Types/Types";
+import { QueryProps, TCategory, TItem } from "./Types/Types";
 import { Themes } from "./Types/Enums";
 
-export default async function Home() {
+export default async function Home(props: QueryProps) {
   const session = await getServerSession(options);
   if (session === null) {
     redirect("/Auth/Login");

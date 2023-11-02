@@ -57,11 +57,20 @@ export default async function List(props: QueryProps) {
       />
       <div className="flex justify-center pb-20">
         <div className="w-5/6 desktop:w-1/3">
-          <h1
-            className={`${themeClassName} text-defaultColor text-3xl font-bold mt-2 mb-4`}
-          >
-            {list?.list_name}
-          </h1>
+          <div className="flex flex-row justify-between items-center">
+            <h1
+              className={`${themeClassName} text-defaultColor text-3xl font-bold mt-2 mb-4`}
+            >
+              {list?.list_name}
+            </h1>
+            <button
+              className={`${themeClassName} border py-1 px-4 h-8 rounded-lg bg-formButtonBg text-formButtonText 
+                          hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border-formButtonBorder 
+                          disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
+            >
+              Edit this list
+            </button>
+          </div>
           {list?.is_done && (
             <div className={`${themeClassName} text-gray-900 bg-gray-300 p-4`}>
               <p>{"This list is archived."}</p>
