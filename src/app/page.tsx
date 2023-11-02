@@ -8,6 +8,8 @@ import { QueryProps, TCategory, TItem } from "./Types/Types";
 import { Themes } from "./Types/Enums";
 
 export default async function Home(props: QueryProps) {
+  const { listId, ownerId } = props.searchParams;
+
   const session = await getServerSession(options);
   if (session === null) {
     redirect("/Auth/Login");
@@ -19,6 +21,11 @@ export default async function Home(props: QueryProps) {
       email: session?.user?.email as string,
     },
   });
+
+  // check user data matches with owner id
+  if (ownerId !== undefined && parseInt(ownerId as string) !== userData?.id) {
+    throw new Error("User ID mismatch.");
+  }
 
   const categories: Array<TCategory> = await prisma.category.findMany({
     where: {
@@ -49,13 +56,22 @@ export default async function Home(props: QueryProps) {
     })
   );
 
+  if (listId !== undefined) {
+    
+  }
+
   return (
     <>
       <Navbar
         userDataId={userData?.id as number}
         userImage={userData?.image as string}
       />
-      <ControlPanel masterList={masterList} theme={userData?.theme as Themes} />
+      <ControlPanel
+        masterList={masterList}
+        listId={parseInt(listId as string)}
+        userId={parseInt(ownerId as string)}
+        theme={userData?.theme as Themes}
+      />
     </>
   );
 }
