@@ -9,6 +9,7 @@ import { useShoppingListStore } from "../Store/shoppinglist_store";
 import React, { useEffect } from "react";
 import { TCategory, TList, TShoppingListItem } from "../Types/Types";
 import { Themes } from "../Types/Enums";
+import { createCategorizedShoppingList } from "../Utilities/shoppingListUtils";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -54,7 +55,11 @@ export default function ControlPanel({
 
   useEffect(() => {
     if (editListInfo || editShoppingListItems.length > 0) {
-      updateShoppingList(editShoppingListItems);
+      const categorizedShoppingList = createCategorizedShoppingList(
+        editShoppingListItems,
+        masterList
+      );
+      updateShoppingList(categorizedShoppingList);
       updateActiveListId(editListInfo.id);
       updateActiveListName(editListInfo.list_name);
     }
@@ -64,6 +69,7 @@ export default function ControlPanel({
     updateShoppingList,
     updateActiveListId,
     updateActiveListName,
+    masterList,
   ]);
 
   // get snackbar store
