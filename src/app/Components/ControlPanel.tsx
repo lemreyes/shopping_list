@@ -53,9 +53,11 @@ export default function ControlPanel({
   );
 
   useEffect(() => {
-    updateShoppingList(editShoppingListItems);
-    updateActiveListId(editListInfo.id);
-    updateActiveListName(editListInfo.list_name);
+    if (editListInfo || editShoppingListItems.length > 0) {
+      updateShoppingList(editShoppingListItems);
+      updateActiveListId(editListInfo.id);
+      updateActiveListName(editListInfo.list_name);
+    }
   }, [
     editListInfo,
     editShoppingListItems,
