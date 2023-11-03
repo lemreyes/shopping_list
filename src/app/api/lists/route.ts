@@ -96,6 +96,8 @@ export async function POST(request: NextRequest) {
           quantity: srcListItem.quantity,
           listId: newList.id,
           is_purchased: false,
+          categoryId: srcListItem.categoryId,
+          masterItemId: srcListItem.masterItemId,
         },
       });
 
