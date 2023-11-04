@@ -36,6 +36,11 @@ export default function ShoppingList() {
             />
           </button>
         </div>
+        {editMode && (
+          <div className="p-2 rounded-lg bg-orange-200 text-red-900">
+            <p className="text-sm">Shopping List Edit Mode ON.</p>
+          </div>
+        )}
 
         {shoppingList.map((category: TShoppingListCategory) => {
           return (
