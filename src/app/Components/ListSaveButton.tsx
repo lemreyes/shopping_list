@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { createNewList, updateList } from "../Services/fetchWrapper";
@@ -36,6 +36,10 @@ export default function ListSaveButton() {
 
   const [listName, setListName] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    setListName(activeListName);
+  }, [activeListName]);
 
   const hdlListNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setListName(event.target.value);
@@ -109,6 +113,7 @@ export default function ListSaveButton() {
         placeholder="Name of list"
         className="py-2 pl-2 pr-8 rounded-lg border border-gray-700 w-full"
         onChange={hdlListNameChange}
+        defaultValue={listName}
       />
       <button
         className="p-2 bg-gray-700 border border-gray-700 text-white rounded-lg -ml-8 hover:bg-white hover:text-gray-700 disabled:bg-gray-400 disabled:text-black"
