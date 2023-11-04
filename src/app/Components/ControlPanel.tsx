@@ -53,7 +53,7 @@ export default function ControlPanel({
     (state: any) => state.updateActiveListName
   );
 
-  useEffect(() => {
+    useEffect(() => {
     if (editListInfo || editShoppingListItems.length > 0) {
       const categorizedShoppingList = createCategorizedShoppingList(
         editShoppingListItems,
@@ -62,6 +62,10 @@ export default function ControlPanel({
       updateShoppingList(categorizedShoppingList);
       updateActiveListId(editListInfo.id);
       updateActiveListName(editListInfo.list_name);
+    } else {
+      updateShoppingList([]);
+      updateActiveListId(undefined);
+      updateActiveListName(undefined);
     }
   }, [
     editListInfo,

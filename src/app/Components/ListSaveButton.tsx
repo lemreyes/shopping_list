@@ -41,14 +41,16 @@ export default function ListSaveButton() {
     setListName(activeListName);
   }, [activeListName]);
 
-  const hdlListNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setListName(event.target.value);
-
-    if (listName !== "" && shoppingList.length !== 0) {
+  useEffect(() => {
+    if ((listName !== "" && listName) && shoppingList.length !== 0) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
+  }, [listName, shoppingList]);
+
+  const hdlListNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setListName(event.target.value);
   };
 
   const hdlSaveButton = async () => {
