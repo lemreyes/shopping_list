@@ -130,7 +130,7 @@ export default function ListSaveButton() {
           Save
         </button>
       </div>
-      {activeListName !== listName && listName !== "" && (
+      {activeListName && activeListName !== listName && listName !== "" && (
         <div className="mt-2 p-2 rounded-lg bg-orange-200 text-red-900">
           <p className="text-sm">The list will be renamed to {listName}.</p>
         </div>
