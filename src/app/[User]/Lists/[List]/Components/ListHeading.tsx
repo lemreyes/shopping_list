@@ -19,7 +19,6 @@ export default function ListHeading({
     const queryParamString = new URLSearchParams(
       `listId=${listId}&ownerId=${ownerId}`
     );
-    console.log("queryParamString", queryParamString);
     router.push(`/?${queryParamString}`);
   };
 
