@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { createNewList, updateList } from "../Services/fetchWrapper";
@@ -42,7 +42,7 @@ export default function ListSaveButton() {
   }, [activeListName]);
 
   useEffect(() => {
-    if ((listName !== "" && listName) && shoppingList.length !== 0) {
+    if (listName !== "" && listName && shoppingList.length !== 0) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
@@ -109,21 +109,28 @@ export default function ListSaveButton() {
   };
 
   return (
-    <div className="flex flex-row mt-20">
-      <input
-        type="text"
-        placeholder="Name of list"
-        className="py-2 pl-2 pr-8 rounded-lg border border-gray-700 w-full"
-        onChange={hdlListNameChange}
-        defaultValue={listName}
-      />
-      <button
-        className="p-2 bg-gray-700 border border-gray-700 text-white rounded-lg -ml-8 hover:bg-white hover:text-gray-700 disabled:bg-gray-400 disabled:text-black"
-        disabled={isButtonDisabled}
-        onClick={hdlSaveButton}
-      >
-        Save
-      </button>
-    </div>
+    <Fragment>
+      <div className="flex flex-row mt-20">
+        <input
+          type="text"
+          placeholder="Name of list"
+          className="py-2 pl-2 pr-8 rounded-lg border border-gray-700 w-full"
+          onChange={hdlListNameChange}
+          defaultValue={listName}
+        />
+        <button
+          className="p-2 bg-gray-700 border border-gray-700 text-white rounded-lg -ml-8 hover:bg-white hover:text-gray-700 disabled:bg-gray-400 disabled:text-black"
+          disabled={isButtonDisabled}
+          onClick={hdlSaveButton}
+        >
+          Save
+        </button>
+      </div>
+      {activeListName !== listName && listName !== "" && (
+        <div className="mt-2 p-2 rounded-lg bg-orange-200 text-red-900">
+          <p className="text-sm">The list will be renamed to {listName}.</p>
+        </div>
+      )}
+    </Fragment>
   );
 }
