@@ -90,7 +90,7 @@ export async function PATCH(request: Request) {
     },
   });
 
-  const { listId, shoppingList } = await request.json();
+  const { listId, listName, shoppingList } = await request.json();
 
   // check if list is existing
   let targetUpdateList = await prisma.list.findUnique({
@@ -108,6 +108,16 @@ export async function PATCH(request: Request) {
   } else {
     // do nothing
   }
+
+  targetUpdateList = await prisma.list.update({
+    where: {
+      id: listId,
+    },
+    data: {
+      list_name: listName,
+      updated_at: new Date(),
+    },
+  });
 
   // update list in database
   const updatedShoppingList = await Promise.all(

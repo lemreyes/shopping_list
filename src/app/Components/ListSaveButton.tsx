@@ -86,7 +86,11 @@ export default function ListSaveButton() {
     } else {
       // there is current active list, perform incremental update
       try {
-        const responseData = await updateList(activeListId, shoppingListItems);
+        const responseData = await updateList(
+          activeListId,
+          listName,
+          shoppingListItems
+        );
 
         setSnackbarMessage(`${activeListName} list was successfully updated.`);
         setSeverity("success");

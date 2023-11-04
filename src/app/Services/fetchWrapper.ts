@@ -126,6 +126,7 @@ export async function createNewList(
 
 export async function updateList(
   list_id: number,
+  list_name: string,
   shopping_list: Array<TShoppingListItem>
 ) {
   const response = await fetch("/api/activelist", {
@@ -135,6 +136,7 @@ export async function updateList(
     },
     body: JSON.stringify({
       listId: list_id,
+      listName: list_name,
       shoppingList: shopping_list,
     }),
   });
