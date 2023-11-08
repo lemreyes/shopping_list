@@ -49,6 +49,7 @@ export async function POST(request: Request) {
             quantity: listItem.quantity,
             is_purchased: false,
             categoryId: listItem.categoryId,
+            categoryName: listItem.categoryName,
             listId: activeList?.id,
             masterItemId: listItem.masterItemId,
           },
@@ -133,6 +134,7 @@ export async function PATCH(request: Request) {
           masterItemId: listItem.masterItemId,
           listId: listId,
           categoryId: listItem.categoryId,
+          categoryName: listItem.categoryName,
         },
         update: {
           listed_item_name: listItem.listed_item_name,

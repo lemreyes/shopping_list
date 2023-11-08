@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 
 import prisma from "../../Utilities/prismaUtils"
+import { TCategory, TItem } from "@/app/Types/Types";
 
 export async function GET() {
   const session = await getServerSession(options);

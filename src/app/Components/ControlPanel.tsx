@@ -26,7 +26,7 @@ export default function ControlPanel({
   theme,
 }: {
   masterList: Array<TCategory>;
-  editListInfo: TList;
+  editListInfo: TList | undefined;
   editShoppingListItems: Array<TShoppingListItem>;
   userId: number;
   theme: Themes;
@@ -53,15 +53,15 @@ export default function ControlPanel({
     (state: any) => state.updateActiveListName
   );
 
-    useEffect(() => {
+  useEffect(() => {
     if (editListInfo || editShoppingListItems.length > 0) {
       const categorizedShoppingList = createCategorizedShoppingList(
         editShoppingListItems,
         masterList
       );
       updateShoppingList(categorizedShoppingList);
-      updateActiveListId(editListInfo.id);
-      updateActiveListName(editListInfo.list_name);
+      updateActiveListId(editListInfo?.id);
+      updateActiveListName(editListInfo?.list_name);
     } else {
       updateShoppingList([]);
       updateActiveListId(undefined);

@@ -31,6 +31,7 @@ export type TShoppingListItem = {
   listed_item_name: string;
   listId: number | null;
   categoryId: number | null;
+  categoryName: string;
   masterItemId: number | null;
 };
 

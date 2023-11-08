@@ -111,6 +111,7 @@ model ListedItem {
   is_purchased     Boolean
   Category         Category? @relation(fields: [categoryId], references: [id])
   categoryId       Int?
+  categoryName     String
   created_at       DateTime  @default(now())
   updated_at       DateTime  @default(now())
   List             List?     @relation(fields: [listId], references: [id])

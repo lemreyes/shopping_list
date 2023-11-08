@@ -151,6 +151,7 @@ export default function Item({
         is_purchased: false,
         masterItemId: item_id,
         categoryId: category_id,
+        categoryName: category,
         listId: activeListId,
       };
 

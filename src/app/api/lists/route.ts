@@ -97,6 +97,7 @@ export async function POST(request: NextRequest) {
           listId: newList.id,
           is_purchased: false,
           categoryId: srcListItem.categoryId,
+          categoryName: srcListItem.categoryName,
           masterItemId: srcListItem.masterItemId,
         },
       });

@@ -12,6 +12,7 @@ import {
   TShoppingListItem,
 } from "./Types/Types";
 import { Themes } from "./Types/Enums";
+import { prepareDataForEdit } from "./Utilities/serverUtils/editShoppingListUtils";
 
 export default async function Home(props: QueryProps) {
   const { listId, ownerId } = props.searchParams;
@@ -33,6 +34,35 @@ export default async function Home(props: QueryProps) {
     throw new Error("User ID mismatch.");
   }
 
+  let shoppingListItems: Array<TShoppingListItem> = [];
+  let listInfo, addedCategories, addedItems;
+  // if listId is defined, page is in shopping list edit mode
+  if (listId !== undefined) {
+    // prepare master list and shopping list data for edit
+    ({ listInfo, addedCategories, addedItems } = await prepareDataForEdit(
+      parseInt(listId as string),
+      userData?.id as number
+    ));
+
+    // get shooping list items
+    shoppingListItems = await prisma.listedItem.findMany({
+      where: {
+        listId: parseInt(listId as string),
+      },
+      select: {
+        id: true,
+        quantity: true,
+        is_purchased: true,
+        listed_item_name: true,
+        listId: true,
+        categoryId: true,
+        categoryName: true,
+        masterItemId: true,
+      },
+    });
+  }
+
+  // retrieve list of categories
   const categories: Array<TCategory> = await prisma.category.findMany({
     where: {
       userDataId: userData?.id,
@@ -44,6 +74,7 @@ export default async function Home(props: QueryProps) {
     },
   });
 
+  // retrieve masterlist
   const masterList = await Promise.all(
     categories.map(async (category) => {
       const items: Array<TItem> = await prisma.item.findMany({
@@ -61,43 +92,6 @@ export default async function Home(props: QueryProps) {
       return category;
     })
   );
-
-  let shoppingListItems: Array<TShoppingListItem> = [];
-  let listInfo = undefined;
-  if (listId !== undefined) {
-    // get list information
-    listInfo = await prisma.list.findFirst({
-      where: {
-        id: parseInt(listId as string),
-      },
-      select: {
-        id: true,
-        list_name: true,
-        is_done: true,
-        ownerId: true,
-        updated_at: true,
-      },
-    });
-    if (listInfo === null) {
-      throw Error("List not found.");
-    }
-
-    // get shooping list items
-    shoppingListItems = await prisma.listedItem.findMany({
-      where: {
-        listId: parseInt(listId as string),
-      },
-      select: {
-        id: true,
-        quantity: true,
-        is_purchased: true,
-        listed_item_name: true,
-        listId: true,
-        categoryId: true,
-        masterItemId: true,
-      },
-    });
-  }
 
   return (
     <>
