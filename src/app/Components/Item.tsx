@@ -8,12 +8,6 @@ import Image from "next/image";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
 import { useMasterlistStore } from "../Store/masterlist_store";
 
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { deleteItem } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
 import {
@@ -24,6 +18,7 @@ import {
 } from "../Types/Types";
 import { Themes } from "../Types/Enums";
 import { getThemeClassName } from "../Utilities/ThemeUtils";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 export default function Item({
   category_id,
@@ -214,27 +209,13 @@ export default function Item({
           />
         )}
       </button>
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseNo}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {`Delete ${label} from Master List`}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete {label} from the Master list?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseNo}>No</Button>
-          <Button onClick={handleCloseYes} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ConfirmationDialog
+        isDialogOpen={openDialog}
+        dialogTitle={`Delete ${label} from Master List`}
+        dialogContent={`Are you sure you want to delete ${label} from the Master list?`}
+        hdlCloseNo={handleCloseNo}
+        hdlCloseYes={handleCloseYes}
+      />
     </>
   );
 }
