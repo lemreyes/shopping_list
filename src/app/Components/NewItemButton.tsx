@@ -4,19 +4,12 @@ import add_icon from "../../../public/assets/add_icon.svg";
 
 import Image from "next/image";
 
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
 import { useMasterlistStore } from "../Store/masterlist_store";
 import { ChangeEvent, useState } from "react";
 import { createNewItem } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
 import { TCategory } from "../Types/Types";
+import NewObjectDialog from "./NewObjectDialog";
 
 export default function NewItemButton({
   category_id,
@@ -27,13 +20,12 @@ export default function NewItemButton({
 }) {
   const [itemName, setItemName] = useState("");
   const [openNewItemForm, setOpenNewItemForm] = React.useState(false);
+  const [isValidEntry, setIsValidEntry] = useState(false);
   const masterlist = useMasterlistStore((state: any) => state.categories);
   const updateMasterList = useMasterlistStore(
     (state: any) => state.updateCategories
   );
-  const setSnackbarMessage = useSnackbarStore(
-    (state: any) => state.setMessage
-  );
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
   const setOpenSnackbar = useSnackbarStore(
     (state: any) => state.setOpenSnackbar
   );
@@ -41,6 +33,12 @@ export default function NewItemButton({
 
   const hdlItemNameOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setItemName(event.target.value);
+
+    if (event.target.value.length > 0) {
+      setIsValidEntry(true);
+    } else {
+      setIsValidEntry(false);
+    }
   };
 
   const handleClickOpen = () => {
@@ -91,33 +89,16 @@ export default function NewItemButton({
         New Item
         <Image src={add_icon} alt="add" className="inline w-6" />
       </button>
-      <Dialog
-        open={openNewItemForm}
-        onClose={handleClose}
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle>Add new item</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Add a new item to {category_name}
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={hdlItemNameOnChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleAddItem}>Add item</Button>
-        </DialogActions>
-      </Dialog>
+      <NewObjectDialog
+        isNewObjectDialogOpen={openNewItemForm}
+        dialogTitle={"Add new item"}
+        dialogContentText={`Add a new item to ${category_name}`}
+        confirmationText={"Add item"}
+        isValidEntry={isValidEntry}
+        hdlCloseNo={handleClose}
+        hdlCloseYes={handleAddItem}
+        hdlOnChange={hdlItemNameOnChange}
+      />
     </>
   );
 }

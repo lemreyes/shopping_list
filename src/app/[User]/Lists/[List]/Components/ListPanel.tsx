@@ -38,6 +38,7 @@ export default function ListPanel({
 
   const [isOpenCopyDialog, setIsOpenCopyDialog] = useState(false);
   const [dialogCopyListName, setDialogCopyListName] = useState("");
+  const [isValidEntry, setIsValidEntry] = useState(false);
   const [isShowCopyResult, setIsShowCopyResult] = useState(false);
   const [duplicateListName, setDuplicateListName] = useState("");
   const [duplicateListId, setDuplicateListId] = useState(0);
@@ -114,6 +115,12 @@ export default function ListPanel({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDialogCopyListName(event.target.value);
+
+    if (event.target.value.length > 0) {
+      setIsValidEntry(true);
+    } else {
+      setIsValidEntry(false);
+    }
   };
 
   const btnHdlArchiveReopenList = async () => {
@@ -207,8 +214,9 @@ export default function ListPanel({
         <NewObjectDialog
           isNewObjectDialogOpen={isOpenCopyDialog}
           dialogTitle="Copy Current List to New List"
-          dialogContentText="Enter new name of copy list"
+          dialogContentText="Enter new name for copy list"
           confirmationText="Copy"
+          isValidEntry={isValidEntry}
           hdlCloseNo={handleCopyDlgCloseNo}
           hdlCloseYes={handleCloseYesCopyList}
           hdlOnChange={handleCopyDialogOnChange}

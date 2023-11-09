@@ -12,6 +12,7 @@ export default function NewObjectDialog({
   dialogTitle,
   dialogContentText,
   confirmationText,
+  isValidEntry,
   hdlCloseNo,
   hdlCloseYes,
   hdlOnChange,
@@ -20,6 +21,7 @@ export default function NewObjectDialog({
   dialogTitle: string;
   dialogContentText: string;
   confirmationText: string;
+  isValidEntry: boolean;
   hdlCloseNo: () => void;
   hdlCloseYes: () => void;
   hdlOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -47,7 +49,9 @@ export default function NewObjectDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={hdlCloseNo}>Cancel</Button>
-        <Button onClick={hdlCloseYes}>{confirmationText}</Button>
+        <Button onClick={hdlCloseYes} disabled={!isValidEntry}>
+          {confirmationText}
+        </Button>
       </DialogActions>
     </Dialog>
   );
