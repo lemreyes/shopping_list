@@ -15,6 +15,7 @@ import { useMasterlistStore } from "../Store/masterlist_store";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { createNewCategory } from "../Services/fetchWrapper";
 import { useSnackbarStore } from "../Store/snackbar_store";
+import NewObjectDialog from "./NewObjectDialog";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -26,6 +27,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export default function NewCategoryButton() {
   const [categoryName, setCategoryName] = useState("");
   const [openNewCategoryForm, setOpenNewCategoryForm] = useState(false);
+  const [isValidEntry, setIsValidEntry] = useState(false);
   const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
   const setOpenSnackbar = useSnackbarStore(
     (state: any) => state.setOpenSnackbar
@@ -39,6 +41,12 @@ export default function NewCategoryButton() {
 
   const handleCategoryOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCategoryName(event.target.value);
+
+    if (event.target.value.length > 0) {
+      setIsValidEntry(true);
+    } else {
+      setIsValidEntry(false);
+    }
   };
 
   const handleClickOpen = () => {
@@ -84,31 +92,16 @@ export default function NewCategoryButton() {
         Create new Category{" "}
         <Image src={add_icon} alt="add" className="inline w-6" />
       </button>
-      <Dialog
-        open={openNewCategoryForm}
-        onClose={handleClose}
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle>Add new Category</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Enter name of new category</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="standard"
-            onChange={handleCategoryOnChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleAddCategory}>Add category</Button>
-        </DialogActions>
-      </Dialog>
+      <NewObjectDialog
+        isNewObjectDialogOpen={openNewCategoryForm}
+        dialogTitle={"Add new Category"}
+        dialogContentText={`Enter name of new category`}
+        confirmationText={"Add category"}
+        isValidEntry={isValidEntry}
+        hdlCloseNo={handleClose}
+        hdlCloseYes={handleAddCategory}
+        hdlOnChange={handleCategoryOnChange}
+      />
     </>
   );
 }
