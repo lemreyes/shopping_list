@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEventHandler, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
 import { useMasterlistStore } from "../Store/masterlist_store";
 import {
   createItemWithNewCategory,
@@ -22,6 +22,7 @@ export default function NewItemFormActiveList({
   const [itemName, setItemName] = useState("");
   const [newCategoryName, setNewCategoryName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const [isAddButtonDisable, setIsAddButtonDisable] = useState(true);
   const masterlist = useMasterlistStore((state: any) => state.categories);
   const updateMaterList = useMasterlistStore(
     (state: any) => state.updateCategories
@@ -32,6 +33,20 @@ export default function NewItemFormActiveList({
     (state: any) => state.setOpenSnackbar
   );
   const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
+
+  useEffect(() => {
+    if (
+      showNewCategoryInput === true &&
+      newCategoryName.length > 0 &&
+      itemName.length > 0
+    ) {
+      setIsAddButtonDisable(false);
+    } else if (showNewCategoryInput === false && itemName.length > 0) {
+      setIsAddButtonDisable(false);
+    } else {
+      setIsAddButtonDisable(true);
+    }
+  }, [showNewCategoryInput, newCategoryName, itemName]);
 
   const hdlSelectChange = (event: React.FormEvent<HTMLSelectElement>) => {
     if (parseInt(event.currentTarget.value) === NEW_CATEGORY_ID) {
@@ -170,13 +185,16 @@ export default function NewItemFormActiveList({
       <div className="flex flex-row justify-evenly">
         <button
           onClick={cancelHandler}
-          className="px-4 py-2 border rounded-2xl border-gray-600"
+          className="px-4 py-2 border rounded-2xl border-gray-600 hover:text-white hover:bg-gray-600"
         >
           cancel
         </button>
         <button
           onClick={hdlAddItem}
-          className="px-4 py-2 border rounded-2xl border-gray-600 bg-gray-600 text-white"
+          className="px-4 py-2 border rounded-2xl bg-green-700 text-white
+                      hover:text-green-700 hover:bg-white hover:border-green-700
+                     disabled:border-gray-600 disabled:bg-gray-600 "
+          disabled={isAddButtonDisable}
         >
           Add to list
         </button>
