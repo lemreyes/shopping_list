@@ -41,6 +41,14 @@ export async function POST(request: NextRequest) {
   }
 
   const { srcListId, destListName }: PostRequestType = await request.json();
+  if (srcListId <= 0 || destListName.length <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters",
+      },
+      { status: 400 }
+    );
+  }
 
   // validate source list id
   const srcList = await prisma.list.findUnique({
@@ -131,6 +139,14 @@ export async function DELETE(request: NextRequest) {
   }
 
   const { listId }: { listId: number } = await request.json();
+  if (listId <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters",
+      },
+      { status: 400 }
+    );
+  }
 
   try {
     // delete itemList contents of the list
@@ -178,6 +194,14 @@ export async function PATCH(request: NextRequest) {
   }
 
   const { listId, archivedStatus }: PatchRequestType = await request.json();
+  if (listId <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters",
+      },
+      { status: 400 }
+    );
+  }
 
   const updatedList = await prisma.list.update({
     where: {
