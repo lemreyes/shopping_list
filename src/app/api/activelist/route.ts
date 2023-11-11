@@ -4,6 +4,15 @@ import { options } from "../auth/[...nextauth]/options";
 import prisma from "../../Utilities/prismaUtils";
 import { TShoppingListItem } from "@/app/Types/Types";
 
+interface PostRequestType {
+  listName: string;
+  shoppingList: Array<TShoppingListItem>;
+}
+
+interface PatchRequestType extends PostRequestType {
+  listId: number;
+}
+
 // create new list and store all items in DB
 export async function POST(request: Request) {
   const session = await getServerSession(options);
@@ -22,8 +31,24 @@ export async function POST(request: Request) {
       email: session?.user?.email as string,
     },
   });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
 
-  const { listName, shoppingList } = await request.json();
+  const { listName, shoppingList }: PostRequestType = await request.json();
+  if (listName.length < 1 || shoppingList.length < 1) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters.",
+      },
+      { status: 400 }
+    );
+  }
 
   let activeList = await prisma.list.findFirst({
     where: {
@@ -90,8 +115,25 @@ export async function PATCH(request: Request) {
       email: session?.user?.email as string,
     },
   });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
 
-  const { listId, listName, shoppingList } = await request.json();
+  const { listId, listName, shoppingList }: PatchRequestType =
+    await request.json();
+  if (listId < 1 || listName.length < 1 || shoppingList.length < 1) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters.",
+      },
+      { status: 400 }
+    );
+  }
 
   // check if list is existing
   let targetUpdateList = await prisma.list.findUnique({
