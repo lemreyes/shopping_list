@@ -20,8 +20,24 @@ export async function POST(request: Request) {
       email: session?.user?.email as string,
     },
   });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
 
-  const { categoryName } = await request.json();
+  const { categoryName }: { categoryName: string } = await request.json();
+  if (categoryName.length <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters.",
+      },
+      { status: 400 }
+    );
+  }
 
   let category = await prisma.category.findFirst({
     where: {

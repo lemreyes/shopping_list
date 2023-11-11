@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   }
 
   const { listName, shoppingList }: PostRequestType = await request.json();
-  if (listName.length < 1 || shoppingList.length < 1) {
+  if (listName.length <= 0 || shoppingList.length <= 0) {
     return NextResponse.json(
       {
         errorMessage: "Invalid parameters.",
@@ -126,7 +126,7 @@ export async function PATCH(request: Request) {
 
   const { listId, listName, shoppingList }: PatchRequestType =
     await request.json();
-  if (listId < 1 || listName.length < 1 || shoppingList.length < 1) {
+  if (listId <= 0 || listName.length <= 0 || shoppingList.length <= 0) {
     return NextResponse.json(
       {
         errorMessage: "Invalid parameters.",
