@@ -123,7 +123,9 @@ export default function ListSaveButton() {
           defaultValue={listName}
         />
         <button
-          className="p-2 bg-gray-700 border border-gray-700 text-white rounded-lg -ml-8 hover:bg-white hover:text-gray-700 disabled:bg-gray-400 disabled:text-black"
+          className="p-2 bg-green-700 border border-gray-700 text-white rounded-lg -ml-8
+                     hover:bg-white hover:text-green-700 
+                     disabled:border-gray-600 disabled:bg-gray-400 disabled:text-black"
           disabled={isButtonDisabled}
           onClick={hdlSaveButton}
         >
