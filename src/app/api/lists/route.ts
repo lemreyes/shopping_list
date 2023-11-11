@@ -4,6 +4,16 @@ import { options } from "../auth/[...nextauth]/options";
 import prisma from "@/app/Utilities/prismaUtils";
 import { Prisma } from "@prisma/client";
 
+interface PostRequestType {
+  srcListId: number;
+  destListName: string;
+}
+
+interface PatchRequestType {
+  listId: number;
+  archivedStatus: boolean;
+}
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
   if (!session) {
@@ -30,7 +40,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { srcListId, destListName } = await request.json();
+  const { srcListId, destListName }: PostRequestType = await request.json();
 
   // validate source list id
   const srcList = await prisma.list.findUnique({
@@ -120,7 +130,7 @@ export async function DELETE(request: NextRequest) {
     );
   }
 
-  const { listId } = await request.json();
+  const { listId }: { listId: number } = await request.json();
 
   try {
     // delete itemList contents of the list
@@ -167,7 +177,7 @@ export async function PATCH(request: NextRequest) {
     );
   }
 
-  const { listId, archivedStatus } = await request.json();
+  const { listId, archivedStatus }: PatchRequestType = await request.json();
 
   const updatedList = await prisma.list.update({
     where: {
