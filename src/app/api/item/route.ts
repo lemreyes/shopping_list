@@ -4,6 +4,11 @@ import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 import prisma from "../../Utilities/prismaUtils";
 
+interface PostRequestType {
+  itemName: string;
+  categoryId: number;
+}
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
   if (!session) {
@@ -15,7 +20,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { itemName, categoryId } = await request.json();
+  const { itemName, categoryId }: PostRequestType = await request.json();
+  if (itemName.length <= 0 || categoryId <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters.",
+      },
+      { status: 400 }
+    );
+  }
 
   let item = await prisma.item.findFirst({
     where: {
@@ -72,7 +85,15 @@ export async function DELETE(request: NextRequest) {
     );
   }
 
-  const { itemId } = await request.json();
+  const { itemId }: { itemId: number } = await request.json();
+  if (itemId <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters.",
+      },
+      { status: 400 }
+    );
+  }
 
   try {
     const deletedItem = await prisma.item.delete({
