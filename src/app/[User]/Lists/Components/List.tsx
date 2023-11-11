@@ -14,6 +14,7 @@ import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
 import { TList } from "@/app/Types/Types";
 import { Themes } from "@/app/Types/Enums";
 import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
+import ConfirmationDialog from "@/app/Components/ConfirmationDialog";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -144,27 +145,13 @@ export default function List({
       ) : (
         <p className={`${themeClassName} text-defaultColor`}>No lists found.</p>
       )}
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseNo}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {`Delete ${label} from Lists`}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete {label} from the lists?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseNo}>No</Button>
-          <Button onClick={handleCloseYes} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ConfirmationDialog
+        isDialogOpen={openDialog}
+        dialogTitle={`Delete ${label} from Lists`}
+        dialogContent={`Are you sure you want to delete ${label} from the lists?`}
+        hdlCloseNo={handleCloseNo}
+        hdlCloseYes={handleCloseYes}
+      />
       <Snackbar
         open={openSnackbar}
         autoHideDuration={4000}
