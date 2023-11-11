@@ -4,6 +4,11 @@ import { options } from "../auth/[...nextauth]/options";
 
 import prisma from "../../Utilities/prismaUtils";
 
+interface PostRequestType {
+  categoryName: string;
+  itemName: string;
+}
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
   if (!session) {
@@ -30,7 +35,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { categoryName, itemName } = await request.json();
+  const { categoryName, itemName }: PostRequestType = await request.json();
 
   let category = await prisma.category.findFirst({
     where: {
