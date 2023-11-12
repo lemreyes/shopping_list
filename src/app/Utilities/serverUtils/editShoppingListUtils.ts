@@ -29,7 +29,6 @@ export async function prepareDataForEdit(listId: number, userId: number) {
       categoryId: null,
     },
   });
-  console.log("itemsWithNullCategories", itemsWithNullCategories);
 
   // register the missing categories back to the masterlist
   for (const item of itemsWithNullCategories) {
@@ -41,7 +40,6 @@ export async function prepareDataForEdit(listId: number, userId: number) {
         category_name: item.categoryName,
       },
     });
-    console.log("existingCategory", existingCategory);
 
     // if not existing category add it to masterlist
     if (existingCategory === null) {
@@ -52,7 +50,6 @@ export async function prepareDataForEdit(listId: number, userId: number) {
         },
         select: { id: true, category_name: true, items: true },
       });
-      console.log("addedCategory", addedCategory);
 
       // update listed item category
       const updatedListedItem = await prisma.listedItem.update({
@@ -64,12 +61,10 @@ export async function prepareDataForEdit(listId: number, userId: number) {
           categoryName: addedCategory.category_name,
         },
       });
-      console.log("updatedListedItem", updatedListedItem);
       if (!updatedListedItem) {
         throw new Error("Listed item not found.");
       }
 
-      console.log("Push", addedCategory);
       addedCategories.push(addedCategory);
     } else {
       // update listed item to this category
@@ -153,10 +148,6 @@ export async function prepareDataForEdit(listId: number, userId: number) {
       }
     }
   }
-
-  console.log("listInfo", listInfo);
-  console.log("addedCategories", addedCategories);
-  console.log("addedItems", addedItems);
 
   return {
     listInfo,

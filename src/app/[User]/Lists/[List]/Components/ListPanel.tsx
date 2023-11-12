@@ -155,7 +155,7 @@ export default function ListPanel({
     <div>
       <div className={`${themeClassName} flex flex-row justify-between mt-8`}>
         {isArchived ? (
-          <>
+          <div>
             <button
               className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
@@ -177,9 +177,9 @@ export default function ListPanel({
               hdlCloseNo={handleArchiveReopenDlgCloseNo}
               hdlCloseYes={handleCloseYesReopen}
             />
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <button
               className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
                         hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
@@ -201,7 +201,7 @@ export default function ListPanel({
               hdlCloseNo={handleArchiveReopenDlgCloseNo}
               hdlCloseYes={handleCloseYesArchive}
             />
-          </>
+          </div>
         )}
         <button
           className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
@@ -225,7 +225,7 @@ export default function ListPanel({
         />
         <Snackbar
           open={openSnackbar}
-          autoHideDuration={4000}
+          autoHideDuration={2000}
           onClose={handleCloseSnackber}
         >
           <Alert
