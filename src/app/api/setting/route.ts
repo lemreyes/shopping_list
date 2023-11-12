@@ -4,7 +4,6 @@ import { options } from "../auth/[...nextauth]/options";
 import prisma from "@/app/Utilities/prismaUtils";
 import fs from "fs";
 import { TUserData } from "@/app/Types/Types";
-import { Themes } from "@/app/Types/Enums";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(options);
@@ -19,6 +18,14 @@ export async function POST(request: NextRequest) {
 
   const formData = await request.formData();
   const userDataId = parseInt(formData.get("id") as string);
+  if (!formData || userDataId <= 0) {
+    return NextResponse.json(
+      {
+        errorMessage: "Invalid parameters.",
+      },
+      { status: 400 }
+    );
+  }
 
   const userData = await prisma.userData.findUnique({
     where: {
