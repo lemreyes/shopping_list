@@ -205,8 +205,10 @@ export default function ListPanel({
         )}
         <button
           className={`${themeClassName} border bg-formButtonBg text-formButtonText p-2 rounded-lg flex flex-row w-36 items-center
-                    hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder`}
+                    hover:bg-formButtonBgHover hover:text-formButtonTextHover  hover:border-formButtonBorder
+                    disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
           onClick={btnHdlCopyList}
+          disabled={isArchived}
         >
           <Image src={copy_icon} className={`w-8 mr-2`} alt="copy icon" />
           Copy this List

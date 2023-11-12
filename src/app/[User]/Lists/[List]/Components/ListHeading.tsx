@@ -6,11 +6,13 @@ export default function ListHeading({
   listId,
   ownerId,
   listName,
+  isArchived,
   themeClassName,
 }: {
   listId: number;
   ownerId: number;
   listName: string;
+  isArchived: boolean;
   themeClassName: string;
 }) {
   const router = useRouter();
@@ -34,6 +36,7 @@ export default function ListHeading({
                   hover:bg-formButtonBgHover hover:text-formButtonTextHover hover:border-formButtonBorder 
                   disabled:bg-formButtonBgDisabled disabled:text-formButtonTextDisabled`}
         onClick={hdlEditButton}
+        disabled={isArchived}
       >
         Edit this list
       </button>

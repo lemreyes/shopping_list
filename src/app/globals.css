@@ -17,7 +17,7 @@
   --formButtonBorder: theme("colors.gray.600");
   --formButtonBgHover: theme("colors.white");
   --formButtonText: theme("colors.white");
-  --formButtonTextDisabled: theme("colors.gray.800")
+  --formButtonTextDisabled: theme("colors.gray.400");
   --formButtonTextHover: theme("colors.gray.800");
   --colorWarning: theme("colors.red.800");
   --colorBrand: theme("colors.green.600");
@@ -35,7 +35,7 @@
   --formButtonBorder: theme("colors.gray.600");
   --formButtonBgHover: theme("colors.white");
   --formButtonText: theme("colors.white");
-  --formButtonTextDisabled: theme("colors.gray.800");
+  --formButtonTextDisabled: theme("colors.gray.400");
   --formButtonTextHover: theme("colors.gray.800");
   --colorWarning: theme("colors.red.800");
   --colorBrand: theme("colors.green.600");

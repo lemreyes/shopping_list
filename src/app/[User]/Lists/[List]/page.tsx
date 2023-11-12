@@ -31,7 +31,7 @@ export default async function List(props: QueryProps) {
     },
   });
   if (!list) {
-    // TODO: error handling
+    throw new Error("Could not retrieve list.");
   }
 
   const listItems: Array<ListedItem> = await prisma.listedItem.findMany({
@@ -62,6 +62,7 @@ export default async function List(props: QueryProps) {
             listId={list?.id as number}
             ownerId={list?.ownerId as number}
             listName={list?.list_name as string}
+            isArchived={list?.is_done as boolean}
             themeClassName={themeClassName}
           />
           {list?.is_done && (
