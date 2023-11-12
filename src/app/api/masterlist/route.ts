@@ -2,11 +2,19 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { options } from "../auth/[...nextauth]/options";
 
-import prisma from "../../Utilities/prismaUtils"
+import prisma from "../../Utilities/prismaUtils";
 import { TCategory, TItem } from "@/app/Types/Types";
 
 export async function GET() {
   const session = await getServerSession(options);
+  if (!session) {
+    return NextResponse.json(
+      {
+        errorMessage: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
 
   // find user data
   const userData = await prisma.userData.findUnique({
@@ -14,6 +22,14 @@ export async function GET() {
       email: session?.user?.email as string,
     },
   });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
 
   // populate masterlist with categories
   const categories: Array<TCategory> = await prisma.category.findMany({
