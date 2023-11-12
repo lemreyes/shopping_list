@@ -8,6 +8,7 @@ import List from "./Components/List";
 import { TList } from "@/app/Types/Types";
 import { Themes } from "@/app/Types/Enums";
 import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
+import { convNumberToFilterOptionObject } from "@/app/Utilities/clientUtils/listFilterOptionUtils";
 
 export default async function Lists() {
   const session = await getServerSession(options);
@@ -22,14 +23,62 @@ export default async function Lists() {
     },
   });
 
-  const lists = await prisma.list.findMany({
-    where: {
-      ownerId: userData?.id,
-    },
-    orderBy: {
-      updated_at: "desc",
-    },
-  });
+  const listFilterOptionsObj = convNumberToFilterOptionObject(
+    userData?.listFilterOption as number
+  );
+
+  let lists: Array<TList> = [];
+  if (listFilterOptionsObj.archived && listFilterOptionsObj.open) {
+    lists = await prisma.list.findMany({
+      where: {
+        ownerId: userData?.id,
+      },
+      orderBy: {
+        updated_at: "desc",
+      },
+      select: {
+        id: true,
+        list_name: true,
+        is_done: true,
+        ownerId: true,
+        updated_at: true,
+      },
+    });
+  } else if (listFilterOptionsObj.archived) {
+    lists = await prisma.list.findMany({
+      where: {
+        ownerId: userData?.id,
+        is_done: true,
+      },
+      orderBy: {
+        updated_at: "desc",
+      },
+      select: {
+        id: true,
+        list_name: true,
+        is_done: true,
+        ownerId: true,
+        updated_at: true,
+      },
+    });
+  } else if (listFilterOptionsObj.open) {
+    lists = await prisma.list.findMany({
+      where: {
+        ownerId: userData?.id,
+        is_done: false,
+      },
+      orderBy: {
+        updated_at: "desc",
+      },
+      select: {
+        id: true,
+        list_name: true,
+        is_done: true,
+        ownerId: true,
+        updated_at: true,
+      },
+    });
+  }
 
   const themeClassName = getThemeClassName(userData?.theme as Themes);
 
@@ -50,6 +99,7 @@ export default async function Lists() {
             list_items={lists as Array<TList>}
             userId={userData?.id as number}
             theme={userData?.theme as Themes}
+            filterOptionsFromDb={userData?.listFilterOption as number}
           />
         </div>
       </div>

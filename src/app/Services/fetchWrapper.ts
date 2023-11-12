@@ -1,5 +1,6 @@
 import { Themes } from "../Types/Enums";
 import { TShoppingListItem } from "../Types/Types";
+import { FilterOptions } from "../[User]/Lists/Components/FilterPanel";
 
 export async function getMasterlist() {
   const response = await fetch("/api/masterlist", {
@@ -297,6 +298,26 @@ export async function updateSetting(
   const response = await fetch("/api/setting/", {
     method: "POST",
     body,
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.errorMessage);
+  }
+
+  return responseData;
+}
+
+export async function updateFilterOptions(filterNum: number) {
+  const response = await fetch("/api/lists/filter/", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      filterNum: filterNum,
+    }),
   });
 
   const responseData = await response.json();

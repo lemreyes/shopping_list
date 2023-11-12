@@ -15,6 +15,7 @@ import { TList } from "@/app/Types/Types";
 import { Themes } from "@/app/Types/Enums";
 import { getThemeClassName } from "@/app/Utilities/ThemeUtils";
 import ConfirmationDialog from "@/app/Components/ConfirmationDialog";
+import FilterPanel from "./FilterPanel";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -27,10 +28,12 @@ export default function List({
   list_items,
   userId,
   theme,
+  filterOptionsFromDb,
 }: {
   list_items: Array<TList>;
   userId: number;
   theme: Themes;
+  filterOptionsFromDb: number;
 }) {
   const [editMode, setEditMode] = useState(false);
 
@@ -124,6 +127,10 @@ export default function List({
           </h2>
         )}
       </div>
+      <FilterPanel
+        theme={themeClassName}
+        filterOptionsFromDb={filterOptionsFromDb}
+      />
       {arrayList.length > 0 ? (
         arrayList.map((list) => {
           return (
