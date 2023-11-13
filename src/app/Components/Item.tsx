@@ -186,8 +186,8 @@ export default function Item({
       <button
         value={label}
         className={`${themeClassName} border ${
-          itemCount > 0 ? "border-black" : "border-gray-300"
-        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-formButtonText bg-formButtonBg 
+          itemCount > 0 ? "border-green-600 bg-green-600" : "border-gray-300 bg-formButtonBg"
+        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-formButtonText  
           hover:border-formButtonBorder hover:text-formButtonTextHover hover:bg-formButtonBgHover`}
         onClick={hdlItemBtnClick}
       >
