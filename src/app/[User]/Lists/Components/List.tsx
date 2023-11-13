@@ -2,12 +2,6 @@
 import ListCard from "./ListCard";
 import { forwardRef, useEffect, useState } from "react";
 
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { deleteList } from "@/app/Services/fetchWrapper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";

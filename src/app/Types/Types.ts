@@ -49,6 +49,6 @@ export type TList = {
   id: number;
   list_name: string;
   is_done: boolean;
-  ownerId: number;
+  ownerId: number | null;
   updated_at: Date;
 };
