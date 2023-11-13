@@ -187,7 +187,7 @@ export default function Item({
         value={label}
         className={`${themeClassName} border ${
           itemCount > 0 ? "border-green-600 bg-green-600" : "border-gray-300 bg-formButtonBg"
-        } rounded-xl py-2 px-2 mt-2 mr-2 text-sm text-formButtonText  
+        } rounded-xl py-2 px-2 mt-2 mr-2 h-12 text-sm text-formButtonText  
           hover:border-formButtonBorder hover:text-formButtonTextHover hover:bg-formButtonBgHover`}
         onClick={hdlItemBtnClick}
       >
@@ -197,7 +197,7 @@ export default function Item({
           <Image
             src={theme === Themes.ThemeLight ? trash_icon : trash_icon_dark}
             alt="delete"
-            className="inline w-6"
+            className="inline w-4"
           />
         ) : itemCount > 0 ? (
           <span className="text_lg ml-3">{itemCount}</span>
@@ -205,7 +205,7 @@ export default function Item({
           <Image
             src={theme === Themes.ThemeLight ? add_icon : add_icon_dark}
             alt="add"
-            className="inline w-6"
+            className="inline w-4"
           />
         )}
       </button>
