@@ -1,4 +1,6 @@
 import LoginPanel from "./Components/LoginPanel";
+import Image from "next/image";
+import heroImage from "../../../../public/assets/hero.jpg";
 
 export default function Login() {
   return (
@@ -8,7 +10,8 @@ export default function Login() {
           Welcome to List
           <span className="text-green-600 font-bold">Easy</span>
         </h1>
-        <h2 className="font-bold text-xl">Your Ultimate Shopping Companion!</h2>
+        <h2 className="font-bold text-xl mb-8">Your Ultimate Shopping Companion!</h2>
+        <Image src={heroImage} alt="hero image" />
         <section className="mt-8">
           <p className="mb-4">
             Never miss an item at the grocery store again! With ListEasy, your
