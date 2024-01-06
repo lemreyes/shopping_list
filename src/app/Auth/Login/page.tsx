@@ -1,6 +1,7 @@
 import LoginPanel from "./Components/LoginPanel";
 import Image from "next/image";
 import heroImage from "../../../../public/assets/hero.jpg";
+import heroImageMobile from "../../../public/assets/hero_mobile.jpg";
 
 export default function Login() {
   return (
@@ -10,15 +11,27 @@ export default function Login() {
           Welcome to List
           <span className="text-green-600 font-bold">Easy</span>
         </h1>
-        <h2 className="font-bold text-xl mb-8">Your Ultimate Shopping Companion!</h2>
-        <Image src={heroImage} alt="hero image" />
+        <section>
+          <picture>
+            <source srcSet="/assets/hero.jpg" media={`(min-width: 480px)`} />
+
+            <img src="/assets/hero_mobile.jpg" alt="hero" />
+          </picture>
+          <h2 className="font-bold text-xl mb-8">
+            Your Ultimate Shopping Companion!
+          </h2>
+        </section>
+
         <section className="mt-8">
-          <p className="mb-4">
-            Never miss an item at the grocery store again! With ListEasy, your
-            shopping experience is about to get a whole lot smoother. Say
-            goodbye to those last-minute frantic runs to the store and embrace
-            the convenience of organized shopping at your fingertips.
-          </p>
+          <div>
+            <p className="mb-4">
+              Never miss an item at the grocery store again! With ListEasy, your
+              shopping experience is about to get a whole lot smoother. Say
+              goodbye to those last-minute frantic runs to the store and embrace
+              the convenience of organized shopping at your fingertips.
+            </p>
+          </div>
+
           <p className="mb-4">
             Effortlessly plan your shopping with your master list of grocery
             items. You have the ability to add new items and categories to the
