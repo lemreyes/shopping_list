@@ -45,6 +45,12 @@ export default function LoginPanel() {
       <p className="my-4">or</p>
       <button
         className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
+        onClick={() => signIn("apple", { callbackUrl: "/" })}
+      >
+        Login with Apple ID
+      </button>
+      <button
+        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
         onClick={() => signIn("facebook", { callbackUrl: "/" })}
       >
         Login with Facebook
