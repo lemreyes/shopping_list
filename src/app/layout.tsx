@@ -8,6 +8,9 @@ const qs = Quicksand({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "List Easy",
   description: "Plan your way to an easy shopping list.",
+  icons: {
+    icon: "/assets/favicon96.png",
+  },
 };
 
 export default async function RootLayout({
