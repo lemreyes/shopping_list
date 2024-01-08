@@ -46,12 +46,6 @@ export default function LoginPanel() {
 
       <button
         className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
-        onClick={() => signIn("facebook", { callbackUrl: "/" })}
-      >
-        Login with Facebook
-      </button>
-      <button
-        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
         onClick={() => signIn("google", { callbackUrl: "/" })}
       >
         Login with Google
