@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function LoginPanel() {
   const searchParams = useSearchParams();
+  console.log("searchParams", searchParams);
   let errorMessage = "";
 
   const errorResult = searchParams.get("error");
