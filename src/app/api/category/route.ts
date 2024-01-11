@@ -45,6 +45,7 @@ export async function POST(request: Request) {
         equals: categoryName,
         mode: "insensitive",
       },
+      userDataId: userData.id,
     },
   });
   if (!category) {
