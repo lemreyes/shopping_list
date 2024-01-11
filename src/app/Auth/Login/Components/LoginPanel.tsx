@@ -3,10 +3,12 @@
 import TextField from "@mui/material/TextField";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { ChangeEvent, useState } from "react";
 
 export default function LoginPanel() {
   const searchParams = useSearchParams();
-  console.log("searchParams", searchParams);
+  const [email, setEmail] = useState("");
+
   let errorMessage = "";
 
   const errorResult = searchParams.get("error");
@@ -25,6 +27,10 @@ export default function LoginPanel() {
     }
   }
 
+  const hdlEmailInputOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
   return (
     <div
       id="login"
@@ -36,10 +42,11 @@ export default function LoginPanel() {
         label="Email"
         variant="outlined"
         className="w-full"
+        onChange={hdlEmailInputOnChange}
       />
       <button
         className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
-        onClick={() => signIn("email", { callbackUrl: "/" })}
+        onClick={() => signIn("email", { email, callbackUrl: "/" })}
       >
         Login with Email
       </button>
