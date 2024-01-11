@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
         equals: categoryName,
         mode: "insensitive",
       },
+      userDataId: userData.id,
     },
   });
   if (!category) {
@@ -77,6 +78,7 @@ export async function POST(request: NextRequest) {
         equals: itemName,
         mode: "insensitive",
       },
+      userDataId: userData.id,
     },
   });
   if (!item) {
