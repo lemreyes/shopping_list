@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
         equals: itemName,
         mode: "insensitive",
       },
+      categoryId: categoryId,
     },
   });
   if (!item) {
