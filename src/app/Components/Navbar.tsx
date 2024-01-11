@@ -69,7 +69,7 @@ export default function Navbar({
         <div className="ml-8">
           <Image
             src={
-              userImage.length > 0 && userImage != null
+              userImage != null && userImage.length > 0
                 ? userImage
                 : profile_icon
             }
