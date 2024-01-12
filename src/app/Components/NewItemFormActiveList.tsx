@@ -191,9 +191,12 @@ export default function NewItemFormActiveList({
         </button>
         <button
           onClick={hdlAddItem}
-          className="px-4 py-2 border rounded-2xl bg-green-700 text-white
-                      hover:text-green-700 hover:bg-white hover:border-green-700
-                     disabled:border-gray-600 disabled:bg-gray-600 "
+          className={`px-4 py-2 border rounded-2xl bg-green-700 text-white
+                      ${
+                        isAddButtonDisable === false
+                          ? "hover:text-green-700 hover:bg-white hover:border-green-700"
+                          : "disabled:border-gray-600 disabled:bg-gray-600 disabled:text-white"
+                      }`}
           disabled={isAddButtonDisable}
         >
           Add to list
