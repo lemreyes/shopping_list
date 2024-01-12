@@ -53,6 +53,7 @@ export async function POST(request: Request) {
   let activeList = await prisma.list.findFirst({
     where: {
       list_name: listName,
+      ownerId: userData.id,
     },
   });
 
