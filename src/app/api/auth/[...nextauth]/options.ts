@@ -40,8 +40,6 @@ export const options: NextAuthOptions = {
           name: "Guest",
           email: "guest@guest.com",
         };
-        console.log("credentials", credentials);
-        console.log("req", req);
 
         if (user) {
           return user;
@@ -52,6 +50,9 @@ export const options: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   events: {
     createUser: async (message) => {
       const theme: Themes = Themes.ThemeLight;
@@ -70,13 +71,13 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async session({ session }: { session: Session; token: any; user: any }) {
-      console.log("Session: ", session);
       if (session.user != undefined || session.user != null) {
         const userData = await prisma.userData.findUnique({
           where: {
             email: session.user.email as string,
           },
         });
+
         // Assign userDataId to the custom user type
         session.user = {
           ...session.user,
