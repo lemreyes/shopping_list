@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import DemoLogin from "./DemoLogin";
 
 export default function LoginPanel() {
   const searchParams = useSearchParams();
@@ -37,6 +38,7 @@ export default function LoginPanel() {
       className="flex flex-col items-center p-8 border-t desktop:border-none"
     >
       <h2 className="mb-4">Login</h2>
+      <DemoLogin />
       <TextField
         id="outlined-basic"
         label="Email"
