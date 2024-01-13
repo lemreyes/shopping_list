@@ -37,7 +37,7 @@ export default function LoginPanel() {
       id="login"
       className="flex flex-col items-center p-8 border-t desktop:border-none"
     >
-      <h2 className="mb-4">Login</h2>
+      <h2 className="mb-4 font-bold text-3xl">Login</h2>
       <DemoLogin />
       <TextField
         id="outlined-basic"
@@ -47,7 +47,7 @@ export default function LoginPanel() {
         onChange={hdlEmailInputOnChange}
       />
       <button
-        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
+        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100 font-bold"
         onClick={() => signIn("email", { email, callbackUrl: "/" })}
       >
         Login with Email
@@ -55,7 +55,7 @@ export default function LoginPanel() {
       <p className="my-4">or</p>
 
       <button
-        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100"
+        className="w-full mt-2 p-4 bg-gray-400 hover:bg-gray-100 font-bold"
         onClick={() => signIn("google", { callbackUrl: "/" })}
       >
         Login with Google

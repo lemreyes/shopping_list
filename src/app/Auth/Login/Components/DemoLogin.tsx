@@ -16,7 +16,7 @@ export default function DemoLogin() {
         Login as Guest
       </button>
       <p className="text-green-800 text-left">
-        Login as guest to see the app&apos;s features.{" "}
+        Login as guest to see the app&apos;s features.
       </p>
     </div>
   );
