@@ -15,7 +15,7 @@ export default function ProfileMenuCard({
           </li>
         </Link>
         <li
-          className="py-1 px-8 font-bold hover:bg-white hover-text-gray-800 border-b border-gray-600"
+          className="py-1 px-8 font-bold hover:bg-white hover:text-gray-800 border-b border-gray-600"
           onClick={() => signOut()}
         >
           Signout
