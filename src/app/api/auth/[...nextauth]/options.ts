@@ -4,14 +4,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import prisma from "../../../Utilities/prismaUtils";
 import { Themes } from "@/app/Types/Enums";
-
-type MyUser = {
-  userDataId?: string | null;
-  // Add other properties here if needed
-};
 
 export const options: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -30,6 +26,29 @@ export const options: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+    CredentialsProvider({
+      id: "guest",
+      name: "guest_login",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "guest" },
+      },
+      async authorize(credentials, req) {
+        // Add logic here to look up the user from the credentials supplied
+        const user = {
+          id: "88888888",
+          name: "Guest",
+          email: "guest@guest.com",
+        };
+        console.log("credentials", credentials);
+        console.log("req", req);
+
+        if (user) {
+          return user;
+        } else {
+          return null;
+        }
+      },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
@@ -51,6 +70,7 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async session({ session }: { session: Session; token: any; user: any }) {
+      console.log("Session: ", session);
       if (session.user != undefined || session.user != null) {
         const userData = await prisma.userData.findUnique({
           where: {

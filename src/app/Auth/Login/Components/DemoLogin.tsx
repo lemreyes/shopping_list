@@ -1,6 +1,9 @@
+import { signIn } from "next-auth/react";
+
 export default function DemoLogin() {
-  const hdlLoginDemoOnclick = () => {
-    return;
+  const hdlLoginDemoOnclick = async () => {
+    console.log("try login");
+    await signIn("credentials", { callbackUrl: "/", username: "Guest" });
   };
 
   return (

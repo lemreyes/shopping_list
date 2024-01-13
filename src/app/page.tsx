@@ -18,6 +18,7 @@ export default async function Home(props: QueryProps) {
   const { listId, ownerId } = props.searchParams;
 
   const session = await getServerSession(options);
+  console.log("session", session);
   if (session === null) {
     redirect("/Auth/Login");
   }
