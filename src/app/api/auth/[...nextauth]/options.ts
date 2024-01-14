@@ -34,12 +34,30 @@ export const options: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "guest" },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
+        console.log("credentials authorize");
+        console.log("credentials: ", credentials);
+        console.log("req: ", req);
+
+        // create new guest account
+        const randomId = Math.floor(Math.random() * 90000) + 10000;
+
         const user = {
-          id: "88888888",
-          name: "Guest",
-          email: "guest@guest.com",
+          id: randomId.toString(),
+          name: `Guest${randomId}`,
+          email: `guest${randomId}@guest.com`,
         };
+
+        const userData = await prisma.userData.create({
+          data: {
+            name: user.name,
+            email: user.email,
+            theme: Themes.ThemeLight,
+          },
+        });
+        if (!userData) {
+          throw Error("Unable to create account");
+          return null;
+        }
 
         if (user) {
           return user;
@@ -55,6 +73,7 @@ export const options: NextAuthOptions = {
   },
   events: {
     createUser: async (message) => {
+      console.log("events createUser");
       const theme: Themes = Themes.ThemeLight;
       const userData = await prisma.userData.create({
         data: {
@@ -64,6 +83,7 @@ export const options: NextAuthOptions = {
           theme: theme as number,
         },
       });
+      console.log("userData", userData);
     },
   },
   pages: {
@@ -71,12 +91,16 @@ export const options: NextAuthOptions = {
   },
   callbacks: {
     async session({ session }: { session: Session; token: any; user: any }) {
+      console.log("callbacks session");
+      console.log("param session: ", session);
+      console.log("param session user: ", session.user);
       if (session.user != undefined || session.user != null) {
         const userData = await prisma.userData.findUnique({
           where: {
             email: session.user.email as string,
           },
         });
+        console.log("session callback userData: ", userData);
 
         // Assign userDataId to the custom user type
         session.user = {
@@ -84,6 +108,8 @@ export const options: NextAuthOptions = {
           userDataId: userData?.id as number,
         };
       }
+
+      console.log("return session", session);
       return session;
     },
   },
