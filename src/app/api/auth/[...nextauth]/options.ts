@@ -52,6 +52,7 @@ export const options: NextAuthOptions = {
             name: user.name,
             email: user.email,
             theme: Themes.ThemeLight,
+            isGuest: true,
           },
         });
         if (!userData) {
@@ -81,6 +82,7 @@ export const options: NextAuthOptions = {
           name: message.user.name as string,
           image: message.user.image as string,
           theme: theme as number,
+          isGuest: false,
         },
       });
       console.log("userData", userData);
