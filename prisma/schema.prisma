@@ -53,25 +53,27 @@ model VerificationToken {
 }
 
 model UserData {
-  id               Int        @id @default(autoincrement())
+  id               Int          @id @default(autoincrement())
   name             String?
-  email            String     @unique
+  email            String       @unique
   image            String?
   theme            Int
-  created_at       DateTime   @default(now())
-  updated_at       DateTime   @default(now())
+  isGuest          Boolean
+  created_at       DateTime     @default(now())
+  updated_at       DateTime     @default(now())
   Category         Category[]
   List             List[]
   items            Item[]
-  listFilterOption Int        @default(0)
+  listedItems      ListedItem[]
+  listFilterOption Int          @default(0)
 }
 
 model Category {
   id            Int          @id @default(autoincrement())
   category_name String
   items         Item[]
-  UserData      UserData?    @relation(fields: [userDataId], references: [id])
-  userDataId    Int?
+  UserData      UserData     @relation(fields: [userDataId], references: [id])
+  userDataId    Int
   created_at    DateTime     @default(now())
   updated_at    DateTime     @default(now())
   ListedItem    ListedItem[]
@@ -88,16 +90,16 @@ model Item {
   listed_items ListedItem[]
   created_at   DateTime     @default(now())
   updated_at   DateTime     @default(now())
-  UserData     UserData?    @relation(fields: [userDataId], references: [id])
-  userDataId   Int?
+  UserData     UserData     @relation(fields: [userDataId], references: [id])
+  userDataId   Int
 }
 
 model List {
   id          Int               @id @default(autoincrement())
   list_name   String
   is_done     Boolean
-  UserData    UserData?         @relation(fields: [ownerId], references: [id])
-  ownerId     Int?
+  UserData    UserData          @relation(fields: [ownerId], references: [id])
+  ownerId     Int
   accessors   AccessorsOnList[]
   listedItems ListedItem[]
   created_at  DateTime          @default(now())
@@ -119,6 +121,8 @@ model ListedItem {
   listId           Int?
   Item             Item?     @relation(fields: [masterItemId], references: [id])
   masterItemId     Int?
+  UserData         UserData  @relation(fields: [ownerId], references: [id])
+  ownerId          Int
 }
 
 model Accessor {
