@@ -117,6 +117,7 @@ export async function POST(request: NextRequest) {
           categoryId: srcListItem.categoryId,
           categoryName: srcListItem.categoryName,
           masterItemId: srcListItem.masterItemId,
+          ownerId: userData.id,
         },
       });
 
