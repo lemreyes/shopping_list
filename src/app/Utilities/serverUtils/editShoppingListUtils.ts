@@ -110,6 +110,7 @@ export async function prepareDataForEdit(listId: number, userId: number) {
           quantity: 0,
           is_purchased: false,
           categoryId: item.categoryId,
+          userDataId: item.ownerId,
         },
         select: {
           id: true,
