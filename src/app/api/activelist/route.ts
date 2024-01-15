@@ -78,6 +78,7 @@ export async function POST(request: Request) {
             categoryName: listItem.categoryName,
             listId: activeList?.id,
             masterItemId: listItem.masterItemId,
+            ownerId: userData.id,
           },
         });
 
@@ -178,6 +179,7 @@ export async function PATCH(request: Request) {
           listId: listId,
           categoryId: listItem.categoryId,
           categoryName: listItem.categoryName,
+          ownerId: userData.id,
         },
         update: {
           listed_item_name: listItem.listed_item_name,
