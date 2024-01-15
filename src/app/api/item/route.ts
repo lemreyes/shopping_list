@@ -20,6 +20,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // find user data
+  const userData = await prisma.userData.findUnique({
+    where: {
+      email: session?.user?.email as string,
+    },
+  });
+  if (!userData) {
+    return NextResponse.json(
+      {
+        errorMessage: "User not found.",
+      },
+      { status: 404 }
+    );
+  }
+
   const { itemName, categoryId }: PostRequestType = await request.json();
   if (itemName.length <= 0 || categoryId <= 0) {
     return NextResponse.json(
@@ -46,6 +61,7 @@ export async function POST(request: NextRequest) {
         quantity: 0,
         is_purchased: false,
         categoryId: categoryId,
+        userDataId: userData.id,
       },
     });
     if (!item) {
