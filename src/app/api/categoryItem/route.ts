@@ -88,6 +88,7 @@ export async function POST(request: NextRequest) {
         categoryId: category.id,
         quantity: 0,
         is_purchased: false,
+        userDataId: userData.id,
       },
     });
     if (!item) {
