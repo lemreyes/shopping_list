@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import add_icon from "../../../public/assets/add_icon.svg";
 import add_icon_dark from "../../../public/assets/add_icon_dark.svg";
 import trash_icon from "../../../public/assets/trash_icon.svg";
@@ -56,6 +56,7 @@ export default function Item({
   const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
   const themeClassName = getThemeClassName(theme);
+  const [isHover, setIsHover] = useState(false);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -181,31 +182,74 @@ export default function Item({
 
   const itemCount = getItemCount();
 
+  const getAddIconStyle = () => {
+    if (theme === Themes.ThemeLight) {
+      if (isHover) {
+        return add_icon;
+      } else {
+        return add_icon_dark;
+      }
+    } else {
+      if (isHover) {
+        return add_icon;
+      } else {
+        return add_icon_dark;
+      }
+    }
+  };
+
+  const getTrashIconStyle = () => {
+    if (theme === Themes.ThemeLight) {
+      if (isHover) {
+        return trash_icon;
+      } else {
+        return trash_icon_dark;
+      }
+    } else {
+      if (isHover) {
+        return trash_icon;
+      } else {
+        return trash_icon_dark;
+      }
+    }
+  };
+
+  const hdlMouseEnter = () => {
+    setIsHover(true);
+  };
+
+  const hdlMouseLeave = () => {
+    setIsHover(false);
+  };
+
   return (
     <>
       <button
         value={label}
         className={`${themeClassName} border ${
-          itemCount > 0 ? "border-green-600 bg-green-600" : "border-gray-300 bg-formButtonBg"
+          itemCount > 0
+            ? "border-green-600 bg-green-600"
+            : "border-gray-300 bg-formButtonBg"
         } rounded-xl py-2 px-2 mt-2 mr-2 h-12 text-sm text-formButtonText  
           hover:border-formButtonBorder hover:text-formButtonTextHover hover:bg-formButtonBgHover`}
         onClick={hdlItemBtnClick}
+        onMouseEnter={hdlMouseEnter}
+        onMouseLeave={hdlMouseLeave}
       >
         {label}
-        {"  "}
         {editMode ? (
           <Image
-            src={theme === Themes.ThemeLight ? trash_icon : trash_icon_dark}
+            src={getTrashIconStyle()}
             alt="delete"
-            className="inline w-4"
+            className="inline w-4 ml-2"
           />
         ) : itemCount > 0 ? (
           <span className="text_lg ml-3">{itemCount}</span>
         ) : (
           <Image
-            src={theme === Themes.ThemeLight ? add_icon : add_icon_dark}
+            src={getAddIconStyle()}
             alt="add"
-            className="inline w-4"
+            className="inline w-4 ml-2"
           />
         )}
       </button>
