@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
     email: userData.email,
     updated_at: new Date(),
     theme: userData.theme,
+    isGuest: userData.isGuest,
   };
 
   const name = formData.get("name");

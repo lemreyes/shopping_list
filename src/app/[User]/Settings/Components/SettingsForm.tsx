@@ -158,8 +158,10 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           />
           <button
             className={`${themeClassName} px-2 py-1 h-6 rounded-lg bg-formButtonBg text-xs text-formButtonText hover:bg-formButtonBgHover 
-                        hover:text-formButtonTextHover hover:border hover:border-formButtonBorder`}
+                        hover:text-formButtonTextHover hover:border hover:border-formButtonBorder
+                        disabled:bg-formButtonBgDisabled disabled:pointer-events-none`}
             onClick={hdlChangePicture}
+            disabled={userData.isGuest}
           >
             Change picture
           </button>
@@ -188,9 +190,10 @@ export default function SettingsForm({ userData }: { userData: TUserData }) {
           type="text"
           id="name"
           name="name"
-          className={`${themeClassName} mb-4 w-full border border-formBorderColor rounded-md pl-2`}
+          className={`${themeClassName} mb-4 w-full border border-formBorderColor rounded-md pl-2 disabled:bg-formBgDisabled`}
           value={name}
           onChange={hdlNameChange}
+          disabled={userData.isGuest}
         />
         <input
           className="hidden"

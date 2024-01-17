@@ -41,6 +41,7 @@ export type TUserData = {
   image?: string;
   name?: string;
   theme: Themes;
+  isGuest: boolean;
   created_at?: Date;
   updated_at?: Date;
 };
