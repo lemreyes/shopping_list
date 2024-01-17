@@ -27,7 +27,7 @@ export default function ActiveListPanel() {
           <section className="rounded-xl p-4 bg-gray-900 text-white mb-8">
             <p>An item is not on the list?</p>
             <button
-              className="bg-white text-black mt-2 py-1 px-4 rounded-lg"
+              className="bg-white text-black mt-2 py-1 px-4 rounded-lg font-bold hover:text-green-600"
               onClick={hdlAddItemButton}
             >
               Add it
