@@ -5,11 +5,7 @@ import trash_icon from "../../../public/assets/trash_icon.svg";
 import trash_icon_dark from "../../../public/assets/trash_icon_dark.svg";
 import Image from "next/image";
 
-import { useShoppingListStore } from "../Store/shoppinglist_store";
-import { useMasterlistStore } from "../Store/masterlist_store";
-
 import { deleteItem } from "../Services/fetchWrapper";
-import { useSnackbarStore } from "../Store/snackbar_store";
 import {
   TCategory,
   TItem,
@@ -26,35 +22,33 @@ const Item = memo(function Item({
   label,
   item_id,
   theme,
+  editMode,
+  masterlist,
+  shoppingList,
+  updateMasterList,
+  updateShoppingList,
+  setSnackbarMessage,
+  setSeverity,
+  setOpenSnackbar,
+  activeListId,
 }: {
   category_id: number;
   category: string;
   label: string;
   item_id: number;
   theme: Themes;
+  editMode: any;
+  masterlist: any;
+  shoppingList: any;
+  updateMasterList: any;
+  updateShoppingList: any;
+  setSnackbarMessage: any;
+  setSeverity: any;
+  setOpenSnackbar: any;
+  activeListId: any;
 }) {
-    const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
-    (state: any) => state.shoppingList
-  );
-  const updateShoppingList = useShoppingListStore(
-    (state: any) => state.updateShoppingList
-  );
-  const activeListId = useShoppingListStore((state: any) => state.activeListId);
-
+  console.log(`Item ${label}`);
   const [openDialog, setOpenDialog] = React.useState(false);
-
-  const editMode = useMasterlistStore((state: any) => state.editMode);
-  const masterlist = useMasterlistStore((state: any) => state.categories);
-  const updateMaterList = useMasterlistStore(
-    (state: any) => state.updateCategories
-  );
-
-  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
-  const setOpenSnackbar = useSnackbarStore(
-    (state: any) => state.setOpenSnackbar
-  );
-  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
-
   const themeClassName = getThemeClassName(theme);
   const [isHover, setIsHover] = useState(false);
 
@@ -95,7 +89,7 @@ const Item = memo(function Item({
         // do nothing
       }
 
-      updateMaterList(newMasterList);
+      updateMasterList(newMasterList);
 
       setOpenDialog(false);
 
@@ -115,10 +109,9 @@ const Item = memo(function Item({
     setOpenDialog(false);
   };
 
-  // find this category in the shoppingList
-  const getItemCount = () => {
+  const getItemCount = useCallback(() => {
     const matchedCategory: TShoppingListCategory | undefined =
-      shoppingList.find((categoryInList) => categoryInList.id === category_id);
+      shoppingList.find((categoryInList: { id: number; }) => categoryInList.id === category_id);
 
     if (matchedCategory) {
       const matchedItem = matchedCategory.items?.find(
@@ -132,30 +125,7 @@ const Item = memo(function Item({
     } else {
       return 0;
     }
-  };
-
-  useCallback(
-    function getItemCount() {
-      const matchedCategory: TShoppingListCategory | undefined =
-        shoppingList.find(
-          (categoryInList) => categoryInList.id === category_id
-        );
-
-      if (matchedCategory) {
-        const matchedItem = matchedCategory.items?.find(
-          (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
-        );
-        if (matchedItem) {
-          return matchedItem.quantity;
-        } else {
-          return 0;
-        }
-      } else {
-        return 0;
-      }
-    },
-    [category_id, item_id, shoppingList]
-  );
+  }, [category_id, item_id, shoppingList]);
 
   const hdlItemBtnClick = () => {
     if (editMode) {

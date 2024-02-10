@@ -1,10 +1,11 @@
 import { useMasterlistStore } from "../Store/masterlist_store";
-import Image from "next/image";
+import { useSnackbarStore } from "../Store/snackbar_store";
 import Item from "./Item";
 import NewItemButton from "./NewItemButton";
-import { TCategory } from "../Types/Types";
+import { TCategory, TShoppingListCategory } from "../Types/Types";
 import { Themes } from "../Types/Enums";
 import { getThemeClassName } from "../Utilities/ThemeUtils";
+import { useShoppingListStore } from "../Store/shoppinglist_store";
 
 export default function CategoryGroup({
   category,
@@ -15,6 +16,24 @@ export default function CategoryGroup({
 }) {
   const editMode = useMasterlistStore((state: any) => state.editMode);
   const themeClassName = getThemeClassName(theme);
+
+  const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
+    (state: any) => state.shoppingList
+  );
+  const updateShoppingList = useShoppingListStore(
+    (state: any) => state.updateShoppingList
+  );
+  const activeListId = useShoppingListStore((state: any) => state.activeListId);
+  const masterlist = useMasterlistStore((state: any) => state.categories);
+  const updateMaterList = useMasterlistStore(
+    (state: any) => state.updateCategories
+  );
+
+  const setSnackbarMessage = useSnackbarStore((state: any) => state.setMessage);
+  const setOpenSnackbar = useSnackbarStore(
+    (state: any) => state.setOpenSnackbar
+  );
+  const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
   return (
     <div key={category.id}>
@@ -33,6 +52,15 @@ export default function CategoryGroup({
               label={item.item_name}
               item_id={item.id}
               theme={theme}
+              editMode={editMode}
+              masterlist={masterlist}
+              shoppingList={shoppingList}
+              updateMasterList={updateMaterList}
+              updateShoppingList={updateShoppingList}
+              setSnackbarMessage={setSnackbarMessage}
+              setSeverity={setSeverity}
+              setOpenSnackbar={setOpenSnackbar}
+              activeListId={activeListId}
             />
           );
         })
