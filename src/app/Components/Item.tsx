@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import add_icon from "../../../public/assets/add_icon.svg";
 import add_icon_dark from "../../../public/assets/add_icon_dark.svg";
 import trash_icon from "../../../public/assets/trash_icon.svg";
@@ -20,7 +20,7 @@ import { Themes } from "../Types/Enums";
 import { getThemeClassName } from "../Utilities/ThemeUtils";
 import ConfirmationDialog from "./ConfirmationDialog";
 
-export default function Item({
+const Item = memo(function Item({
   category_id,
   category,
   label,
@@ -33,7 +33,7 @@ export default function Item({
   item_id: number;
   theme: Themes;
 }) {
-  const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
+    const shoppingList: Array<TShoppingListCategory> = useShoppingListStore(
     (state: any) => state.shoppingList
   );
   const updateShoppingList = useShoppingListStore(
@@ -133,6 +133,29 @@ export default function Item({
       return 0;
     }
   };
+
+  useCallback(
+    function getItemCount() {
+      const matchedCategory: TShoppingListCategory | undefined =
+        shoppingList.find(
+          (categoryInList) => categoryInList.id === category_id
+        );
+
+      if (matchedCategory) {
+        const matchedItem = matchedCategory.items?.find(
+          (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
+        );
+        if (matchedItem) {
+          return matchedItem.quantity;
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    },
+    [category_id, item_id, shoppingList]
+  );
 
   const hdlItemBtnClick = () => {
     if (editMode) {
@@ -262,4 +285,6 @@ export default function Item({
       />
     </>
   );
-}
+});
+
+export default Item;
