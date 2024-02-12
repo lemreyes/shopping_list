@@ -9,8 +9,6 @@ import { deleteItem } from "../Services/fetchWrapper";
 import {
   TCategory,
   TItem,
-  TShoppingListCategory,
-  TShoppingListItem,
 } from "../Types/Types";
 import { Themes } from "../Types/Enums";
 import { getThemeClassName } from "../Utilities/ThemeUtils";
@@ -24,14 +22,12 @@ const Item = memo(function Item({
   theme,
   editMode,
   masterlist,
-  shoppingList,
   updateMasterList,
-  updateShoppingList,
   setSnackbarMessage,
   setSeverity,
   setOpenSnackbar,
-  activeListId,
   getItemCount,
+  hdlItemBtnClick,
 }: {
   category_id: number;
   category: string;
@@ -40,14 +36,18 @@ const Item = memo(function Item({
   theme: Themes;
   editMode: any;
   masterlist: any;
-  shoppingList: any;
   updateMasterList: any;
-  updateShoppingList: any;
   setSnackbarMessage: any;
   setSeverity: any;
   setOpenSnackbar: any;
-  activeListId: any;
   getItemCount: (category_id: number, item_id: number) => number;
+  hdlItemBtnClick: (
+    label: string,
+    item_id: number,
+    category_id: number,
+    categoryName: string,
+    handleClickOpen: () => void
+  ) => void;
 }) {
   console.log(`Item ${label}`);
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -119,61 +119,6 @@ const Item = memo(function Item({
     setOpenDialog(false);
   };
 
-  const hdlItemBtnClick = useCallback(() => {
-    if (editMode) {
-      handleClickOpen();
-    } else {
-      // construct object
-      const newShoppingList = [...shoppingList];
-      const newListItem: TShoppingListItem = {
-        id: 0,
-        listed_item_name: label,
-        quantity: 1,
-        is_purchased: false,
-        masterItemId: item_id,
-        categoryId: category_id,
-        categoryName: category,
-        listId: activeListId,
-      };
-
-      // find the category
-      const matchedCategory: TShoppingListCategory | undefined =
-        newShoppingList.find(
-          (categoryInList) => categoryInList.id === category_id
-        );
-      if (matchedCategory) {
-        // find if there is existing item
-        const matchedItem = matchedCategory.items?.find(
-          (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
-        );
-        if (matchedItem) {
-          matchedItem.quantity++;
-        } else {
-          matchedCategory.items?.push(newListItem);
-        }
-        updateShoppingList(newShoppingList);
-      } else {
-        // category not found so add new category
-        const newCategoryInList = {
-          id: category_id,
-          category_name: category,
-          items: [newListItem],
-        };
-        newShoppingList.push(newCategoryInList);
-        updateShoppingList(newShoppingList);
-      }
-    }
-  }, [
-    activeListId,
-    category,
-    category_id,
-    editMode,
-    item_id,
-    label,
-    shoppingList,
-    updateShoppingList,
-  ]);
-
   const itemCount = getItemCount(category_id, item_id);
 
   const getAddIconStyle = () => {
@@ -226,7 +171,15 @@ const Item = memo(function Item({
             : "border-gray-300 bg-formButtonBg"
         } rounded-xl py-2 px-2 mt-2 mr-2 h-12 text-sm text-formButtonText  
           hover:border-formButtonBorder hover:text-formButtonTextHover hover:bg-formButtonBgHover`}
-        onClick={hdlItemBtnClick}
+        onClick={() =>
+          hdlItemBtnClick(
+            label,
+            item_id,
+            category_id,
+            category,
+            handleClickOpen
+          )
+        }
         onMouseEnter={hdlMouseEnter}
         onMouseLeave={hdlMouseLeave}
       >

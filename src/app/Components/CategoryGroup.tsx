@@ -63,6 +63,62 @@ export default function CategoryGroup({
     [shoppingList]
   );
 
+  const hdlItemBtnClick = useCallback(
+    (
+      label: string,
+      item_id: number,
+      category_id: number,
+      categoryName: string,
+      handleClickOpen: () => void
+    ) => {
+      if (editMode) {
+        handleClickOpen();
+      } else {
+        // construct object
+        const newShoppingList = [...shoppingList];
+        const newListItem: TShoppingListItem = {
+          id: 0,
+          listed_item_name: label,
+          quantity: 1,
+          is_purchased: false,
+          masterItemId: item_id,
+          categoryId: category_id,
+          categoryName: categoryName,
+          listId: activeListId,
+        };
+
+        // find the category
+        const matchedCategory: TShoppingListCategory | undefined =
+          newShoppingList.find(
+            (categoryInList) => categoryInList.id === category_id
+          );
+        if (matchedCategory) {
+          // find if there is existing item
+          const matchedItem = matchedCategory.items?.find(
+            (itemInList: TShoppingListItem) =>
+              itemInList.masterItemId === item_id
+          );
+          if (matchedItem) {
+            matchedItem.quantity++;
+          } else {
+            matchedCategory.items?.push(newListItem);
+          }
+          updateShoppingList(newShoppingList);
+        } else {
+          // category not found so add new category
+          const newCategoryInList = {
+            id: category_id,
+            category_name: categoryName,
+            items: [newListItem],
+          };
+          newShoppingList.push(newCategoryInList);
+          updateShoppingList(newShoppingList);
+        }
+      }
+    },
+    [activeListId, editMode, shoppingList, updateShoppingList]
+  );
+
   return (
     <div key={category.id}>
       <h3
@@ -82,14 +138,12 @@ export default function CategoryGroup({
               theme={theme}
               editMode={editMode}
               masterlist={masterlist}
-              shoppingList={shoppingList}
               updateMasterList={updateMaterList}
-              updateShoppingList={updateShoppingList}
               setSnackbarMessage={setSnackbarMessage}
               setSeverity={setSeverity}
               setOpenSnackbar={setOpenSnackbar}
-              activeListId={activeListId}
               getItemCount={getItemCount}
+              hdlItemBtnClick={hdlItemBtnClick}
             />
           );
         })
