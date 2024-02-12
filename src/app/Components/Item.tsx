@@ -31,6 +31,7 @@ const Item = memo(function Item({
   setSeverity,
   setOpenSnackbar,
   activeListId,
+  getItemCount,
 }: {
   category_id: number;
   category: string;
@@ -46,6 +47,7 @@ const Item = memo(function Item({
   setSeverity: any;
   setOpenSnackbar: any;
   activeListId: any;
+  getItemCount: (category_id: number, item_id: number) => number;
 }) {
   console.log(`Item ${label}`);
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -56,7 +58,7 @@ const Item = memo(function Item({
     setOpenDialog(true);
   };
 
-  const handleCloseYes = async () => {
+  const handleCloseYes = useCallback(async () => {
     // delete in database
     try {
       deleteItem(item_id);
@@ -103,31 +105,21 @@ const Item = memo(function Item({
         setOpenSnackbar(true);
       }
     }
-  };
+  }, [
+    category_id,
+    item_id,
+    masterlist,
+    setOpenSnackbar,
+    setSeverity,
+    setSnackbarMessage,
+    updateMasterList,
+  ]);
 
   const handleCloseNo = () => {
     setOpenDialog(false);
   };
 
-  const getItemCount = useCallback(() => {
-    const matchedCategory: TShoppingListCategory | undefined =
-      shoppingList.find((categoryInList: { id: number; }) => categoryInList.id === category_id);
-
-    if (matchedCategory) {
-      const matchedItem = matchedCategory.items?.find(
-        (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
-      );
-      if (matchedItem) {
-        return matchedItem.quantity;
-      } else {
-        return 0;
-      }
-    } else {
-      return 0;
-    }
-  }, [category_id, item_id, shoppingList]);
-
-  const hdlItemBtnClick = () => {
+  const hdlItemBtnClick = useCallback(() => {
     if (editMode) {
       handleClickOpen();
     } else {
@@ -171,9 +163,18 @@ const Item = memo(function Item({
         updateShoppingList(newShoppingList);
       }
     }
-  };
+  }, [
+    activeListId,
+    category,
+    category_id,
+    editMode,
+    item_id,
+    label,
+    shoppingList,
+    updateShoppingList,
+  ]);
 
-  const itemCount = getItemCount();
+  const itemCount = getItemCount(category_id, item_id);
 
   const getAddIconStyle = () => {
     if (theme === Themes.ThemeLight) {

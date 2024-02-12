@@ -2,10 +2,15 @@ import { useMasterlistStore } from "../Store/masterlist_store";
 import { useSnackbarStore } from "../Store/snackbar_store";
 import Item from "./Item";
 import NewItemButton from "./NewItemButton";
-import { TCategory, TShoppingListCategory } from "../Types/Types";
+import {
+  TCategory,
+  TShoppingListCategory,
+  TShoppingListItem,
+} from "../Types/Types";
 import { Themes } from "../Types/Enums";
 import { getThemeClassName } from "../Utilities/ThemeUtils";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
+import { useCallback } from "react";
 
 export default function CategoryGroup({
   category,
@@ -35,6 +40,29 @@ export default function CategoryGroup({
   );
   const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
 
+  const getItemCount = useCallback(
+    (category_id: number, item_id: number) => {
+      const matchedCategory: TShoppingListCategory | undefined =
+        shoppingList.find(
+          (categoryInList: { id: number }) => categoryInList.id === category_id
+        );
+
+      if (matchedCategory) {
+        const matchedItem = matchedCategory.items?.find(
+          (itemInList: TShoppingListItem) => itemInList.masterItemId === item_id
+        );
+        if (matchedItem) {
+          return matchedItem.quantity;
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    },
+    [shoppingList]
+  );
+
   return (
     <div key={category.id}>
       <h3
@@ -61,6 +89,7 @@ export default function CategoryGroup({
               setSeverity={setSeverity}
               setOpenSnackbar={setOpenSnackbar}
               activeListId={activeListId}
+              getItemCount={getItemCount}
             />
           );
         })
