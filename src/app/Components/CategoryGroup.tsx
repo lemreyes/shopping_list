@@ -4,15 +4,18 @@ import Item from "./Item";
 import NewItemButton from "./NewItemButton";
 import {
   TCategory,
+  TItem,
   TShoppingListCategory,
   TShoppingListItem,
 } from "../Types/Types";
 import { Themes } from "../Types/Enums";
 import { getThemeClassName } from "../Utilities/ThemeUtils";
 import { useShoppingListStore } from "../Store/shoppinglist_store";
-import { useCallback } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
+import { deleteItem } from "../Services/fetchWrapper";
+import { traceLog } from "../Utilities/logUtils";
 
-export default function CategoryGroup({
+const CategoryGroup = memo(function CategoryGroup({
   category,
   theme,
 }: {
@@ -30,7 +33,7 @@ export default function CategoryGroup({
   );
   const activeListId = useShoppingListStore((state: any) => state.activeListId);
   const masterlist = useMasterlistStore((state: any) => state.categories);
-  const updateMaterList = useMasterlistStore(
+  const updateMasterList = useMasterlistStore(
     (state: any) => state.updateCategories
   );
 
@@ -39,6 +42,41 @@ export default function CategoryGroup({
     (state: any) => state.setOpenSnackbar
   );
   const setSeverity = useSnackbarStore((state: any) => state.setSeverity);
+
+  // confirm props changed
+  const prevShoppingList = useRef(shoppingList);
+  useEffect(() => {
+    if (prevShoppingList.current !== shoppingList) {
+      traceLog("shoppingList has changed:", shoppingList);
+      prevShoppingList.current = shoppingList;
+    }
+  }, [shoppingList]);
+
+  const prevactiveListId = useRef(activeListId);
+  useEffect(() => {
+    if (prevactiveListId.current !== activeListId) {
+      traceLog("activeListId has changed:", activeListId);
+      prevactiveListId.current = activeListId;
+    }
+  }, [activeListId]);
+
+  const preveditMode = useRef(editMode);
+  useEffect(() => {
+    if (preveditMode.current !== editMode) {
+      traceLog("editMode has changed:", editMode);
+      preveditMode.current = editMode;
+    }
+  }, [editMode]);
+
+  const prevupdateShoppingList = useRef(updateShoppingList);
+  useEffect(() => {
+    if (prevupdateShoppingList.current !== updateShoppingList) {
+      traceLog("updateShoppingList has changed:", updateShoppingList);
+      prevupdateShoppingList.current = updateShoppingList;
+    }
+  }, [updateShoppingList]);
+
+  //
 
   const getItemCount = useCallback(
     (category_id: number, item_id: number) => {
@@ -74,8 +112,11 @@ export default function CategoryGroup({
       if (editMode) {
         handleClickOpen();
       } else {
-        // construct object
-        const newShoppingList = [...shoppingList];
+        const newShoppingList = shoppingList.map((category) => ({
+          ...category,
+          items: [...category.items], // Shallow copy of items array
+        }));
+
         const newListItem: TShoppingListItem = {
           id: 0,
           listed_item_name: label,
@@ -88,22 +129,23 @@ export default function CategoryGroup({
         };
 
         // find the category
-        const matchedCategory: TShoppingListCategory | undefined =
-          newShoppingList.find(
-            (categoryInList) => categoryInList.id === category_id
+        const matchedCategoryIndex = newShoppingList.findIndex(
+          (categoryInList) => categoryInList.id === category_id
+        );
+        if (matchedCategoryIndex !== -1) {
+          const matchedCategory = newShoppingList[matchedCategoryIndex];
+          // find if there is an existing item
+          const matchedItemIndex = matchedCategory.items.findIndex(
+            (itemInList) => itemInList.masterItemId === item_id
           );
-        if (matchedCategory) {
-          // find if there is existing item
-          const matchedItem = matchedCategory.items?.find(
-            (itemInList: TShoppingListItem) =>
-              itemInList.masterItemId === item_id
-          );
-          if (matchedItem) {
-            matchedItem.quantity++;
+          if (matchedItemIndex !== -1) {
+            const updatedItem = { ...matchedCategory.items[matchedItemIndex] };
+            updatedItem.quantity++;
+            matchedCategory.items[matchedItemIndex] = updatedItem;
           } else {
-            matchedCategory.items?.push(newListItem);
+            matchedCategory.items.push(newListItem);
           }
-          updateShoppingList(newShoppingList);
+          newShoppingList[matchedCategoryIndex] = matchedCategory;
         } else {
           // category not found so add new category
           const newCategoryInList = {
@@ -112,11 +154,71 @@ export default function CategoryGroup({
             items: [newListItem],
           };
           newShoppingList.push(newCategoryInList);
-          updateShoppingList(newShoppingList);
         }
+
+        updateShoppingList(newShoppingList);
       }
     },
     [activeListId, editMode, shoppingList, updateShoppingList]
+  );
+
+  const handleCloseYes = useCallback(
+    async (item_id: number, category_id: number, handleCloseNo: () => void) => {
+      // delete in database
+      try {
+        deleteItem(item_id);
+        let itemName = "";
+
+        // update master list
+        const newMasterList = [...masterlist];
+        const categoryIndex: number = masterlist.findIndex(
+          (categoryInList: TCategory) => categoryInList.id === category_id
+        );
+
+        if (categoryIndex >= 0) {
+          const itemIndex = masterlist[categoryIndex].items.findIndex(
+            (itemInList: TItem) => itemInList.id === item_id
+          );
+
+          itemName = masterlist[categoryIndex].items[itemIndex].item_name;
+
+          if (itemIndex >= 0) {
+            newMasterList[categoryIndex].items.splice(itemIndex, 1);
+
+            // delete category if item list is empty
+            if (newMasterList[categoryIndex].items.length === 0) {
+              newMasterList.splice(categoryIndex, 1);
+            }
+          } else {
+            // do nothing
+          }
+        } else {
+          // do nothing
+        }
+
+        updateMasterList(newMasterList);
+
+        // close dialog
+        handleCloseNo();
+
+        setSnackbarMessage(`${itemName} was successfully deleted.`);
+        setSeverity("success");
+        setOpenSnackbar(true);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setSnackbarMessage(error.message);
+          setSeverity("error");
+          setOpenSnackbar(true);
+        }
+      }
+    },
+    [
+      masterlist,
+      setOpenSnackbar,
+      setSeverity,
+      setSnackbarMessage,
+      updateMasterList,
+    ]
   );
 
   return (
@@ -137,13 +239,9 @@ export default function CategoryGroup({
               item_id={item.id}
               theme={theme}
               editMode={editMode}
-              masterlist={masterlist}
-              updateMasterList={updateMaterList}
-              setSnackbarMessage={setSnackbarMessage}
-              setSeverity={setSeverity}
-              setOpenSnackbar={setOpenSnackbar}
               getItemCount={getItemCount}
               hdlItemBtnClick={hdlItemBtnClick}
+              handleCloseYes={handleCloseYes}
             />
           );
         })
@@ -160,4 +258,6 @@ export default function CategoryGroup({
       )}
     </div>
   );
-}
+});
+
+export default CategoryGroup;
