@@ -5,6 +5,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "scontent.xx.fbcdn.net",
       "localhost",
+      "shopping-list83.vercel.app",
     ],
   },
 };
